@@ -76,10 +76,10 @@ public class CalculatorUI extends Shell {
 		text.setText(displayString);
 		
 		Button btnNewButton = new Button(this, SWT.NONE);
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
 		
 			@Override
-			public void mouseDoubleClick(MouseEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				updateDisplay('1');
 			}
 		});

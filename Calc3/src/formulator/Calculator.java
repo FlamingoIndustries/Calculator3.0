@@ -4,7 +4,7 @@ import java.util.Vector;
 
 //shouldn't catch the minus
 
-public class Main {
+public class Calculator {
 	public static HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
 	
 	public static void main(String[] args){

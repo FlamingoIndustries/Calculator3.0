@@ -9,7 +9,7 @@ public class EvalFormula {
 	//parser
 	public static double evaluateFor(String input){
 		//find formula element and identify its variables
-		FormulaElement formula = Main.formulas.get(input.substring(0, 1));
+		FormulaElement formula = Calculator.formulas.get(input.substring(0, 1));
 		Vector<String> varKeys = formula.identifyVars();
 		HashMap<String, Double> vars = new HashMap<String, Double>();
 		for(String key: varKeys)
