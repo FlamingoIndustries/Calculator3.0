@@ -4,10 +4,10 @@ import java.util.Vector;
 
 public class Differentiation
 {
-/*
- * (f(x+dx)-f(x))/dx
- */
+
+	
 	final ConstantElement dx=new ConstantElement(0.0000001);
+	
 	public FormulaElement numericDiff(FormulaElement form, String respect, int degree) throws Exception
 	{
 		//Replace variable
