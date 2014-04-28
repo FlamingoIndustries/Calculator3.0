@@ -29,7 +29,7 @@ public class ConstantElement extends FormulaElement {
 	@Override
 	public String getXMLformat(String tabbing)
 	{
-		String newline=System.lineSeparator()+tabbing;
+		String newline="\n"+tabbing;
 		return "<"+this.getClass().getSimpleName()+">value="+value+"</"+this.getClass().getSimpleName()+">";
 	}
 	

@@ -58,6 +58,7 @@ public class Main {
 		//PARTIAL EVALUATION for derivatives
 		G.setDValue("x", new MultipleFunctionElement(new VariableElement("y"), new ConstantElement(4)));
 		System.out.println(G.dEval());
+		
 		ReadWriteFormulae.WriteFormulae();
 		System.out.println(ReadWriteFormulae.ReadFormulae());
 	}

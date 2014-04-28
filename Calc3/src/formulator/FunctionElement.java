@@ -20,7 +20,7 @@ abstract class FunctionElement extends FormulaElement {
 	@Override
 	public String getXMLformat(String tabbing)
 	{
-		String newline=System.lineSeparator()+tabbing;
+		String newline="\n"+tabbing;
 		String funcName=this.getClass().getSimpleName();
 		String out="<"+funcName+">";
 		for(FormulaElement e: arguments)

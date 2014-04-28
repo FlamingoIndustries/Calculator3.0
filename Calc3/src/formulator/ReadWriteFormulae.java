@@ -48,8 +48,8 @@ public class ReadWriteFormulae
 	    	for(Entry<String, FormulaElement> form:formulae.entrySet())
 	    	{
 	    		FormulaElement formula=form.getValue();
-	    		String formXML="<"+form.getKey()+">"+System.lineSeparator()+"\t";
-	    		formXML+=formula.getXMLformat("\t")+System.lineSeparator();
+	    		String formXML="<"+form.getKey()+">"+"\n"+"\t";
+	    		formXML+=formula.getXMLformat("\t")+"\n";
 	    		formXML+="</"+form.getKey()+">";
 	    		System.out.println(formXML);
 	    		writer.print(formXML);
