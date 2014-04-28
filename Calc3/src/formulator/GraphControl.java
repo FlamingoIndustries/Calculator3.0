@@ -1,5 +1,7 @@
 package formulator;
 
+import java.util.Vector;
+
 import javax.swing.SwingUtilities;
 
 public class GraphControl {
@@ -33,6 +35,9 @@ public class GraphControl {
 				double min = 0.4;
 				double max = 11.4;
 				double incre = 0.2;
+				Vector<GraphFunction> graphs = new Vector<GraphFunction>();
+				GraphFunction test = new GraphFunction(result, min, max, incre);
+				graphs.add(test);
 				CartesianFrame frame = new CartesianFrame(result, min, max, incre, true, true, true);
 				frame.showUI();
 		   }
