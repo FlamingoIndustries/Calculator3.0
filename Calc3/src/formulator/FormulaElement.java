@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public abstract class FormulaElement extends Calculator
+public abstract class FormulaElement
 {	
 	public abstract double evaluate();
 	public abstract FormulaElement dEval();
@@ -77,7 +77,7 @@ public abstract class FormulaElement extends Calculator
 	public static FormulaElement parseFormula(String formula)
 	{
 		//will chop the string into substring tokens wherever it sees a delimiter
-		StringTokenizer tokenizer = new StringTokenizer(formula, "+-/()^ \t", true);
+		StringTokenizer tokenizer = new StringTokenizer(formula, "+-/()^ \t'", true);
 		Vector tokens = new Vector();
 		String token="";
 
@@ -110,35 +110,54 @@ public abstract class FormulaElement extends Calculator
 		if(!checkFormula(tokens))
 			return null;
 		
-		Vector<String> formulas = new Vector<String>();
-		formulas.add("f");
-		//Find recursive formula definitions
+		//Only for testing!
+		HashMap<String, FormulaElement> forms = new HashMap<String, FormulaElement>();
+		forms.put("f", new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3)));
+		
+		//FORMULAS USED TO DEFINE FORMULAS
 		for(int i=0; i<tokens.size(); i++){
-			String current = (String) tokens.get(i);
-			if(formulas.contains(current)){
-				current = (String) tokens.get(i);
-				while(!current.equals(")")){
-					i++;
-					current = (String) tokens.get(i);
+			String key = (String) tokens.get(i);
+			if(forms.containsKey(key)){
+				tokens.remove(i);
+				String current = (String) tokens.remove(i);
+				int degree=0;
+				String respect="";
+				while(current.equals("'")){
+					degree++;
+					current = (String) tokens.remove(i);
 				}
+				while(!current.equals(")")){
+					if(!current.equals("("))
+						respect+=current;
+					current = (String) tokens.remove(i);
+				}
+				if(degree!=0){
+					Differentiation diff = new Differentiation();
+					FormulaElement temp = diff.symbolicDiff(forms.get(key), respect, degree);
+					tokens.add(i, temp);
+				}
+				else
+					tokens.add(i, forms.get(key));
 			}
 		}
 		
 		//1st pass: convert integers to constant elements and variables to variable elements
 		for(int i=0; i<tokens.size(); i++){
-			String current = (String) tokens.get(i);
-			if(Character.isDigit(current.charAt(0))){
-				//check for double dots; if so the formula is badly formed
-				if(current.contains("..")){
-					System.out.println("There are two dots between numbers; badly formed decimal.");
-					return null;
+			if(tokens.get(i) instanceof String){
+				String current = (String) tokens.get(i);
+				if(Character.isDigit(current.charAt(0))){
+					//check for double dots; if so the formula is badly formed
+					if(current.contains("..")){
+						System.out.println("There are two dots between numbers; badly formed decimal.");
+						return null;
+					}
+					tokens.remove(i);
+					tokens.add(i, new ConstantElement(Double.parseDouble(current)));
 				}
-				tokens.remove(i);
-				tokens.add(i, new ConstantElement(Double.parseDouble(current)));
-			}
-			else if(Character.isLetter(current.charAt(0))&&!current.equals("cos")&&!current.equals("sin")){
-				tokens.remove(i);
-				tokens.add(i, new VariableElement(current));
+				else if(Character.isLetter(current.charAt(0))&&!current.equals("cos")&&!current.equals("sin")){
+					tokens.remove(i);
+					tokens.add(i, new VariableElement(current));
+				}
 			}
 		}
 		//Testing
@@ -344,7 +363,8 @@ public abstract class FormulaElement extends Calculator
 	}
 	
 	public static void main(String[] args){
-		FormulaElement test = FormulaElement.parseFormula("f(x)+2");
+		FormulaElement test = FormulaElement.parseFormula("f'(x)+2");
+		System.out.println(test.toString());
 	}
 }
 

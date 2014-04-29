@@ -19,7 +19,7 @@ public class Differentiation
 		else
 			return numericDiff(div, respect, degree-1);
 	}
-	public FormulaElement symbolicDiff(FormulaElement form, String respect, int degree) throws Exception
+	public FormulaElement symbolicDiff(FormulaElement form, String respect, int degree)
 	{
 		FormulaElement out=form;
 		if(form instanceof ConstantElement)
