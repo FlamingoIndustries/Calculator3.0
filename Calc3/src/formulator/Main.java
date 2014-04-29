@@ -6,26 +6,26 @@ import org.eclipse.swt.widgets.Display;
 public class Main
 {
 	public static void main(String[] args){
-//		try {
-//			Display display = Display.getDefault();
-//			CalculatorUI shell = new CalculatorUI(display);
-//			shell.open();
-//			shell.layout();
-//			while (!shell.isDisposed()) {
-//				if (!display.readAndDispatch()) {
-//					display.sleep();
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
+		try {
+			Display display = Display.getDefault();
+			CalculatorUI shell = new CalculatorUI(display);
+			shell.open();
+			shell.layout();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 
-//		}
+		}
 		
 
 //		}		
-		FormulaElement form=FormulaElement.parseFormula("x+3");
-		Differentiation diff=new Differentiation();
-		System.out.println(diff.symbolicDiff(form, "x", 1));
+//		FormulaElement form=FormulaElement.parseFormula("x+3");
+//		Differentiation diff=new Differentiation();
+//		System.out.println(diff.symbolicDiff(form, "x", 1));
 //		Calculator calc=new Calculator();
 //		calc.branch("graph f(x=5.0,300.0,7.0, y=3.0, z=4.0)");
 //		EvalFormula ev=new EvalFormula();
