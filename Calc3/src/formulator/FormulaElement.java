@@ -324,5 +324,12 @@ public abstract class FormulaElement
 		return false;
 	}
 	
+<<<<<<< HEAD
+=======
+	public VariableElement findVariable(String varName)
+	{
+		return null;
+	}
+>>>>>>> FETCH_HEAD
 }
 

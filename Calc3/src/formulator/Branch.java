@@ -17,9 +17,29 @@ public class Branch extends Calculator
 		{
 			ReadWriteFormulae.ReadFormulae();
 		}
-		else if(text.matches("^graph\\s+\\w+\\(\\w+(,\\w+)*\\)"))
+		else if(text.matches("^graph(\\s+\\w+\\(\\w+=\\d+,\\s?\\d+(,\\s?\\d+)?(,\\s?\\w+=\\d+)*\\))+"))
 		{
-			System.out.println("graph!");
+			Vector<GraphFunction> graphs=new Vector<GraphFunction>();
+			
+			Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+,\\s?\\d+(,\\s?\\d+)?(,\\s?\\w+=\\d+)*\\)");
+			Matcher m = form.matcher(text);
+			Vector<String> formv=new Vector<String>();
+			while(m.find()==true)
+			{
+				formv.add(m.group(0));
+			}
+			for(String s:formv)
+			{
+				Vector<String> results=new Vector<String>();
+				form= Pattern.compile("(\\w+)\\((\\w+)=(\\d+),\\s?(\\d+)(,\\s?(\\d+))?(,\\s?(\\w+)=(\\d+))*\\)");
+				m = form.matcher(s);
+				m.find();
+				for(int i=1;i<m.groupCount();i++)
+				{
+					results.add(m.group(i));
+				}
+				System.out.println(results);
+			}
 		}
 		else if(text.equals("save graph"))
 		{

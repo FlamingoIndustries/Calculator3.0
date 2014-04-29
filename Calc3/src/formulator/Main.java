@@ -1,7 +1,6 @@
 package formulator;
 
 import java.util.Vector;
-
 import org.eclipse.swt.widgets.Display;
 
 public class Main
@@ -20,7 +19,17 @@ public class Main
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
+<<<<<<< HEAD
 
+=======
+		
+		Branch b=new Branch();
+		b.branch("graph f(x=5,300,2, y=3, z=4) g(x=1,100,2)");
+//		EvalFormula ev=new EvalFormula();
+//		//Sample input Strings to try:
+//		//"Y^3-6X(Z+5(Y+2^2))"
+//		//"3 + 4.6 + cos(1)"
+>>>>>>> FETCH_HEAD
 //		Calculator calc=new Calculator();
 		
 		//testing PARSEFORMULA
