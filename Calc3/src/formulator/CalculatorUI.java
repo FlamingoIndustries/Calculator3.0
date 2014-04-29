@@ -80,7 +80,7 @@ public class CalculatorUI extends Shell {
 		
 		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI);
 		text_1.setBounds(23, 10, 279, 72);
-		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
+		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		
 		Button button1 = new Button(this, SWT.NONE);
 		button1.addMouseListener(new MouseAdapter() {
@@ -345,10 +345,18 @@ public class CalculatorUI extends Shell {
 		      } else {
 		        tempString = tempString.substring(0, tempString.length() - 1);
 		      }
+		      displayString =  text.getText() + tempString;
+		      text.setText(displayString);
 		      break;
 		      
 		    case 'R':
-		    	tempString = "HELLO";
+		    	String previous = text_1.getText();
+		    	String current = text.getText();
+		    	System.out.println(current);
+		    	text_1.setText(previous+current);
+		    	text_1.setTopIndex(text_1.getLineCount()-1);
+		    	tempString = "";
+		    	text.setText(tempString);
 		    	doClear = true;
 		    	break;
 		     
@@ -360,15 +368,15 @@ public class CalculatorUI extends Shell {
 		      break;
 		      
 		    default: 
-		    	tempString = tempString + keyVal; 
+		    	tempString = ""+keyVal; 
+			     displayString =  text.getText() + tempString;
+			     text.setText(displayString);
+
 		        break;
 		      }
 		    
 		    clearDisplay = doClear;
-		    if (!displayString.equals(tempString)) {
-		      displayString = tempString;
-		      text.setText(displayString);
-		    }
+
 		
 	}
 		
