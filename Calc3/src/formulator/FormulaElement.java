@@ -104,7 +104,7 @@ public abstract class FormulaElement
 			
 		}
 		//Used for debugging:
-		System.out.println("Initial: "+tokens.toString());
+		//System.out.println("Initial: "+tokens.toString());
 		
 		//Before continuing, perform some basic checks to ensure that the formula has a proper format
 		if(!checkFormula(tokens))
@@ -363,7 +363,7 @@ public abstract class FormulaElement
 	}
 	
 	public static void main(String[] args){
-		FormulaElement test = FormulaElement.parseFormula("f'(x)+2");
+		FormulaElement test = FormulaElement.parseFormula("x+4(5)");
 		System.out.println(test.toString());
 	}
 }

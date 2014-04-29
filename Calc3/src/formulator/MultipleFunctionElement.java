@@ -6,8 +6,15 @@ public class MultipleFunctionElement extends FunctionElement {
 	
 	//constructor that allows two arguments to be added immediately
 	public MultipleFunctionElement(FormulaElement arg1, FormulaElement arg2){
-		addArgument(arg1);
-		addArgument(arg2);
+		if(arg1 instanceof ConstantElement && arg2 instanceof ConstantElement){
+			Double d_arg1 = ((ConstantElement)arg1).getValue();
+			Double d_arg2 = ((ConstantElement)arg2).getValue();
+			addArgument(new ConstantElement(d_arg1*d_arg2));
+		}
+		else{
+			addArgument(arg1);
+			addArgument(arg2);
+		}
 	}
 	
 	//empty constructor; arguments can be added manually
@@ -21,7 +28,7 @@ public class MultipleFunctionElement extends FunctionElement {
 		FormulaElement arg;
 		for(int i=0; i<arguments.size(); i++){
 			arg=arguments.elementAt(i);
-			//allows for a result to be calculate if 1+ argument is a constant
+			//allows for a result to be calculated if 1+ argument is a constant
 			if(arg instanceof ConstantElement){
 				retNum+=((ConstantElement) arg).getValue();
 			}
