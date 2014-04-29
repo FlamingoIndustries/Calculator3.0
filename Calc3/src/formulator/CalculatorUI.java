@@ -3,8 +3,6 @@ package formulator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -13,20 +11,17 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-//import org.eclipse.wb.swt.SWTResourceManager;
+
 
 
 public class CalculatorUI extends Shell {
 		private Text text;
 		// The three calculator registers.
 		private String displayString = "0.";
-		private String memoryString = new String();
-		private String operatorString = new String();
 		// A variable to store the pending calculation
 		private char calcChar = ' ';
 		// Error strings
 		private final String ERROR_STRING = "Error: ";
-		private final String NAN_STRING = "Not a Number";
 		private final String LONG_STRING = "Number too long";
 		private final String INFINITY_STRING = "Infinity";
 		// A flag to check if display should be cleared on the next keystroke
@@ -60,7 +55,7 @@ public class CalculatorUI extends Shell {
 		super(display, SWT.SHELL_TRIM);
 		setLayout(null);
 		
-		text = new Text(this, SWT.BORDER);
+		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
 		text.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -69,8 +64,8 @@ public class CalculatorUI extends Shell {
 				}
 			}
 		});
-		text.setBounds(23, 10, 260, 29);
-		//text.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		text.setBounds(23, 10, 260, 44);
+		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
 		text.setEditable (true);
 		text.setDoubleClickEnabled(false);
 		text.setText(displayString);
@@ -169,22 +164,52 @@ public class CalculatorUI extends Shell {
 		button_7.setBounds(130, 155, 47, 37);
 		
 		Button button_8 = new Button(this, SWT.NONE);
+		button_8.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('.');
+			}
+		});
 		button_8.setText(".");
 		button_8.setBounds(23, 198, 47, 37);
 		
 		Button button_9 = new Button(this, SWT.NONE);
+		button_9.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('0');
+			}
+		});
 		button_9.setText("0");
 		button_9.setBounds(77, 198, 47, 37);
 		
 		Button button_11 = new Button(this, SWT.NONE);
+		button_11.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('+');
+			}
+		});
 		button_11.setText("+");
 		button_11.setBounds(183, 112, 47, 37);
 		
 		Button button_12 = new Button(this, SWT.NONE);
+		button_12.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('-');
+			}
+		});
 		button_12.setText("-");
 		button_12.setBounds(236, 112, 47, 37);
 		
 		Button button_13 = new Button(this, SWT.NONE);
+		button_13.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('*');
+			}
+		});
 		button_13.setText("*");
 		button_13.setBounds(236, 155, 47, 37);
 		
@@ -193,14 +218,32 @@ public class CalculatorUI extends Shell {
 		button_14.setBounds(183, 198, 100, 37);
 		
 		Button button_10 = new Button(this, SWT.NONE);
+		button_10.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('/');
+			}
+		});
 		button_10.setText("/");
 		button_10.setBounds(183, 155, 47, 37);
 		
 		Button button_15 = new Button(this, SWT.NONE);
+		button_15.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('^');
+			}
+		});
 		button_15.setText("^");
 		button_15.setBounds(130, 198, 47, 37);
 		
 		Button btnBsp = new Button(this, SWT.NONE);
+		btnBsp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateDisplay('B');
+			}
+		});
 		btnBsp.setText("DEL");
 		btnBsp.setBounds(183, 69, 47, 37);
 		
@@ -263,10 +306,10 @@ public class CalculatorUI extends Shell {
 		      
 		    case 'R':
 		    	
+		    	
 		      
 		    case 'C': // Clear
 		      tempString = "0.";
-		      operatorString = "";
 		      calcChar = ' ';
 		      doClear = true;
 		      break;
