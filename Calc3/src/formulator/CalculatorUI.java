@@ -1,10 +1,7 @@
-package formulator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -21,13 +18,7 @@ import org.eclipse.swt.events.FocusEvent;
 public class CalculatorUI extends Shell {
 		private Text text;
 		// The three calculator registers.
-		private String displayString = "0.";
-		// A variable to store the pending calculation
-		private char calcChar = ' ';
-		// Error strings
-		private final String ERROR_STRING = "Error: ";
-		private final String LONG_STRING = "Number too long";
-		private final String INFINITY_STRING = "Infinity";
+		private String displayString = "";
 		// A flag to check if display should be cleared on the next keystroke
 		private boolean clearDisplay = true;
 		private Text text_1;
@@ -60,18 +51,18 @@ public class CalculatorUI extends Shell {
 		super(display, SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		setLayout(null);
 		
-		text = new Text(this, SWT.BORDER | SWT.H_SCROLL);
+		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
 		text.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						text.setFocus();
+						text.setSelection(text.getText().length());
 					}
 				});
 			}
 		});
-		
 		text.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -97,8 +88,6 @@ public class CalculatorUI extends Shell {
 				updateDisplay('1');
 			}
 		});
-
-		button1.setCapture(true);
 		button1.setToolTipText("Numeric Pad");
 		button1.setBounds(23, 138, 47, 37);
 		button1.setText("1");
@@ -359,20 +348,18 @@ public class CalculatorUI extends Shell {
 		      
 		    case 'R':
 		    	tempString = "HELLO";
-		    	calcChar = ' ';
 		    	doClear = true;
 		    	break;
 		     
 		    	
 		      
 		    case 'C': // Clear
-		      tempString = "0.";
-		      calcChar = ' ';
+		      tempString = "";
 		      doClear = true;
 		      break;
 		      
-		    default:  // Default case is for the digits 1 through 9.
-		          tempString = tempString + keyVal;
+		    default: 
+		    	tempString = tempString + keyVal; 
 		        break;
 		      }
 		    
