@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 public class GraphControl {
 	/*Current bug list:
-	 Rounding doubles is leaving the origin point on axes a little off.
+	 Rounding doubles is leaving the origin point on axes a little off.22123432341
 	 Sin and Cos are broken
 	 
 	 SHORTCUTS:

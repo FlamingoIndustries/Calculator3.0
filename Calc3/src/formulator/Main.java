@@ -7,32 +7,30 @@ import org.eclipse.swt.widgets.Display;
 public class Main
 {
 	public static void main(String[] args){
-		try {
-			Display display = Display.getDefault();
-			CalculatorUI shell = new CalculatorUI(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-//		EvalFormula ev=new EvalFormula();
-//		//Sample input Strings to try:
-//		//"Y^3-6X(Z+5(Y+2^2))"
-//		//"3 + 4.6 + cos(1)"
+//		try {
+//			Display display = Display.getDefault();
+//			CalculatorUI shell = new CalculatorUI(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
 //		Calculator calc=new Calculator();
-//		//testing PARSEFORMULA
-//		String sampleInput1= "-1+3";
-//		String sampleInput2 = "(2.3 + X + 4.5 + 3X)(2X - (Y^3 + 7) + cos(2^X))";
-//		FormulaElement test = FormulaElement.parseFormula(sampleInput2);
-//		if(test!=null)
-//			System.out.println("Parsed formula: "+test.toString());
-//		else
-//			System.out.println("String wasn't parsed correctly");
+		
+		//testing PARSEFORMULA
+		String sampleInput1= "f(x)+3";
+		String sampleInput2 = "(2.3 + X + 4.5 + 3X)(2X - (Y^3 + 7) + cos(2^X))";
+		FormulaElement test = FormulaElement.parseFormula(sampleInput1);
+		if(test!=null)
+			System.out.println("Parsed formula: "+test.toString());
+		else
+			System.out.println("String wasn't parsed correctly");
 //	
 //		//testing BASIC EVALUATION
 //		FormulaElement evalEx = FormulaElement.parseFormula("2x+2+x^2-y");
