@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public class EvalFormula {
+public class EvalFormula extends Calculator
+{
 	
 	//parser
-	public static double evaluateFor(String input){
+	public double evaluateFor(String input){
 		//find formula element and identify its variables
-		FormulaElement formula = Calculator.formulas.get(input.substring(0, 1));
+		FormulaElement formula = formulas.get(input.substring(0, 1));
 		Vector<String> varKeys = formula.identifyVars();
 		HashMap<String, Double> vars = new HashMap<String, Double>();
 		for(String key: varKeys)
@@ -33,7 +34,7 @@ public class EvalFormula {
 			//with a nested formula in the brackets
 			if(tokens.size()>2){
 				String recInput=toParse.substring(0, 4);
-				double varValue = EvalFormula.evaluateFor(recInput);
+				double varValue = this.evaluateFor(recInput);
 				vars.put(key, varValue);
 			}
 			else{
@@ -60,7 +61,7 @@ public class EvalFormula {
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
-						double varValue = EvalFormula.evaluateFor(recInput);
+						double varValue = this.evaluateFor(recInput);
 						vars.put(varKey, varValue);
 					}
 					else

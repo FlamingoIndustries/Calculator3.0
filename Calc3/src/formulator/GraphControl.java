@@ -6,20 +6,18 @@ import javax.swing.SwingUtilities;
 
 public class GraphControl {
 	/*Current bug list:
-	 !Extra Origin point being drawn.
-	 Conversion from double to integer is leaving point offsets a little weird.
-	 !NO MINUS POINTS YET 
-	 !Need check to stop drawing if a point exceeds the limit of the graph.
-	 Allow multiple graphs.
-	 !Powers are broken
-	 !Labels are intrusive in large numbers
-	 !Keyboard shortcuts for labels, dots etc.
+	 Rounding doubles is leaving the origin point on axes a little off.22123432341
+	 Sin and Cos are broken
 	 
 	 SHORTCUTS:
 	 1 - Toggle labels
 	 2 - Toggle dots
 	 3 - Toggle lines
 	*/
+	Vector<GraphFunction> graphlist;
+	public GraphControl(Vector<GraphFunction> graphs){
+		graphlist = graphs;	
+	}
 	public static void main
 	(String[] args) {
 		  SwingUtilities.invokeLater(new Runnable() {
@@ -28,17 +26,29 @@ public class GraphControl {
 		   public void run() {
 			   	//String str = "cos(x)";
 			   	String str = "x(4/3)";
-				//String str = "(x^(3/2)) ";
+				//String str = "sin(x)";
 				//String str = "(x+2)(x-(y^7)+cos(2^x))";
 				FormulaElement result = (FormulaElement.parseFormula(str));
 				//Pass in the root node of the formula to the CartesianFrame constructor
-				double min = 0.4;
-				double max = 11.4;
-				double incre = 0.2;
+				double min =-5;
+				double max =5;
+				double incre = 1;
 				Vector<GraphFunction> graphs = new Vector<GraphFunction>();
-				GraphFunction test = new GraphFunction(result, min, max, incre);
+				GraphFunction test = new GraphFunction(result, "x", min, max, incre);
 				graphs.add(test);
-				CartesianFrame frame = new CartesianFrame(result, min, max, incre, true, true, true);
+			   	String str2 = "cos(x)";
+			   	String str3 = "x(2/3)";
+
+				FormulaElement result2 = (FormulaElement.parseFormula(str2));
+				FormulaElement result3 = (FormulaElement.parseFormula(str3));
+
+				GraphFunction test2 = new GraphFunction(result2, "x", min, max, incre);
+				GraphFunction test3 = new GraphFunction(result3, "x", min, max, incre);
+				graphs.add(test2);
+
+				graphs.add(test3);
+
+				CartesianFrame frame = new CartesianFrame(graphs, true, true, true);
 				frame.showUI();
 		   }
 		  });

@@ -63,5 +63,22 @@ abstract class FunctionElement extends FormulaElement {
 		else
 			return false;
 	}
-
+	
+	@Override
+	public VariableElement findVariable(String varName)
+	{
+		for(int i=0;i<arguments.size();i++)
+		{
+			FormulaElement e=arguments.elementAt(i);
+			if(e instanceof VariableElement&& ((VariableElement)e).getName().equals(varName))
+				return (VariableElement)e;
+			else if(e instanceof FunctionElement)
+			{
+				VariableElement f=e.findVariable(varName);
+				if(f!=null)
+					return f;
+			}
+		}
+		return null;
+	}
 }

@@ -9,6 +9,8 @@ public abstract class FormulaElement
 	public abstract double evaluate();
 	public abstract FormulaElement dEval();
 	public abstract String getXMLformat(String tabbing);
+	//TO DO
+	//parse for nested formulas in formula declaration
 	
 	//assigns the specified value to all instances of the specified variable in the formula by recursively searching
 	public void setVariableValue(String varName, double value){
@@ -70,15 +72,6 @@ public abstract class FormulaElement
 		}
 		return true;
 	}
-
-	
-	public static FormulaElement parseInitialFormula(String formula){
-		while(formula.charAt(0)!='='){
-			formula = formula.substring(1);
-		}
-		formula = formula.substring(1);
-		return parseFormula(formula);
-	}
 	
 	@SuppressWarnings("unchecked")
 	public static FormulaElement parseFormula(String formula)
@@ -111,7 +104,7 @@ public abstract class FormulaElement
 			
 		}
 		//Used for debugging:
-		//System.out.println("Initial: "+tokens.toString());
+		System.out.println("Initial: "+tokens.toString());
 		
 		//Before continuing, perform some basic checks to ensure that the formula has a proper format
 		if(!checkFormula(tokens))
@@ -329,6 +322,11 @@ public abstract class FormulaElement
 	public Boolean equals(FormulaElement comp)
 	{
 		return false;
+	}
+	
+	public VariableElement findVariable(String varName)
+	{
+		return null;
 	}
 }
 
