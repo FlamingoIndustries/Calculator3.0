@@ -23,7 +23,6 @@ public class CalculatorUI extends Shell {
 		// A flag to check if display should be cleared on the next keystroke
 		private boolean clearDisplay = true;
 		private Text text_1;
-		private Calculator calc;
 
 	/**
 	 * Launch the application.
@@ -52,7 +51,7 @@ public class CalculatorUI extends Shell {
 	public CalculatorUI(Display display) {
 		super(display, SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		setLayout(null);
-		calc=new Calculator();
+		
 		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
 		text.addFocusListener(new FocusAdapter() {
 			@Override
@@ -79,7 +78,7 @@ public class CalculatorUI extends Shell {
 		text.setDoubleClickEnabled(false);
 		text.setText(displayString);
 		
-		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI);
+		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
 		text_1.setBounds(23, 10, 279, 72);
 		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		
@@ -346,15 +345,15 @@ public class CalculatorUI extends Shell {
 		      } else {
 		        tempString = tempString.substring(0, tempString.length() - 1);
 		      }
-		      displayString =  text.getText() + tempString;
+		      displayString =  tempString;
 		      text.setText(displayString);
 		      break;
 		      
 		    case 'R':
 		    	String previous = text_1.getText();
 		    	String current = text.getText();
-		    	String result=calc.branch(current);
-		    	text_1.setText(previous+current+"\n"+result);
+		    	System.out.println(current);
+		    	text_1.setText(previous+current);
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
