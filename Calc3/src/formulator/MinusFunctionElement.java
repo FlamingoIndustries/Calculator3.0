@@ -31,8 +31,12 @@ public class MinusFunctionElement extends FunctionElement{
 			return ""+retNum;
 		}
 		//create string with minus symbol if 1+ arguments are variables
-		else
+		else{
+			if(arg2 instanceof PlusFunctionElement){
+				return arg1.toString() + " - "+"("+arg2.toString()+")";
+			}
 			return arg1.toString() + " - " + arg2.toString();
+		}
 	}
 	
 	public double evaluate(){
