@@ -1,3 +1,4 @@
+package formulator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
