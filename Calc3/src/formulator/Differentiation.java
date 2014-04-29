@@ -10,17 +10,14 @@ public class Differentiation
 	
 	public FormulaElement numericDiff(FormulaElement form, String respect, int degree) throws Exception
 	{
-		//Replace variable
-		return null;
-//		FormulaElement adjustedform= form.copyFormula();
-//		FormulaElement replace=new PlusFunctionElement(dx, form.findVariable(respect));
-//		adjustedform.replaceVariable("x", replace);
-//		MinusFunctionElement minus=new MinusFunctionElement(adjustedform,form);
-//		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
-//		if(degree==1)
-//			return div;
-//		else
-//			return numericDiff(div, respect, degree-1);
+		FormulaElement replace=new PlusFunctionElement(dx, form.findVariable(respect));
+		form.setDValue(respect, replace);//ASK BARBARA!
+		MinusFunctionElement minus=new MinusFunctionElement(form.dEval(),form);
+		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
+		if(degree==1)
+			return div;
+		else
+			return numericDiff(div, respect, degree-1);
 	}
 	public FormulaElement symbolicDiff(FormulaElement form, String respect, int degree) throws Exception
 	{

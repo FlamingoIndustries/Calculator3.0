@@ -1,25 +1,27 @@
 package formulator;
 
 import java.util.Vector;
-
 import org.eclipse.swt.widgets.Display;
 
 public class Main
 {
 	public static void main(String[] args){
-		try {
-			Display display = Display.getDefault();
-			CalculatorUI shell = new CalculatorUI(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Display display = Display.getDefault();
+//			CalculatorUI shell = new CalculatorUI(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+		Branch b=new Branch();
+		b.branch("graph f(x=5,300,2, y=3, z=4) g(x=1,100,2)");
 //		EvalFormula ev=new EvalFormula();
 //		//Sample input Strings to try:
 //		//"Y^3-6X(Z+5(Y+2^2))"

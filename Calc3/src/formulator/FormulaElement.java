@@ -330,5 +330,10 @@ public abstract class FormulaElement extends Calculator
 	{
 		return false;
 	}
+	
+	public VariableElement findVariable(String varName)
+	{
+		return null;
+	}
 }
 
