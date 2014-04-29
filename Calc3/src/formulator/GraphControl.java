@@ -37,10 +37,16 @@ public class GraphControl {
 				GraphFunction test = new GraphFunction(result, "x", min, max, incre);
 				graphs.add(test);
 			   	String str2 = "cos(x)";
+			   	String str3 = "x(2/3)";
 
 				FormulaElement result2 = (FormulaElement.parseFormula(str2));
+				FormulaElement result3 = (FormulaElement.parseFormula(str3));
+
 				GraphFunction test2 = new GraphFunction(result2, "x", min, max, incre);
+				GraphFunction test3 = new GraphFunction(result3, "x", min, max, incre);
 				graphs.add(test2);
+
+				graphs.add(test3);
 
 				CartesianFrame frame = new CartesianFrame(graphs, true, true, true);
 				frame.showUI();

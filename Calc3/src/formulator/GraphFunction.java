@@ -9,7 +9,7 @@ public double min;
 public double max;
 public double increment;
 public String var_name;
-Vector<Point> points;
+public Vector<Point> points = new Vector<Point>();
 
 	public GraphFunction(FormulaElement input_root, String var, double min_in, double max_in, double incre){
 		root = input_root;

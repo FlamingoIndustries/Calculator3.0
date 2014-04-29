@@ -45,7 +45,6 @@ class CartesianFrame extends JFrame {
         panel.getActionMap().put("one", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("one");
                 labels = !labels;
         		panel = new CartesianPanel(graphs, labels, dots, lines);
         		add(panel);
@@ -55,7 +54,6 @@ class CartesianFrame extends JFrame {
         panel.getActionMap().put("two", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("two");
                 dots = !dots;
         		panel = new CartesianPanel(graphs, labels, dots, lines);
         		add(panel);
@@ -65,14 +63,13 @@ class CartesianFrame extends JFrame {
         panel.getActionMap().put("three", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("three");
                 lines = !lines;
         		panel = new CartesianPanel(graphs, labels, dots, lines);
         		add(panel);
 				showUI();
             }
         });
-        
+        System.out.println(panel.getComponentCount());
 	}
 	
 	
@@ -137,13 +134,9 @@ class CartesianPanel extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		Vector<Point> points = new Vector<Point>();
 		double x;
 		double y;
 		double max_y = 0, min_y = 0, max_x= 0, min_x =0;
-		double xt = 0;
-		double yt = 0;
-		double largest = 0;
 		int xCoordNumbers = 0;
 		int yCoordNumbers = 0;
 		
@@ -184,7 +177,7 @@ class CartesianPanel extends JPanel {
 			if (min_y > y) {
 				min_y = y;
 			}
-			points.add(current);
+			graph.points.add(current);
 			//String t = "(" + x + ", " + y + ")";
 		}
 	}
@@ -296,12 +289,13 @@ class CartesianPanel extends JPanel {
 		
 		double old_dotx=0;
 		double old_doty=0;
-		
+	for(int e = 0; e<graphs.size(); e++){
+		Vector<Point> current_points = graphs.get(e).points;
 		// Save it to the vector, then draw...
-		for (int i = 0; i < points.size(); i++) {
+		for (int i = 0; i < current_points.size(); i++) {
 			// Draw points
-			double px = points.get(i).getx();
-			double py = points.get(i).gety();
+			double px = current_points.get(i).getx();
+			double py = current_points.get(i).gety();
 			double dotx = (50 + (px * xLength));
 			double doty =  (600 - (py * yLength));
 
@@ -312,7 +306,7 @@ class CartesianPanel extends JPanel {
 				doty =  (y_meets_x - (py * yLength));
 			}
 
-			System.out.println("Pixel values for x,y: " + dotx + ", " + doty);
+			//System.out.println("Pixel values for x,y: " + dotx + ", " + doty);
 			//System.out.println("meets: " + x_meets_y + ", " + y_meets_x);
 			if(dots == true){
 				g2.fill(new Ellipse2D.Double((dotx - (ORIGIN_COORDINATE_LENGHT/2)), doty - (ORIGIN_COORDINATE_LENGHT/2), ORIGIN_COORDINATE_LENGHT,
@@ -323,7 +317,7 @@ class CartesianPanel extends JPanel {
 			if(labels  == true){
 				
 			String t = "(" + Math.round(px*100.0)/100.0 + ", " + Math.round(py*100.0)/100.0 + ")";
-			System.out.println(t);
+			//System.out.println(t);
 			g2.drawString(t, (int) dotx + 12, (int) doty);
 			}
 			
@@ -335,7 +329,7 @@ class CartesianPanel extends JPanel {
 			old_dotx = dotx;
 			old_doty = doty;
 		}	 
-		
+	}
 	}
 }
 
