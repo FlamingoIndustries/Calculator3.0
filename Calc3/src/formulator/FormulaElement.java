@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public abstract class FormulaElement
+public abstract class FormulaElement extends Calculator
 {	
 	public abstract double evaluate();
 	public abstract FormulaElement dEval();
@@ -110,9 +110,23 @@ public abstract class FormulaElement
 		if(!checkFormula(tokens))
 			return null;
 		
+		Vector<String> formulas = new Vector<String>();
+		formulas.add("f");
+		//Find recursive formula definitions
+		for(int i=0; i<tokens.size(); i++){
+			String current = (String) tokens.get(i);
+			if(formulas.contains(current)){
+				current = (String) tokens.get(i);
+				while(!current.equals(")")){
+					i++;
+					current = (String) tokens.get(i);
+				}
+			}
+		}
+		
 		//1st pass: convert integers to constant elements and variables to variable elements
 		for(int i=0; i<tokens.size(); i++){
-			String current = (String) tokens.elementAt(i);
+			String current = (String) tokens.get(i);
 			if(Character.isDigit(current.charAt(0))){
 				//check for double dots; if so the formula is badly formed
 				if(current.contains("..")){
@@ -140,7 +154,7 @@ public abstract class FormulaElement
 		
 		//2nd pass: convert adjacent variable/constant elements to multiple function elements
 		for(int i=0; i<tokens.size()-1; i++){
-			if(tokens.elementAt(i) instanceof FormulaElement && tokens.elementAt(i+1) instanceof FormulaElement)
+			if(tokens.get(i) instanceof FormulaElement && tokens.get(i+1) instanceof FormulaElement)
 			{
 				FormulaElement arg1 = (FormulaElement) tokens.remove(i);
 				FormulaElement arg2 = (FormulaElement) tokens.remove(i);
@@ -157,9 +171,9 @@ public abstract class FormulaElement
 		int brackets=0;
 		for(int i=0; i<tokens.size(); i++)
 		{
-			if(tokens.elementAt(i).equals("("))
+			if(tokens.get(i).equals("("))
 				brackets++;
-			if(tokens.elementAt(i).equals(")"))
+			if(tokens.get(i).equals(")"))
 			{
 				brackets--;
 				//if the brackets are matched a complete section in parentheses has been found
@@ -188,7 +202,7 @@ public abstract class FormulaElement
 		//the part in brackets has already been reduced to one formula element; the item after sin/cos in tokens
 		for(int i=0; i<tokens.size(); i++)
 		{
-			if(tokens.elementAt(i).equals("sin") || tokens.elementAt(i).equals("cos"))
+			if(tokens.get(i).equals("sin") || tokens.get(i).equals("cos"))
 			{
 				String type = (String) tokens.remove(i);
 				FormulaElement arg = (FormulaElement) tokens.remove(i);
@@ -206,7 +220,7 @@ public abstract class FormulaElement
 		//5th pass: find powers and replace the symbol and its 2 arguments with a power function element
 		for(int i=0; i<tokens.size()-1; i++)
 		{
-			if(tokens.elementAt(i+1).equals("^"))
+			if(tokens.get(i+1).equals("^"))
 			{
 				tokens.remove(i+1);
 				FormulaElement arg1 = (FormulaElement) tokens.remove(i);
@@ -220,13 +234,13 @@ public abstract class FormulaElement
 		
 		//6th pass: find multiplication and division and replace with appropriate function elements
 		for(int i=1; i<tokens.size(); i++){
-			if(tokens.elementAt(i-1)instanceof FormulaElement && tokens.elementAt(i)instanceof FormulaElement){
+			if(tokens.get(i-1)instanceof FormulaElement && tokens.get(i)instanceof FormulaElement){
 				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);
 				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
 				tokens.add(i-1, new MultipleFunctionElement(arg1, arg2));
 				i--;
 			}
-			else if(tokens.elementAt(i).equals("/")){
+			else if(tokens.get(i).equals("/")){
 				tokens.remove(i);
 				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);			
 				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
@@ -239,14 +253,14 @@ public abstract class FormulaElement
 		
 		//7th pass: find addition and subtraction and replace with appropriate function elements
 		for(int i=0; i<tokens.size()-1; i++){
-			if(tokens.elementAt(i).equals("+")){
+			if(tokens.get(i).equals("+")){
 				tokens.remove(i);
 				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);
 				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
 				tokens.add(i-1, new PlusFunctionElement(arg1, arg2));
 				i--;
 			}
-			else if(tokens.elementAt(i).equals("-")){
+			else if(tokens.get(i).equals("-")){
 				tokens.remove(i);
 				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);
 				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
@@ -255,7 +269,7 @@ public abstract class FormulaElement
 			}
 		}
 		if(!tokens.isEmpty())
-			return (FormulaElement) tokens.elementAt(0);
+			return (FormulaElement) tokens.get(0);
 		else
 			return null;
 	}
@@ -327,6 +341,10 @@ public abstract class FormulaElement
 	public VariableElement findVariable(String varName)
 	{
 		return null;
+	}
+	
+	public static void main(String[] args){
+		FormulaElement test = FormulaElement.parseFormula("f(x)+2");
 	}
 }
 
