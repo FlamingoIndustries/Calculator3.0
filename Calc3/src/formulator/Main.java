@@ -18,8 +18,12 @@ public class Main
 //			}
 //		} catch (Exception e) {
 //			e.printStackTrace();
+
 //		}
 		
+
+//		}		
+
 		Branch b=new Branch();
 		b.branch("graph f(x=5,300,2, y=3, z=4) g(x=1,100,2)");
 //		EvalFormula ev=new EvalFormula();
