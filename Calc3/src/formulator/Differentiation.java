@@ -8,10 +8,11 @@ public class Differentiation
 	
 	final ConstantElement dx=new ConstantElement(0.0000001);
 	
-	public FormulaElement numericDiff(FormulaElement form, String respect, int degree) throws Exception
+	public FormulaElement numericDiff(FormulaElement form, String respect, int degree)
 	{
 		FormulaElement replace=new PlusFunctionElement(dx, form.findVariable(respect));
 		form.setDValue(respect, replace);//ASK BARBARA!
+		System.out.println(form.dEval()+"\t\t"+form);
 		MinusFunctionElement minus=new MinusFunctionElement(form.dEval(),form);
 		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
 		if(degree==1)

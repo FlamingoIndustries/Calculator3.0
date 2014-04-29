@@ -23,9 +23,11 @@ public class Main
 		
 
 //		}		
-
-		Calculator calc=new Calculator();
-		calc.branch("graph f(x=5.0,300.0,7.0, y=3.0, z=4.0)");
+		FormulaElement form=FormulaElement.parseFormula("x+3");
+		Differentiation diff=new Differentiation();
+		System.out.println(diff.symbolicDiff(form, "x", 1));
+//		Calculator calc=new Calculator();
+//		calc.branch("graph f(x=5.0,300.0,7.0, y=3.0, z=4.0)");
 //		EvalFormula ev=new EvalFormula();
 //		//Sample input Strings to try:
 //		//"Y^3-6X(Z+5(Y+2^2))"
@@ -33,13 +35,13 @@ public class Main
 //		Calculator calc=new Calculator();
 		
 		//testing PARSEFORMULA
-		String sampleInput1= "f(x)+3";
-		String sampleInput2 = "(2.3 + X + 4.5 + 3X)(2X - (Y^3 + 7) + cos(2^X))";
-		FormulaElement test = FormulaElement.parseFormula(sampleInput1);
-		if(test!=null)
-			System.out.println("Parsed formula: "+test.toString());
-		else
-			System.out.println("String wasn't parsed correctly");
+//		String sampleInput1= "f(x)+3";
+//		String sampleInput2 = "(2.3 + X + 4.5 + 3X)(2X - (Y^3 + 7) + cos(2^X))";
+//		FormulaElement test = FormulaElement.parseFormula(sampleInput1);
+//		if(test!=null)
+//			System.out.println("Parsed formula: "+test.toString());
+//		else
+//			System.out.println("String wasn't parsed correctly");
 //	
 //		//testing BASIC EVALUATION
 //		FormulaElement evalEx = FormulaElement.parseFormula("2x+2+x^2-y");
