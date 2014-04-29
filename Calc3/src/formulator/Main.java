@@ -24,8 +24,8 @@ public class Main
 
 //		}		
 
-		Branch b=new Branch();
-		b.branch("graph f(x=5,300,2, y=3, z=4) g(x=1,100,2)");
+		Calculator calc=new Calculator();
+		calc.branch("graph f(x=5.0,300.0,7.0, y=3.0, z=4.0)");
 //		EvalFormula ev=new EvalFormula();
 //		//Sample input Strings to try:
 //		//"Y^3-6X(Z+5(Y+2^2))"
