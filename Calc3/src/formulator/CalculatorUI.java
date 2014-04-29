@@ -11,6 +11,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 
 
 
@@ -26,6 +30,7 @@ public class CalculatorUI extends Shell {
 		private final String INFINITY_STRING = "Infinity";
 		// A flag to check if display should be cleared on the next keystroke
 		private boolean clearDisplay = true;
+		private Text text_1;
 
 	/**
 	 * Launch the application.
@@ -52,10 +57,21 @@ public class CalculatorUI extends Shell {
 	 * @param display
 	 */
 	public CalculatorUI(Display display) {
-		super(display, SWT.SHELL_TRIM);
+		super(display, SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		setLayout(null);
 		
-		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
+		text = new Text(this, SWT.BORDER | SWT.H_SCROLL);
+		text.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Display.getCurrent().asyncExec(new Runnable() {
+					public void run() {
+						text.setFocus();
+					}
+				});
+			}
+		});
+		
 		text.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -64,198 +80,233 @@ public class CalculatorUI extends Shell {
 				}
 			}
 		});
-		text.setBounds(23, 10, 260, 44);
-		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+		text.setBounds(23, 88, 260, 44);
+		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_MAGENTA));
 		text.setEditable (true);
 		text.setDoubleClickEnabled(false);
 		text.setText(displayString);
 		
-		Button btnNewButton = new Button(this, SWT.NONE);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
+		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI);
+		text_1.setBounds(23, 10, 279, 72);
+		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
 		
+		Button button1 = new Button(this, SWT.NONE);
+		button1.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('1');
 			}
 		});
-		btnNewButton.setCapture(true);
-		btnNewButton.setToolTipText("Numeric Pad");
-		btnNewButton.setBounds(23, 69, 47, 37);
-		btnNewButton.setText("1");
+
+		button1.setCapture(true);
+		button1.setToolTipText("Numeric Pad");
+		button1.setBounds(23, 138, 47, 37);
+		button1.setText("1");
 		
-		Button button = new Button(this, SWT.NONE);
-		button.addSelectionListener(new SelectionAdapter() {
+		Button button2 = new Button(this, SWT.NONE);
+		button2.setToolTipText("Numeric Pad");
+		button2.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('2');
 			}
 		});
-		button.setText("2");
-		button.setBounds(77, 69, 47, 37);
+		button2.setText("2");
+		button2.setBounds(77, 138, 47, 37);
 		
-		Button button_1 = new Button(this, SWT.NONE);
-		button_1.addSelectionListener(new SelectionAdapter() {
+		Button button3 = new Button(this, SWT.NONE);
+		button3.setToolTipText("Numeric Pad");
+		button3.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('3');
 			}
 		});
-		button_1.setText("3");
-		button_1.setBounds(130, 69, 47, 37);
+
+		button3.setText("3");
+		button3.setBounds(130, 138, 47, 37);
 		
-		Button button_2 = new Button(this, SWT.NONE);
-		button_2.addSelectionListener(new SelectionAdapter() {
+		Button button4 = new Button(this, SWT.NONE);
+		button4.setToolTipText("Numeric Pad");
+		button4.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('4');
 			}
 		});
-		button_2.setText("4");
-		button_2.setBounds(23, 112, 47, 37);
+		button4.setText("4");
+		button4.setBounds(23, 181, 47, 37);
 		
-		Button button_3 = new Button(this, SWT.NONE);
-		button_3.addSelectionListener(new SelectionAdapter() {
+		Button button5 = new Button(this, SWT.NONE);
+		button5.setToolTipText("Numeric Pad");
+		button5.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('5');
 			}
 		});
-		button_3.setText("5");
-		button_3.setBounds(77, 112, 47, 37);
+		button5.setText("5");
+		button5.setBounds(77, 181, 47, 37);
 		
-		Button button_4 = new Button(this, SWT.NONE);
-		button_4.addSelectionListener(new SelectionAdapter() {
+		Button button6 = new Button(this, SWT.NONE);
+		button6.setToolTipText("Numeric Pad");
+		button6.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('6');
 			}
 		});
-		button_4.setText("6");
-		button_4.setBounds(130, 112, 47, 37);
+		button6.setText("6");
+		button6.setBounds(130, 181, 47, 37);
 		
-		Button button_5 = new Button(this, SWT.NONE);
-		button_5.addSelectionListener(new SelectionAdapter() {
+		Button button7 = new Button(this, SWT.NONE);
+		button7.setToolTipText("Numeric Pad");
+		button7.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('7');
 			}
 		});
-		button_5.setText("7");
-		button_5.setBounds(23, 155, 47, 37);
+
+		button7.setText("7");
+		button7.setBounds(23, 224, 47, 37);
 		
-		Button button_6 = new Button(this, SWT.NONE);
-		button_6.addSelectionListener(new SelectionAdapter() {
+		Button button8 = new Button(this, SWT.NONE);
+		button8.setToolTipText("Numeric Pad");
+		button8.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('8');
 			}
 		});
-		button_6.setText("8");
-		button_6.setBounds(77, 155, 47, 37);
+		button8.setText("8");
+		button8.setBounds(77, 224, 47, 37);
 		
-		Button button_7 = new Button(this, SWT.NONE);
-		button_7.addSelectionListener(new SelectionAdapter() {
+		Button button9 = new Button(this, SWT.NONE);
+		button9.setToolTipText("Numeric Pad");
+		button9.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('9');
 			}
 		});
-		button_7.setText("9");
-		button_7.setBounds(130, 155, 47, 37);
+		button9.setText("9");
+		button9.setBounds(130, 224, 47, 37);
 		
-		Button button_8 = new Button(this, SWT.NONE);
-		button_8.addSelectionListener(new SelectionAdapter() {
+		Button button0 = new Button(this, SWT.NONE);
+		button0.setToolTipText("Numeric Pad");
+		button0.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateDisplay('.');
-			}
-		});
-		button_8.setText(".");
-		button_8.setBounds(23, 198, 47, 37);
-		
-		Button button_9 = new Button(this, SWT.NONE);
-		button_9.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('0');
 			}
 		});
-		button_9.setText("0");
-		button_9.setBounds(77, 198, 47, 37);
 		
-		Button button_11 = new Button(this, SWT.NONE);
-		button_11.addSelectionListener(new SelectionAdapter() {
+				button0.setText("0");
+				button0.setBounds(77, 267, 47, 37);
+		
+		Button buttonDot = new Button(this, SWT.NONE);
+		buttonDot.setToolTipText("Numeric Pad");
+		buttonDot.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
+				updateDisplay('.');
+			}
+		});
+		buttonDot.setText(".");
+		buttonDot.setBounds(23, 267, 47, 37);
+		
+		Button buttonPlus = new Button(this, SWT.NONE);
+		buttonPlus.setToolTipText("Plus");
+		buttonPlus.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('+');
 			}
 		});
-		button_11.setText("+");
-		button_11.setBounds(183, 112, 47, 37);
+		buttonPlus.setText("+");
+		buttonPlus.setBounds(183, 181, 47, 37);
 		
-		Button button_12 = new Button(this, SWT.NONE);
-		button_12.addSelectionListener(new SelectionAdapter() {
+		Button buttonMinus = new Button(this, SWT.NONE);
+		buttonMinus.setToolTipText("Minus");
+		buttonMinus.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('-');
 			}
 		});
-		button_12.setText("-");
-		button_12.setBounds(236, 112, 47, 37);
+
+		buttonMinus.setText("-");
+		buttonMinus.setBounds(236, 181, 47, 37);
 		
-		Button button_13 = new Button(this, SWT.NONE);
-		button_13.addSelectionListener(new SelectionAdapter() {
+		Button buttonMultiply = new Button(this, SWT.NONE);
+		buttonMultiply.setToolTipText("Multiply");
+		buttonMultiply.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('*');
 			}
 		});
-		button_13.setText("*");
-		button_13.setBounds(236, 155, 47, 37);
+
+		buttonMultiply.setText("*");
+		buttonMultiply.setBounds(236, 224, 47, 37);
 		
-		Button button_14 = new Button(this, SWT.NONE);
-		button_14.setText("=");
-		button_14.setBounds(183, 198, 100, 37);
-		
-		Button button_10 = new Button(this, SWT.NONE);
-		button_10.addSelectionListener(new SelectionAdapter() {
+		Button buttonDivide = new Button(this, SWT.NONE);
+		buttonDivide.setToolTipText("Divide");
+		buttonDivide.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('/');
 			}
 		});
-		button_10.setText("/");
-		button_10.setBounds(183, 155, 47, 37);
+		buttonDivide.setText("/");
+		buttonDivide.setBounds(183, 224, 47, 37);
 		
-		Button button_15 = new Button(this, SWT.NONE);
-		button_15.addSelectionListener(new SelectionAdapter() {
+		Button buttonPower = new Button(this, SWT.NONE);
+		buttonPower.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('^');
 			}
 		});
-		button_15.setText("^");
-		button_15.setBounds(130, 198, 47, 37);
+		buttonPower.setToolTipText("Power");
+		buttonPower.setText("^");
+		buttonPower.setBounds(130, 267, 47, 37);
+		
+		Button buttonEquals = new Button(this, SWT.NONE);
+		buttonEquals.setToolTipText("Equals");
+		buttonEquals.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay('R');
+			}
+		});
+		buttonEquals.setText("=");
+		buttonEquals.setBounds(183, 267, 100, 37);
 		
 		Button btnBsp = new Button(this, SWT.NONE);
-		btnBsp.addSelectionListener(new SelectionAdapter() {
+		btnBsp.addMouseListener(new MouseAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void mouseDown(MouseEvent e) {
 				updateDisplay('B');
 			}
 		});
+
 		btnBsp.setText("DEL");
-		btnBsp.setBounds(183, 69, 47, 37);
+		btnBsp.setToolTipText("Backspace");
+		btnBsp.setBounds(183, 138, 47, 37);
 		
 		Button btnClr = new Button(this, SWT.NONE);
-		btnClr.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			updateDisplay('C');
-		}
+		btnClr.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay('C');
+			}
 		});
+
 		btnClr.setToolTipText("Clear Screen");
 		btnClr.setText("CLR");
-		btnClr.setBounds(236, 69, 47, 37);
+		btnClr.setBounds(236, 138, 47, 37);
 		
 		Menu menu = new Menu(this, SWT.BAR);
 		setMenuBar(menu);
@@ -276,9 +327,11 @@ public class CalculatorUI extends Shell {
 		mntmView.setText("View");
 		
 		Menu menu_2 = new Menu(mntmView);
+		menu_2.setEnabled(false);
 		mntmView.setMenu(menu_2);
 		
 		MenuItem mntmStandard = new MenuItem(menu_2, SWT.CHECK);
+		mntmStandard.setSelection(true);
 		mntmStandard.setText("Standard");
 		
 		MenuItem mntmScientific = new MenuItem(menu_2, SWT.CHECK);
@@ -305,7 +358,11 @@ public class CalculatorUI extends Shell {
 		      break;
 		      
 		    case 'R':
-		    	
+		    	tempString = "HELLO";
+		    	calcChar = ' ';
+		    	doClear = true;
+		    	break;
+		     
 		    	
 		      
 		    case 'C': // Clear
@@ -334,7 +391,7 @@ public class CalculatorUI extends Shell {
 	 */
 	protected void createContents() {
 		setText("Formulator");
-		setSize(323, 312);
+		setSize(319, 373);
 
 	}
 
