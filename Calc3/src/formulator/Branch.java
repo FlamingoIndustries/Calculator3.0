@@ -3,8 +3,9 @@ package formulator;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
-public class Branch
+public class Branch extends Calculator
 {
 	public void branch(String text)
 	{
@@ -28,28 +29,26 @@ public class Branch
 		{
 			
 		}
-		else if(text.matches("^\\w+\\(\\w+(,\\w+)*\\)=.+"))
+		else if(text.matches("^\\w+=.+"))
 		{
-			Pattern form= Pattern.compile("(^\\w+\\(\\w+(,\\w+)*\\))=(.+)");
+			Pattern form= Pattern.compile("^(\\w+)=(.+)");
 			Matcher m = form.matcher(text);
 			Vector<String> formv=new Vector<String>();
 			m.find();
-			formv.add(m.group(1));
-			formv.add(m.group(3));
-			//Parse and store formula
-		}
-		else if(text.matches(".*\\w+'+\\(.*\\).*"))
-		{
-			Pattern diff= Pattern.compile("(\\w+('+)\\([^()]+\\))");
-			Matcher m = diff.matcher(text);
-			Vector<String> diffv=new Vector<String>();
-			while (m.find())
+			FormulaElement newform=FormulaElement.parseFormula(m.group(2));
+			Boolean store=false;
+			if(formulas.containsKey(m.group(1)))
 			{
-				diffv.add(""+m.group(2).length());
-			    diffv.add(m.group(1));
+				//MessageBox msg=new MessageBox(getShell(),SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+				int dialogResult = JOptionPane.showConfirmDialog (null, "The formula \""+m.group(1)+"\" already exists\nWould you like to overwrite?","Warning",JOptionPane.YES_NO_OPTION);
+				if(dialogResult==0)
+					store=true;
 			}
-			System.out.println(diffv);
-			//check formula map, diff formula and replace f'(x) with it in formula
+			else
+				store=true;
+			if(store)
+				formulas.put(m.group(1), newform);
+			//Parse and store formula
 		}
 		else
 		{

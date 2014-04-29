@@ -26,27 +26,7 @@ public class CalculatorUI extends Shell {
 		private final String INFINITY_STRING = "Infinity";
 		// A flag to check if display should be cleared on the next keystroke
 		private boolean clearDisplay = true;
-
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String args[]) {
-		try {
-			Display display = Display.getDefault();
-			CalculatorUI shell = new CalculatorUI(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+		
 	/**
 	 * Create the shell.
 	 * @param display

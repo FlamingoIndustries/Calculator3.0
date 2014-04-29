@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public abstract class FormulaElement
+public abstract class FormulaElement extends Calculator
 {	
 	public abstract double evaluate();
 	public abstract FormulaElement dEval();
