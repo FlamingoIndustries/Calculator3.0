@@ -6,8 +6,7 @@ import javax.swing.SwingUtilities;
 
 public class GraphControl {
 	/*Current bug list:
-	 Rounding doubles is leaving the origin point on axes a little off.22123432341
-	 Sin and Cos are broken
+	 
 	 
 	 SHORTCUTS:
 	 1 - Toggle labels
@@ -17,6 +16,7 @@ public class GraphControl {
 	Vector<GraphFunction> graphlist;
 	public GraphControl(Vector<GraphFunction> graphs){
 		graphlist = graphs;	
+		//run();
 	}
 	public static void main
 	(String[] args) {
@@ -45,7 +45,6 @@ public class GraphControl {
 				GraphFunction test2 = new GraphFunction(result2, "x", min, max, incre);
 				GraphFunction test3 = new GraphFunction(result3, "x", min, max, incre);
 				graphs.add(test2);
-
 				graphs.add(test3);
 
 				CartesianFrame frame = new CartesianFrame(graphs, true, true, true);

@@ -1,5 +1,6 @@
 package formulator;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -49,7 +50,6 @@ class CartesianFrame extends JFrame {
 		panel.getActionMap().put("one", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("one");
 				labels = !labels;
 				panel = new CartesianPanel(graphs, labels, dots, lines);
 				add(panel);
@@ -59,7 +59,6 @@ class CartesianFrame extends JFrame {
 		panel.getActionMap().put("two", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("two");
 				dots = !dots;
 				panel = new CartesianPanel(graphs, labels, dots, lines);
 				add(panel);
@@ -69,7 +68,6 @@ class CartesianFrame extends JFrame {
 		panel.getActionMap().put("three", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("three");
 				lines = !lines;
 				panel = new CartesianPanel(graphs, labels, dots, lines);
 				add(panel);
@@ -109,9 +107,7 @@ class CartesianPanel extends JPanel {
 	public static final int Y_AXIS_SECOND_Y_COORD = 600;
 	public static int Y_AXIS_X_COORD = 50;
 
-	// arrows of axis are represented with "hypotenuse" of
-	// triangle
-	// now we are define length of cathetas of that triangle
+	// size of axis indents
 	public static final int FIRST_LENGHT = 10;
 	public static final int SECOND_LENGHT = 5;
 
@@ -127,8 +123,6 @@ class CartesianPanel extends JPanel {
 		dots = dot_tog;
 		lines = lines_tog;
 		graphs = graphs_in;
-
-		// paintComponent(g);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -139,23 +133,22 @@ class CartesianPanel extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		Vector<Point> points = new Vector<Point>();
 		double x;
 		double y;
 		double max_y = 0, min_y = 0, max_x = 0, min_x = 0;
-		double xt = 0;
-		double yt = 0;
-		double largest = 0;
+		String variable = "";
 		int xCoordNumbers = 0;
 		int yCoordNumbers = 0;
 
+		// Cycle through the GraphFunction objects, find all the points and then
+		// work out scales and ranges.
 		for (int e = 0; e < graphs.size(); e++) {
-			System.out.println("HELLO");
 			GraphFunction graph = graphs.get(e);
 			node = graph.root;
 			range_min = graph.min;
 			range_max = graph.max;
 			increment = graph.increment;
+			variable = graph.var_name;
 
 			if (range_min < 0) {
 				range_total = range_max - range_min;
@@ -164,11 +157,9 @@ class CartesianPanel extends JPanel {
 			}
 
 			// Find points
-			// Static value range currently, will sub in user input later.
-			System.out.println("min:" + range_min + " max: " + range_max);
 			graph.points.clear();
 			for (x = range_min; x <= range_max; x += increment) {
-				((FormulaElement) node).setVariableValue("x", x);
+				((FormulaElement) node).setVariableValue(variable, x);
 
 				y = node.evaluate();
 
@@ -189,8 +180,7 @@ class CartesianPanel extends JPanel {
 				// String t = "(" + x + ", " + y + ")";
 			}
 		}
-		System.out.println("max_x: " + max_x + " min_x" + min_x + " max_y: "
-				+ max_y + " min_y: " + min_y);
+
 		// finding ranges
 		double xRange = Math.ceil(max_x);
 		double yRange = Math.ceil(max_y);
@@ -200,8 +190,7 @@ class CartesianPanel extends JPanel {
 		if (min_y < 0) {
 			yRange = Math.ceil(max_y) + Math.abs(Math.floor(min_y));
 		}
-		System.out.println("xRange: " + xRange + " yRange: " + yRange);
-		// largest = Math.max(xt, yt);
+
 		xCoordNumbers = (int) xRange;
 		yCoordNumbers = (int) yRange;
 
@@ -225,17 +214,15 @@ class CartesianPanel extends JPanel {
 			X_AXIS_Y_COORD = (int) r;
 			y_meets_x = r;
 		}
-		// System.out.println("Min_x: " + min_x + "Min_y" + min_y);
-		System.out.println("xLength: " + xLength + "yLength" + yLength);
 
-		// x-axis
+		// draw x-axis
 		g2.drawLine(X_AXIS_FIRST_X_COORD, X_AXIS_Y_COORD,
 				X_AXIS_SECOND_X_COORD, X_AXIS_Y_COORD);
-		// y-axis
+		// draw y-axis
 		g2.drawLine(Y_AXIS_X_COORD, Y_AXIS_FIRST_Y_COORD, Y_AXIS_X_COORD,
 				Y_AXIS_SECOND_Y_COORD);
 
-		// draw text "X" and draw text "Y"
+		// draw text "X" & text "Y"
 		g2.drawString("X", X_AXIS_SECOND_X_COORD + 20, X_AXIS_Y_COORD - 15
 				+ AXIS_STRING_DISTANCE);
 		g2.drawString("Y", Y_AXIS_X_COORD + 15 - AXIS_STRING_DISTANCE,
@@ -272,7 +259,13 @@ class CartesianPanel extends JPanel {
 		}
 
 		// draw y-axis numbers
-		System.out.println("RANGE_MIN: " + min_y);
+		div_factor = 1;
+		if (xRange >= 30) {
+			div_factor = 5;
+		}
+		if (xRange >= 70) {
+			div_factor = 10;
+		}
 		j = (int) Math.floor(min_y);
 		for (int i = 0; i <= yRange; i++) {
 
@@ -289,7 +282,7 @@ class CartesianPanel extends JPanel {
 			j++;
 		}
 
-		// Draw Origin point *uses doubles
+		// Draw Origin point where axes meet
 		g2.fill(new Ellipse2D.Double(
 				x_meets_y - (ORIGIN_COORDINATE_LENGHT / 2), y_meets_x
 						- (ORIGIN_COORDINATE_LENGHT / 2),
@@ -298,10 +291,10 @@ class CartesianPanel extends JPanel {
 		double old_dotx = 0;
 		double old_doty = 0;
 
-		// Save it to the vector, then draw...
+		// For each graph, draw lines between it's points
 		for (int e = 0; e < graphs.size(); e++) {
 			Vector<Point> current_points = graphs.get(e).points;
-			// Save it to the vector, then draw...
+
 			for (int i = 0; i < current_points.size(); i++) {
 				// Draw points
 				double px = current_points.get(i).getx();
@@ -319,6 +312,23 @@ class CartesianPanel extends JPanel {
 				// System.out.println("Pixel values for x,y: " + dotx + ", " +
 				// doty);
 				// System.out.println("meets: " + x_meets_y + ", " + y_meets_x);
+
+				if (e % 3 == 0) {
+					g2.setPaint(Color.BLACK);
+				}
+				if (e % 3 == 1) {
+					g2.setPaint(Color.RED);
+				}
+				if (e % 3 == 2) {
+					g2.setPaint(Color.BLUE);
+				}
+				if (e % 3 == 4) {
+					g2.setPaint(Color.GREEN);
+				}
+				if (e % 3 == 5) {
+					g2.setPaint(Color.CYAN);
+				}
+				// Draw points
 				if (dots == true) {
 					g2.fill(new Ellipse2D.Double(
 							(dotx - (ORIGIN_COORDINATE_LENGHT / 2)), doty
@@ -331,7 +341,6 @@ class CartesianPanel extends JPanel {
 
 					String t = "(" + Math.round(px * 100.0) / 100.0 + ", "
 							+ Math.round(py * 100.0) / 100.0 + ")";
-					// System.out.println(t);
 					g2.drawString(t, (int) dotx + 12, (int) doty);
 				}
 
