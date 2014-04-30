@@ -107,8 +107,8 @@ public abstract class FormulaElement
 		//System.out.println("Initial: "+tokens.toString());
 		
 		//Before continuing, perform some basic checks to ensure that the formula has a proper format
-		if(!checkFormula(tokens))
-			return null;
+//		if(!checkFormula(tokens))
+//			return null;
 		
 		
 		
@@ -310,64 +310,64 @@ public abstract class FormulaElement
 			return null;
 	}
 	
-	//This method returns false if the formula doesn't have the correct format
-	public static boolean checkFormula(Vector tokens){
-		
-		//1st check: For brackets that don't match up
-		int openBrackets=0;
-		int closeBrackets=0;
-		for(int i=0; i<tokens.size(); i++){
-			if(tokens.get(i).equals("("))
-				openBrackets++;
-			else if(tokens.get(i).equals(")")){
-				closeBrackets++;
-				if(closeBrackets>openBrackets){
-					System.out.println("Closing bracket appears before opening bracket.");
-					return false;
-				}
-			}
-		}
-		if(openBrackets!=closeBrackets){
-			System.out.println("The brackets in this formula aren't matched.");
-			return false;
-		}
-		
-		//2nd check: Symbols that occur twice in a row
-		for(int i=0; i<tokens.size()-1; i++){
-			if(tokens.get(i).equals(tokens.get(i+1)) && !tokens.get(i).equals(")") && !tokens.get(i).equals("(")){
-				System.out.println("Badly formed formula; a symbol occurs twice.");
-				return false;
-			}
-		}
-		
-		//3rd check: Incomplete formulas
-		for(int i=0; i<tokens.size()-1; i++){
-			if(tokens.get(i).equals("(") || i==0){
-				String cur;
-				if(i==0)
-					cur = (String) tokens.get(i);
-				else
-					cur = (String) tokens.get(i+1);
-				if(!Character.isDigit(cur.charAt(0)) && !Character.isLetter(cur.charAt(0)) && !cur.equals("(") && !cur.equals("sin") && !cur.equals("cos")){
-					System.out.println("Badly formed formula.");
-					return false;
-				}
-			}
-			else if(tokens.get(i+1).equals(")") || i==tokens.size()-2){
-				String cur;
-				if(i==tokens.size()-2)
-					cur = (String) tokens.get(i+1);
-				else
-					cur = (String) tokens.get(i);
-				if(!Character.isDigit(cur.charAt(0)) && !Character.isLetter(cur.charAt(0)) && !cur.equals(")")){
-					System.out.println("Badly formed formula.");
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}
+//	//This method returns false if the formula doesn't have the correct format
+//	public static boolean checkFormula(Vector tokens){
+//		
+//		//1st check: For brackets that don't match up
+//		int openBrackets=0;
+//		int closeBrackets=0;
+//		for(int i=0; i<tokens.size(); i++){
+//			if(tokens.get(i).equals("("))
+//				openBrackets++;
+//			else if(tokens.get(i).equals(")")){
+//				closeBrackets++;
+//				if(closeBrackets>openBrackets){
+//					System.out.println("Closing bracket appears before opening bracket.");
+//					return false;
+//				}
+//			}
+//		}
+//		if(openBrackets!=closeBrackets){
+//			System.out.println("The brackets in this formula aren't matched.");
+//			return false;
+//		}
+//		
+//		//2nd check: Symbols that occur twice in a row
+//		for(int i=0; i<tokens.size()-1; i++){
+//			if(tokens.get(i).equals(tokens.get(i+1)) && !tokens.get(i).equals(")") && !tokens.get(i).equals("(")){
+//				System.out.println("Badly formed formula; a symbol occurs twice.");
+//				return false;
+//			}
+//		}
+//		
+//		//3rd check: Incomplete formulas
+//		for(int i=0; i<tokens.size()-1; i++){
+//			if(tokens.get(i).equals("(") || i==0){
+//				String cur;
+//				if(i==0)
+//					cur = (String) tokens.get(i);
+//				else
+//					cur = (String) tokens.get(i+1);
+//				if(!Character.isDigit(cur.charAt(0)) && !Character.isLetter(cur.charAt(0)) && !cur.equals("(") && !cur.equals("sin") && !cur.equals("cos")){
+//					System.out.println("Badly formed formula.");
+//					return false;
+//				}
+//			}
+//			else if(tokens.get(i+1).equals(")") || i==tokens.size()-2){
+//				String cur;
+//				if(i==tokens.size()-2)
+//					cur = (String) tokens.get(i+1);
+//				else
+//					cur = (String) tokens.get(i);
+//				if(!Character.isDigit(cur.charAt(0)) && !Character.isLetter(cur.charAt(0)) && !cur.equals(")")){
+//					System.out.println("Badly formed formula.");
+//					return false;
+//				}
+//			}
+//		}
+//		
+//		return true;
+//	}
 	
 	public Boolean equals(FormulaElement comp)
 	{
@@ -383,7 +383,8 @@ public abstract class FormulaElement
 		HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
 		formulas.put("f", new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3)));
 		formulas.put("g", new PlusFunctionElement(new VariableElement("y"), new ConstantElement(2)));
-		FormulaElement test = FormulaElement.parseFormula("(f)(g)", formulas);
+		formulas.put("h", new AbsValueFunctionElement(new VariableElement("x")));
+		FormulaElement test = FormulaElement.parseFormula("h(-3)", formulas);
 		MultipleFunctionElement test2 = new MultipleFunctionElement();
 		VariableElement x = new VariableElement("x");
 		ConstantElement zero = new ConstantElement(3);
