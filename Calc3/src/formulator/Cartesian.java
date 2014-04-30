@@ -20,6 +20,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -81,42 +84,40 @@ class CartesianFrame extends JFrame {
 				showUI();
 			}
 		});
-		
-		ActionListener actionListener = new ActionListener() {
-		      public void actionPerformed(ActionEvent actionEvent) {
-		        System.out.println("I was selected.");
-		      }
-		    };
-
-		    MouseListener mouseListener = new MouseAdapter() {
-		      public void mousePressed(MouseEvent mouseEvent) {
-		        int modifiers = mouseEvent.getModifiers();
-		        if ((modifiers & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
-		          // Mask may not be set properly prior to Java 2
-		          // See SwingUtilities.isLeftMouseButton() for workaround
-		          System.out.println("Left button pressed.");
-		        }
-		        if ((modifiers & InputEvent.BUTTON2_MASK) == InputEvent.BUTTON2_MASK) {
-		          System.out.println("Middle button pressed.");
-		        }
-		        if ((modifiers & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK) {
-		          System.out.println("Right button pressed.");
-		        }
-		      }
-		    };
-			JButton button = new JButton("Save Graph");
-			button.setLayout(null);
-		    button.addActionListener(actionListener);
-		    button.addMouseListener(mouseListener);
-		    button.setSize(80,20);
-		    button.setBounds(60, 300, 220, 30); 
-		    button.setVerticalAlignment(SwingConstants.BOTTOM);
-		    button.setHorizontalAlignment(SwingConstants.RIGHT);
-		    panel.add(button);
+		    
+			JMenu file = new JMenu("File");
+			file.setMnemonic('F');
+			JMenuItem newItem = new JMenuItem("Save Graph");
+			newItem.setMnemonic('S');
+			file.add(newItem);
+			JMenuItem exitItem = new JMenuItem("Exit");
+			exitItem.setMnemonic('x');
+			file.add(exitItem);
+			
+			//adding action listener to menu items
+			newItem.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e)
+					{
+						System.out.println("Saving Graph...");
+					}
+				}
+			);
+			exitItem.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e)
+					{
+						System.out.println("Exit is pressed");
+					}
+				}
+			);						
+			JMenuBar bar = new JMenuBar();
+			setJMenuBar(bar);
+			bar.add(file);
 	}
 
 	public void showUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT);
 		setTitle("Cartesian");
 		setSize(700, 700);
 		setVisible(true);
