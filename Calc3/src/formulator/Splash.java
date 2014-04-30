@@ -17,7 +17,7 @@ public class Splash {
      
     private int splashPos = 0;
  
-    private final int SPLASH_MAX = 20;
+    private final int SPLASH_MAX = 10;
  
     public Splash(Display display)
     {
