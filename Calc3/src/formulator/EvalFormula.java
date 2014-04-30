@@ -8,7 +8,7 @@ public class EvalFormula extends Calculator
 {
 	
 	//parser
-	public double evaluateFor(String input){
+	public static double evaluateFor(String input, HashMap<String, FormulaElement> formulas){
 		//find formula element and identify its variables
 		FormulaElement formula = formulas.get(input.substring(0, 1));
 		Vector<String> varKeys = formula.identifyVars();
@@ -34,7 +34,7 @@ public class EvalFormula extends Calculator
 			//with a nested formula in the brackets
 			if(tokens.size()>2){
 				String recInput=toParse.substring(0, 4);
-				double varValue = this.evaluateFor(recInput);
+				double varValue = evaluateFor(recInput, formulas);
 				vars.put(key, varValue);
 			}
 			else{
@@ -61,7 +61,7 @@ public class EvalFormula extends Calculator
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
-						double varValue = this.evaluateFor(recInput);
+						double varValue = evaluateFor(recInput, formulas);
 						vars.put(varKey, varValue);
 					}
 					else

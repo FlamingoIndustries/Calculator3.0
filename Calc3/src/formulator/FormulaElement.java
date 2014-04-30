@@ -74,7 +74,7 @@ public abstract class FormulaElement
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static FormulaElement parseFormula(String formula)
+	public static FormulaElement parseFormula(String formula, HashMap<String, FormulaElement> formulas)
 	{
 		//will chop the string into substring tokens wherever it sees a delimiter
 		StringTokenizer tokenizer = new StringTokenizer(formula, "+-/()^ \t'", true);
@@ -110,14 +110,10 @@ public abstract class FormulaElement
 		if(!checkFormula(tokens))
 			return null;
 		
-		//Only for testing!
-		HashMap<String, FormulaElement> forms = new HashMap<String, FormulaElement>();
-		forms.put("f", new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3)));
-		
 		//FORMULAS USED TO DEFINE FORMULAS
 		for(int i=0; i<tokens.size(); i++){
 			String key = (String) tokens.get(i);
-			if(forms.containsKey(key)){
+			if(formulas.containsKey(key)){
 				tokens.remove(i);
 				String current = (String) tokens.remove(i);
 				int degree=0;
@@ -133,11 +129,11 @@ public abstract class FormulaElement
 				}
 				if(degree!=0){
 					Differentiation diff = new Differentiation();
-					FormulaElement temp = diff.symbolicDiff(forms.get(key), respect, degree);
+					FormulaElement temp = diff.symbolicDiff(formulas.get(key), respect, degree);
 					tokens.add(i, temp);
 				}
 				else
-					tokens.add(i, forms.get(key));
+					tokens.add(i, formulas.get(key));
 			}
 		}
 		
@@ -363,8 +359,15 @@ public abstract class FormulaElement
 	}
 	
 	public static void main(String[] args){
-		FormulaElement test = FormulaElement.parseFormula("x+4(5)");
-		System.out.println(test.toString());
+		HashMap<String , FormulaElement> formulas = new HashMap<String, FormulaElement>();
+		FormulaElement test = FormulaElement.parseFormula("4+5", formulas);
+		MultipleFunctionElement test2 = new MultipleFunctionElement();
+		VariableElement x = new VariableElement("x");
+		ConstantElement zero = new ConstantElement(3);
+		ConstantElement zero2 = new ConstantElement(4);
+		test2.addArgument(zero);
+		test2.addArgument(zero2);
+		System.out.println(test2.toString());
 	}
 }
 
