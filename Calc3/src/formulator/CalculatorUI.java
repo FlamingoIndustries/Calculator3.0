@@ -13,8 +13,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
 
 
@@ -373,8 +371,6 @@ public class CalculatorUI extends Shell {
 		    char keyVal = keyPressed;
 		    String tempString = new String();
 		    
-		    
-		    
 		    if (!clearDisplay) {
 		        tempString = displayString;
 		      }
@@ -383,14 +379,9 @@ public class CalculatorUI extends Shell {
 		    
 		    case 'A': 
 		    	if (answer.charAt(0) == '$'){
-		    	text.append(answer);
-		    	System.out.println(answer);
+		    		text.append(answer.substring(1));
+		    	}
 		    	break;
-		    	}
-		    	
-		    	else {
-		    		break;
-		    	}
 		    	
 		    	
 		    case 'B': // Backspace
@@ -406,10 +397,11 @@ public class CalculatorUI extends Shell {
 		      
 		    case 'E':
 		    	String current = text.getText();
-		    	text_1.append(current+"\n");
+		    	
 		    	String result=calc.branch(current);
 		    	answer = result;
-		    	text_1.append("Result:" +result+"\n");
+		    	text_1.append(current+"\n");
+		    	text_1.append("Result:"+ result.substring(1) +"\n");
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
@@ -421,7 +413,7 @@ public class CalculatorUI extends Shell {
 		    	text_1.append(current2+"\n");
 		    	String result2=calc.branch(current2);
 		    	answer = result2;
-		    	text_1.append("Result:" +result2);
+		    	text_1.append("Result:" +result2.substring(1));
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
