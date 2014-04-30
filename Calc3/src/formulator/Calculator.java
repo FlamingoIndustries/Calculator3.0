@@ -48,17 +48,25 @@ public class Calculator {
 			else
 				return "Unable to read from file";
 		}
-		else if(text.matches("^\\s*graph.*$"))
-		{//Regex is used to match the user input
+		else if(text.matches("^\\s*graph.*$"))		//Branching to graph code
+		{
 			return this.graphFormula(text);
 		}
-		else if(text.matches("^\\s*\\w+\\s*=.*"))
+		else if(text.matches("^\\s*\\w+\\s*=.*"))	//Assigning rhs of = to formula name on lhs 
 		{
 			Pattern form= Pattern.compile("^\\s*(\\w+)\\s*=\\s*(.+)\\s*$");
 			Matcher m = form.matcher(text);
 			if(m.find()==false)
 				return "Improper assignment form";
-			FormulaElement newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic);
+			FormulaElement newform;
+			try
+			{
+				newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic);
+			}
+			catch(Exception e)
+			{
+				return "Unable to save, invalid formula entered";
+			}
 			Boolean store=false;
 			if(formulas.containsKey(m.group(1)))
 			{
@@ -172,7 +180,7 @@ public class Calculator {
 	    String[] extensions={"*.xml"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
-	    display.dispose();
+	    
 	    if (fileName != null) {
 	    	PrintWriter writer;
 			try
@@ -211,7 +219,6 @@ public class Calculator {
 	    String[] extensions={"*.xml"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
-	    display.dispose();
 		Scanner reader;
 		try
 		{

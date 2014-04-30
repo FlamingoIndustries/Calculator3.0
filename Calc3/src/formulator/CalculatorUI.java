@@ -441,10 +441,10 @@ public class CalculatorUI extends Shell {
 		btnCheckButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btnCheckButton.getSelection())
-		            setPageComplete(true);
-		        else
-		            setPageComplete(false);
+//				if (btnCheckButton.getSelection())
+//		            setPageComplete(true);
+//		        else
+//		            setPageComplete(false);
 			}
 		});
 		btnCheckButton.setBounds(479, 148, 101, 16);
