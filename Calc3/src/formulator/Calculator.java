@@ -29,8 +29,7 @@ public class Calculator {
 	
 	public String branch(String text)
 	{
-		text=text.trim();
-		if(text.equals("save"))				//Branching to save all formulae in a file
+		if(text.matches("^\\s*save\\s*$"))				//Branching to save all formulae in a file
 		{
 			if(!formulas.isEmpty())
 				if(this.WriteFormulae())
@@ -40,26 +39,28 @@ public class Calculator {
 			else
 				return "Nothing to save!";
 		}
-		else if(text.equals("load"))		//Branching to load all formulae from a chosen file
+		else if(text.matches("^\\s*load\\s*$"))		//Branching to load all formulae from a chosen file
 		{
 			if(this.ReadFormulae())
 				return "Successfully read from file";
 			else
 				return "Unable to read from file";
 		}
-		else if(text.matches("^graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
+		else if(text.matches("^\\s*graph.*$"))
 		{//Regex is used to match the user input
+			System.out.println("Graph!");
 			return this.graphFormula(text);
 		}
-		else if(text.equals("save graph"))
+		else if(text.matches("^\\s*save\\sgraph\\s*$"))
 		{
 			return "save graph";
 		}
-		else if(text.matches("^\\w+=.+"))
+		else if(text.matches("^\\s*\\w+\\s*="))
 		{
-			Pattern form= Pattern.compile("^(\\w+)=(.+)");
+			Pattern form= Pattern.compile("^\\s*(\\w+)\\s*=\\s*(.+)\\s*$");
 			Matcher m = form.matcher(text);
-			m.find();
+			if(m.find()==false)
+				return "Improper assignment form";
 			FormulaElement newform=FormulaElement.parseFormula(m.group(2), formulas);
 			Boolean store=false;
 			if(formulas.containsKey(m.group(1)))
@@ -93,19 +94,19 @@ public class Calculator {
 	
 	public String graphFormula(String text)
 	{
-		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
+		if(!text.matches("graph(\\s+\\w+\\(\\w+\\s*=\\s*-?\\d+(\\.\\d+)?\\s*,\\s*-?\\d+(\\.\\d+)?(\\s*,\\s*-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*-?\\d+(\\.\\d+)?)*\\))+\\s*"))
+			return "Improper graph format";
 		
-		Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\)");
+		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
+		Pattern form= Pattern.compile("\\w+\\(\\w+\\s*=\\s*-?\\d+(\\.\\d+)?\\s*,\\s*-?\\d+(\\.\\d+)?(\\s*,\\s*-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*-?\\d+(\\.\\d+)?)*\\)");
 		Matcher m = form.matcher(text);
 		Vector<String> formv=new Vector<String>();
 		while(m.find()==true)
-		{
 			formv.add(m.group(0));
-		}
 		for(String s:formv)
 		{
 			Vector<String> results=new Vector<String>();
-			form= Pattern.compile("(\\w+)\\((\\w+)=(\\d+(\\.\\d+)?),\\s?(\\d+(\\.\\d+)?)(,\\s?(\\d+(\\.\\d+)?))?(.*)\\)");
+			form= Pattern.compile("(\\w+)\\((\\w+)\\s*=\\s*(-?\\d+(\\.\\d+)?)\\s*,\\s*(-?\\d+(\\.\\d+)?)(\\s*,\\s*(-?\\d+(\\.\\d+)?))?(.*)\\)");
 			m = form.matcher(s);
 			m.find();
 			FormulaElement root=null;
@@ -125,12 +126,12 @@ public class Calculator {
 				}
 				else if(i==2)
 					var=m.group(2);
-				else if(i==8&&m.group(8)!=null&&m.group(8).matches("^\\d+(\\.\\d+)?$"))
+				else if(i==8&&m.group(8)!=null&&m.group(8).matches("^-?\\d+(\\.\\d+)?$"))
 					increment=Double.parseDouble(m.group(8));
 				else if(i==10)
 				{
 					String assign=m.group(i);
-					Pattern a= Pattern.compile("(\\w+)=(\\d+(\\.\\d+)?)");
+					Pattern a= Pattern.compile("(\\w+)\\s*=\\s*(-?\\d+(\\.\\d+)?)");
 					Matcher b = a.matcher(assign);
 					while(b.find()==true)
 					{
