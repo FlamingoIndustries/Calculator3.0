@@ -23,11 +23,12 @@ public class Main
 		
 
 //		}		
-		FormulaElement form=FormulaElement.parseFormula("x(y)");
-		Differentiation diff=new Differentiation();
-		System.out.println(diff.symbolicDiff(form, "x", 1));
-//		Calculator calc=new Calculator();
-//		calc.branch("graph f(x=5.0,300.0,7.0, y=3.0, z=4.0)");
+//		FormulaElement form=FormulaElement.parseFormula("x(y)");
+//		Differentiation diff=new Differentiation();
+//		System.out.println(diff.symbolicDiff(form, "x", 1));
+		Calculator calc=new Calculator();
+		System.out.println(calc.branch("load"));
+		System.out.println(calc.branch("load"));
 //		EvalFormula ev=new EvalFormula();
 //		//Sample input Strings to try:
 //		//"Y^3-6X(Z+5(Y+2^2))"
