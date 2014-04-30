@@ -7,17 +7,12 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -25,7 +20,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.FileDialog;
+
 
 public class Cartesian {
 
@@ -99,7 +99,17 @@ class CartesianFrame extends JFrame {
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e)
 					{
-						System.out.println("Saving Graph...");
+					    
+					    //Save as
+					    Display display2 = new Display();
+					    final Shell shell2 = new Shell(display2);
+					    FileDialog dlg2 = new FileDialog(shell2, SWT.SAVE);
+					    String[] extensions2={"*.xls", "*.txt"};
+					    dlg2.setFilterExtensions(extensions2);
+					    String fileName2 = dlg2.open();
+					    display2.dispose();
+					    
+					    System.out.println(fileName2);
 					}
 				}
 			);
@@ -108,6 +118,8 @@ class CartesianFrame extends JFrame {
 					public void actionPerformed(ActionEvent e)
 					{
 						System.out.println("Exit is pressed");
+						setVisible(false); 
+						dispose();
 					}
 				}
 			);						
