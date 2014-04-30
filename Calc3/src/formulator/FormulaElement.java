@@ -396,7 +396,6 @@ public abstract class FormulaElement
 		HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
 		formulas.put("f", new MultipleFunctionElement(new VariableElement("y"), new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3))));
 		formulas.put("g", new PlusFunctionElement(new VariableElement("y"), new ConstantElement(2)));
-		//formulas.put("h", new SqrtFunctionElement(new VariableElement("x")));
 		FormulaElement test = FormulaElement.parseFormula("f(4)", formulas);
 		MultipleFunctionElement test2 = new MultipleFunctionElement();
 		VariableElement x = new VariableElement("x");

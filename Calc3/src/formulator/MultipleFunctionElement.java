@@ -20,7 +20,12 @@ public class MultipleFunctionElement extends FunctionElement {
 	}
 	
 	public void addArgument(FormulaElement arg){
-		if(arg instanceof ConstantElement){
+		if(arg instanceof MultipleFunctionElement){
+			for(FormulaElement sub_arg: ((MultipleFunctionElement) arg).getArguments()){
+				this.addArgument(sub_arg);
+			}
+		}
+		else if(arg instanceof ConstantElement){
 			if(((ConstantElement)arg).getValue()==0){
 				zeroFlag=true;
 			}

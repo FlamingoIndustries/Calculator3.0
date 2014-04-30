@@ -45,12 +45,12 @@ public class PlusFunctionElement extends FunctionElement {
 		}
 		//assemble return string, putting constants and variables together
 		//return an int if the double constant is actually an int
-		//if(retNum!=0 && retNum%1==0)
-			//return retString+(int)retNum;
-		//if(retNum!=0)
+		if(retNum!=0 && retNum%1==0)
+			return retString+(int)retNum;
+		if(retNum!=0)
 			return retString+retNum;
-		//else
-			//return retString.substring(0, retString.length()-3);
+		else
+			return retString;
 
 	}
 	
