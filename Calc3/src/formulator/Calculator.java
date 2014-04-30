@@ -29,6 +29,7 @@ public class Calculator {
 	
 	public String branch(String text)
 	{
+		text=text.trim();
 		if(text.matches("^\\s*save\\s*$"))				//Branching to save all formulae in a file
 		{
 			if(!formulas.isEmpty())
@@ -55,7 +56,7 @@ public class Calculator {
 		{
 			return "save graph";
 		}
-		else if(text.matches("^\\s*\\w+\\s*="))
+		else if(text.matches("^\\s*\\w+\\s*=.*"))
 		{
 			Pattern form= Pattern.compile("^\\s*(\\w+)\\s*=\\s*(.+)\\s*$");
 			Matcher m = form.matcher(text);
@@ -82,23 +83,28 @@ public class Calculator {
 		}
 		else
 		{
+			System.out.println(text);
 			//Parse as formula and attempt to solve f(3)+g(4)
 			FormulaElement e=FormulaElement.parseFormula(text, formulas);
-			if(e.isFullyGrounded())
-				return ""+e.evaluate();
-			else
-				return e.toString();
+//			if(e.isFullyGrounded())
+//				return ""+e.evaluate();
+//			else
+//				return e.toString();
+			return "";
 		}
 		
 	}
 	
 	public String graphFormula(String text)
 	{
-		if(!text.matches("graph(\\s+\\w+\\(\\w+\\s*=\\s*-?\\d+(\\.\\d+)?\\s*,\\s*-?\\d+(\\.\\d+)?(\\s*,\\s*-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*-?\\d+(\\.\\d+)?)*\\))+\\s*"))
+		if(!text.matches("^graph(\\s+\\w+\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
+		{
+			System.out.println(text);
 			return "Improper graph format";
+		}
 		
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
-		Pattern form= Pattern.compile("\\w+\\(\\w+\\s*=\\s*-?\\d+(\\.\\d+)?\\s*,\\s*-?\\d+(\\.\\d+)?(\\s*,\\s*-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*-?\\d+(\\.\\d+)?)*\\)");
+		Pattern form= Pattern.compile("\\w+\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)");
 		Matcher m = form.matcher(text);
 		Vector<String> formv=new Vector<String>();
 		while(m.find()==true)
