@@ -102,6 +102,11 @@ public class Calculator {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param text input graph instruction
+	 * @return String indicating success or failure to graph formula
+	 */
 	public String graphFormula(String text)
 	{
 		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
@@ -172,6 +177,10 @@ public class Calculator {
 		return "Formulae successfully graphed";
 	}
 	
+	/**
+	 * 
+	 * @return boolean indicating success or failure
+	 */
 	public boolean WriteFormulae()
 	{
 		Display display = Display.getCurrent();
@@ -208,6 +217,10 @@ public class Calculator {
 	    return true;
 	 }
 	
+	/**
+	 * 
+	 * @return boolean indicating success or failure to read from file
+	 */
 	public boolean ReadFormulae()
 	{
 		HashMap<String, FormulaElement> out=new HashMap<String, FormulaElement>();
@@ -321,8 +334,12 @@ public class Calculator {
 		return true;
 	}
 	
-	public void toggleDiff(boolean val)
+	/**
+	 * 
+	 * Switches differentiation type
+	 */
+	public void toggleDiff()
 	{
-		symbolic=val;
+		symbolic=!symbolic;
 	}
 }
