@@ -403,7 +403,7 @@ public class CalculatorUI extends Shell {
 		    	text_1.append(current+"\n");
 		    	String result=calc.branch(current);
 		    	answer = result;
-		    	text_1.append(result+"\n");
+		    	text_1.append("Fuck you Alan!" +result+"\n");
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
@@ -415,7 +415,7 @@ public class CalculatorUI extends Shell {
 		    	text_1.append(current2+"\n");
 		    	String result2=calc.branch(current2);
 		    	answer = result2;
-		    	text_1.append(result2);
+		    	text_1.append("Fuck you Alan!" +result2);
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
@@ -447,7 +447,7 @@ public class CalculatorUI extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("Formulator");
+		setText("Fuck you Alan!");
 		setSize(314, 410);
 
 	}
