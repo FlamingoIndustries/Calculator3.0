@@ -244,6 +244,7 @@ class CartesianPanel extends JPanel {
 				System.out.println("Increment never reaches end. Exiting...");
 				System.exit(0);
 			}
+			//
 			if (range_min < 0) {
 				range_total = range_max - range_min;
 			} else {
