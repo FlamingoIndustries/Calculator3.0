@@ -316,11 +316,14 @@ public abstract class FormulaElement
 	{
 		ConstantElement dx=new ConstantElement(0.0000001);
 		FormulaElement replace=new PlusFunctionElement(dx, this.findVariable(respect));
-		this.setDValue(respect, replace);//ASK BARBARA!
+		if(replace!=null)
+			this.setDValue(respect, replace);
 		MinusFunctionElement minus=new MinusFunctionElement(this.dEval(),this);
 		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
 		if(degree==1)
 			return div;
+		else if(degree==0)
+			return this;
 		else
 			return this.numericDiff(respect, degree-1);
 	}
