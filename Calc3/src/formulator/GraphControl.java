@@ -51,6 +51,8 @@ public class GraphControl {
 
 				CartesianFrame frame = new CartesianFrame(graphlist, false, true, true);
 				frame.showUI();
+				 frame.toFront();
+			        frame.repaint();
 		   }
 		  });
 		 }

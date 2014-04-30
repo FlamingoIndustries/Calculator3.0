@@ -232,6 +232,18 @@ class CartesianPanel extends JPanel {
 			increment = graph.increment;
 			variable = graph.var_name;
 
+			if(increment == 0){
+				System.out.println("Cannot increment by 0. Exiting...");
+				System.exit(0);
+			}
+			if(range_min > range_max && increment>0){
+				System.out.println("Increment never reaches end. Exiting...");
+				System.exit(0);
+			}
+			if(range_min < range_max && increment<0){
+				System.out.println("Increment never reaches end. Exiting...");
+				System.exit(0);
+			}
 			if (range_min < 0) {
 				range_total = range_max - range_min;
 			} else {
@@ -240,7 +252,7 @@ class CartesianPanel extends JPanel {
 
 			// Find points
 			graph.points.clear();
-			for (x = range_min; x <= range_max; x += increment) {
+			for (x = range_min; x != range_max; x += increment) {
 				((FormulaElement) node).setVariableValue(variable, x);
 
 				y = node.evaluate();
@@ -349,7 +361,6 @@ class CartesianPanel extends JPanel {
 
 		// draw y-axis numbers
 		div_factor = 1;
-		System.out.println("yRange: " + yRange);
 		if (yRange >= 30) {
 			div_factor = 5;
 		}
