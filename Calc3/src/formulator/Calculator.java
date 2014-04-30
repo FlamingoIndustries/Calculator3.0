@@ -84,12 +84,10 @@ public class Calculator {
 		else
 		{
 			System.out.println(text);
-			//Parse as formula and attempt to solve f(3)+g(4)
+			//Parse as formula and attempt to solve
 			FormulaElement e=FormulaElement.parseFormula(text, formulas);
-//			if(e.isFullyGrounded())
-//				return ""+e.evaluate();
-//			else
-//				return e.toString();
+			if(e!=null)
+				return "$"+e.toString();
 			return "";
 		}
 		
@@ -97,14 +95,14 @@ public class Calculator {
 	
 	public String graphFormula(String text)
 	{
-		if(!text.matches("^graph(\\s+\\w+\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
+		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
 		{
 			System.out.println(text);
 			return "Improper graph format";
 		}
 		
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
-		Pattern form= Pattern.compile("\\w+\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)");
+		Pattern form= Pattern.compile("\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)");
 		Matcher m = form.matcher(text);
 		Vector<String> formv=new Vector<String>();
 		while(m.find()==true)
@@ -112,11 +110,12 @@ public class Calculator {
 		for(String s:formv)
 		{
 			Vector<String> results=new Vector<String>();
-			form= Pattern.compile("(\\w+)\\((\\w+)\\s*=\\s*(-?\\d+(\\.\\d+)?)\\s*,\\s*(-?\\d+(\\.\\d+)?)(\\s*,\\s*(-?\\d+(\\.\\d+)?))?(.*)\\)");
+			form= Pattern.compile("(\\w+'*)\\((\\w+)\\s*=\\s*(\\-?\\d+(\\.\\d+)?)\\s*,\\s*(\\-?\\d+(\\.\\d+)?)(\\s*,\\s*(\\-?\\d+(\\.\\d+)?))?(.*)\\)");
 			m = form.matcher(s);
 			m.find();
 			FormulaElement root=null;
 			String var=null;
+			String formName=m.group(1).replaceAll("\\w+", "$1");
 			double min=Double.parseDouble(m.group(3));
 			double max=Double.parseDouble(m.group(5));
 			double increment=1;
