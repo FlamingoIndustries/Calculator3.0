@@ -342,10 +342,10 @@ class CartesianPanel extends JPanel {
 
 		// draw y-axis numbers
 		div_factor = 1;
-		if (xRange >= 30) {
+		if (yRange >= 30) {
 			div_factor = 5;
 		}
-		if (xRange >= 70) {
+		if (yRange >= 70) {
 			div_factor = 10;
 		}
 		j = (int) Math.floor(min_y);

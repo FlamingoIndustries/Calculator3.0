@@ -13,10 +13,10 @@ public class GraphControl {
 		graphlist = graphs;
 		formulas = map;
 		System.out.println("Running graph...");
-		doGraph(graphlist);
+		doGraph();
 	}
 	
-	public void doGraph(final Vector<GraphFunction> graphlist2) {
+	public void doGraph() {
 	//public static void main(String args[]) {
 
 		  SwingUtilities.invokeLater(new Runnable() {
