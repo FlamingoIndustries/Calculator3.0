@@ -401,7 +401,12 @@ public class CalculatorUI extends Shell {
 		    	String result=calc.branch(current);
 		    	answer = result;
 		    	text_1.append(current+"\n");
-		    	text_1.append("Result:"+ result.substring(1) +"\n");
+		    	if (result.charAt(0) == '$'){
+		    	text_1.append(">"+ result.substring(1) +"\n");
+		    	}
+		    	else {
+		    		text_1.append(">"+ result+"\n");
+		    	}
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
@@ -413,7 +418,12 @@ public class CalculatorUI extends Shell {
 		    	text_1.append(current2+"\n");
 		    	String result2=calc.branch(current2);
 		    	answer = result2;
-		    	text_1.append("Result:" +result2.substring(1));
+		    	if (result2.charAt(0) == '$'){
+			    	text_1.append(">"+ result2.substring(1) +"\n");
+			    }
+		    	else {
+		    		text_1.append(">"+result2+"\n");
+		    	}
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
