@@ -1,3 +1,12 @@
+/*
+ * Group name: All Caps Bats
+ * Team Members: 
+ * Alan Mulhall 10335911
+ * Barbara DeKegel 11702369
+ * Stephen Read 11312696
+ * Thomas Higgins 11322981 
+ */
+
 package formulator;
 
 import java.io.FileNotFoundException;
@@ -48,17 +57,25 @@ public class Calculator {
 			else
 				return "Unable to read from file";
 		}
-		else if(text.matches("^\\s*graph.*$"))
-		{//Regex is used to match the user input
+		else if(text.matches("^\\s*graph.*$"))		//Branching to graph code
+		{
 			return this.graphFormula(text);
 		}
-		else if(text.matches("^\\s*\\w+\\s*=.*"))
+		else if(text.matches("^\\s*\\w+\\s*=.*"))	//Assigning rhs of = to formula name on lhs 
 		{
 			Pattern form= Pattern.compile("^\\s*(\\w+)\\s*=\\s*(.+)\\s*$");
 			Matcher m = form.matcher(text);
 			if(m.find()==false)
 				return "Improper assignment form";
-			FormulaElement newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic);
+			FormulaElement newform;
+			try
+			{
+				newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic);
+			}
+			catch(Exception e)
+			{
+				return "Unable to save, invalid formula entered";
+			}
 			Boolean store=false;
 			if(formulas.containsKey(m.group(1)))
 			{
@@ -94,7 +111,12 @@ public class Calculator {
 		}
 	}
 	
-	public String graphFormula(String text)
+	/**
+	 * 
+	 * @param text input graph instruction
+	 * @return String indicating success or failure to graph formula
+	 */
+	private String graphFormula(String text)
 	{
 		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
 			return "Improper graph format";
@@ -164,6 +186,10 @@ public class Calculator {
 		return "Formulae successfully graphed";
 	}
 	
+	/**
+	 * 
+	 * @return boolean indicating success or failure
+	 */
 	public boolean WriteFormulae()
 	{
 		Display display = Display.getCurrent();
@@ -172,7 +198,7 @@ public class Calculator {
 	    String[] extensions={"*.xml"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
-	    display.dispose();
+	    
 	    if (fileName != null) {
 	    	PrintWriter writer;
 			try
@@ -200,6 +226,10 @@ public class Calculator {
 	    return true;
 	 }
 	
+	/**
+	 * 
+	 * @return boolean indicating success or failure to read from file
+	 */
 	public boolean ReadFormulae()
 	{
 		HashMap<String, FormulaElement> out=new HashMap<String, FormulaElement>();
@@ -211,7 +241,6 @@ public class Calculator {
 	    String[] extensions={"*.xml"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
-	    display.dispose();
 		Scanner reader;
 		try
 		{
@@ -314,8 +343,13 @@ public class Calculator {
 		return true;
 	}
 	
-	public void toggleDiff(boolean val)
+	/**
+	 * 
+	 * Switches differentiation type
+	 */
+	public boolean toggleDiff()
 	{
-		symbolic=val;
+		symbolic=!symbolic;
+		return symbolic;
 	}
 }

@@ -2,7 +2,6 @@ package formulator;
 
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.SwingUtilities;
 
 public class GraphControl {

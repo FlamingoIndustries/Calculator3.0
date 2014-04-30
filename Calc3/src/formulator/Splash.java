@@ -1,3 +1,12 @@
+/*
+ * Group name: All Caps Bats
+ * Team Members: 
+ * Alan Mulhall 10335911
+ * Barbara DeKegel 11702369
+ * Stephen Read 11312696
+ * Thomas Higgins 11322981 
+ */
+
 package formulator;
  
 import org.eclipse.swt.SWT;
@@ -17,7 +26,7 @@ public class Splash {
      
     private int splashPos = 0;
  
-    private final int SPLASH_MAX = 20;
+    private final int SPLASH_MAX = 10;
  
     public Splash(Display display)
     {

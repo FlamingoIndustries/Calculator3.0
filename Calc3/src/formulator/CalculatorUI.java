@@ -1,3 +1,12 @@
+/*
+ * Group name: All Caps Bats
+ * Team Members: 
+ * Alan Mulhall 10335911
+ * Barbara DeKegel 11702369
+ * Stephen Read 11312696
+ * Thomas Higgins 11322981 
+ */
+
 package formulator;
 
 import org.eclipse.swt.SWT;
@@ -437,6 +446,22 @@ public class CalculatorUI extends Shell {
 		btnSpace.setText("Space");
 		btnSpace.setBounds(368, 267, 100, 37);
 		
+<<<<<<< HEAD
+=======
+		final Button btnCheckButton = new Button(this, SWT.CHECK);
+		btnCheckButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+//				if (btnCheckButton.getSelection())
+//		            setPageComplete(true);
+//		        else
+//		            setPageComplete(false);
+			}
+		});
+		btnCheckButton.setBounds(479, 148, 101, 16);
+		btnCheckButton.setText("Sym/Num Diff.");
+		
+>>>>>>> 737303ef4bccc3f47ae910b9bc6a14b10c31064e
 		Button btnEvaluate = new Button(this, SWT.NONE);
 		btnEvaluate.addMouseListener(new MouseAdapter() {
 			@Override

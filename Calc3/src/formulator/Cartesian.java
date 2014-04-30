@@ -1,3 +1,12 @@
+/*
+ * Group name: All Caps Bats
+ * Team Members: 
+ * Alan Mulhall 10335911
+ * Barbara DeKegel 11702369
+ * Stephen Read 11312696
+ * Thomas Higgins 11322981 
+ */
+
 package formulator;
 
 import java.awt.Color;
@@ -52,7 +61,8 @@ class CartesianFrame extends JFrame {
 		axes = axes_in;
 		panel = new CartesianPanel(graphs, labels, dots, lines, axes);
 		add(panel);
-		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 		// KEY BINDINGS
 		// Actions taken by KeyBindings
 		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -133,7 +143,6 @@ class CartesianFrame extends JFrame {
 					    String fileName = dlg2.open();
 					    display2.dispose();
 					    
-					    System.out.println(fileName);
 					    if (fileName != null) {
 					    	PrintWriter writer = null;
 							try
@@ -151,13 +160,14 @@ class CartesianFrame extends JFrame {
 							String output = "";
 					    	for(GraphFunction g: graphs)
 					    	{
-					    		System.out.println("Graph has " + g.points.size() + " points");
 
 					    		for(Point p: g.points){
 					    		output = output + p.x + ", " + p.y + ", "; 
 					    		}
 					    	}
 				    		writer.print(output);
+						    System.out.println("Saved in " + fileName);
+
 					    	writer.close();
 					    }
 					    else
@@ -182,7 +192,7 @@ class CartesianFrame extends JFrame {
 	}
 
 	public void showUI() {
-		//setDefaultCloseOperation(JFrame.EXIT);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Cartesian");
 		setSize(700, 700);
 		setVisible(true);
