@@ -26,11 +26,11 @@ public class Calculator {
 	public Calculator()
 	{
 		formulas=new HashMap<String, FormulaElement>();
-		formulas.put("f", new VariableElement("x"));
 	}
 	
 	public String branch(String text)
 	{
+		text=text.trim();
 		if(text.equals("save"))
 		{
 			if(this.WriteFormulae())
@@ -45,8 +45,9 @@ public class Calculator {
 			else
 				return "Unable to read from file";
 		}
-		else if(text.matches("^graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
+		else if(text.matches("graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
 		{
+			System.out.println("hijjjjj");
 			Vector<GraphFunction> graphs=new Vector<GraphFunction>();
 			
 			Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\)");
@@ -113,7 +114,6 @@ public class Calculator {
 		{
 			Pattern form= Pattern.compile("^(\\w+)=(.+)");
 			Matcher m = form.matcher(text);
-			Vector<String> formv=new Vector<String>();
 			m.find();
 			FormulaElement newform=FormulaElement.parseFormula(m.group(2));
 			Boolean store=false;

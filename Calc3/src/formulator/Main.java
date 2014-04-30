@@ -6,29 +6,29 @@ import org.eclipse.swt.widgets.Display;
 public class Main
 {
 	public static void main(String[] args){
-//		try {
-//			Display display = Display.getDefault();
-//			CalculatorUI shell = new CalculatorUI(display);
-//			shell.open();
-//			shell.layout();
-//			while (!shell.isDisposed()) {
-//				if (!display.readAndDispatch()) {
-//					display.sleep();
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//
-//		}
+		try {
+			Display display = Display.getDefault();
+			CalculatorUI shell = new CalculatorUI(display);
+			shell.open();
+			shell.layout();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 		
 
 //		}		
 //		FormulaElement form=FormulaElement.parseFormula("x(y)");
 //		Differentiation diff=new Differentiation();
 //		System.out.println(diff.symbolicDiff(form, "x", 1));
-		Calculator calc=new Calculator();
-		System.out.println(calc.branch("load"));
-		System.out.println(calc.branch("load"));
+//		Calculator calc=new Calculator();
+//		System.out.println(calc.branch("load"));
+//		System.out.println(calc.branch("load"));
 //		EvalFormula ev=new EvalFormula();
 //		//Sample input Strings to try:
 //		//"Y^3-6X(Z+5(Y+2^2))"
