@@ -23,8 +23,10 @@ public class Differentiation
 	public FormulaElement symbolicDiff(FormulaElement form, String respect, int degree)
 	{
 		FormulaElement out=form;
-		if(form instanceof ConstantElement)
-			out=new ConstantElement(0);
+		if(degree==0)
+			out=form;
+		else if(form instanceof ConstantElement)
+			out=new ConstantElement(0);		
 		else if(form instanceof VariableElement)
 		{
 			if(((VariableElement)form).getName().equals(respect))
@@ -38,7 +40,10 @@ public class Differentiation
 			Vector<FormulaElement> elements=elem.getArguments();
 			if(form instanceof PlusFunctionElement||form instanceof MinusFunctionElement)
 			{
-				elem=new PlusFunctionElement();
+				if(form instanceof PlusFunctionElement)
+					elem=new PlusFunctionElement();
+				else if(form instanceof MinusFunctionElement)
+					elem=new MinusFunctionElement();
 				for(int i=0;i<elements.size();i++)
 					elem.addArgument(this.symbolicDiff(elements.elementAt(i), respect, degree));
 				out=this.symbolicDiff(elem, respect, degree-1);
@@ -67,6 +72,7 @@ public class Differentiation
 				MultipleFunctionElement mult=new MultipleFunctionElement(divfirst,second);
 				MultipleFunctionElement mult1=new MultipleFunctionElement(first,divsecond);
 				MinusFunctionElement minus=new MinusFunctionElement(mult,mult1);
+				System.out.println(first);
 				elem.addArgument(minus);
 				PowerFunctionElement pow=new PowerFunctionElement(second,new ConstantElement(2));
 				elem.addArgument(pow);
@@ -79,9 +85,9 @@ public class Differentiation
 				FormulaElement second=elements.elementAt(1);
 				elem.addArgument(second);
 				MinusFunctionElement minus=new MinusFunctionElement(second,new ConstantElement(1));
+				
 				PowerFunctionElement pow=new PowerFunctionElement(first,minus);
 				elem.addArgument(pow);
-				elem.addArgument(this.symbolicDiff(first, respect, degree));
 				out=this.symbolicDiff(elem, respect, degree-1);
 			}
 			else if(form instanceof CosineFunctionElement)
@@ -91,6 +97,7 @@ public class Differentiation
 				elem.addArgument(new ConstantElement(-1));
 				elem.addArgument(new SineFunctionElement(first));
 				elem.addArgument(this.symbolicDiff(first, respect, degree));
+				System.out.println(first);//this.symbolicDiff(first, respect, degree));
 				out=this.symbolicDiff(elem, respect, degree-1);
 			}
 			else if(form instanceof SineFunctionElement)
@@ -102,8 +109,6 @@ public class Differentiation
 				out=this.symbolicDiff(elem, respect, degree-1);
 			}
 		}
-		else
-			out=null;
 		return out;
 	}
 }
