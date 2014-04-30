@@ -5,24 +5,22 @@ import java.util.Vector;
 import javax.swing.SwingUtilities;
 
 public class GraphControl {
-	/*Current bug list:
-	 
-	 
-	 SHORTCUTS:
-	 1 - Toggle labels
-	 2 - Toggle dots
-	 3 - Toggle lines
-	*/
-	Vector<GraphFunction> graphlist;
+	
+	public Vector<GraphFunction> graphlist = new Vector<GraphFunction>();
 	public GraphControl(Vector<GraphFunction> graphs){
 		graphlist = graphs;	
-		//run();
+		//doGraph(graphlist);
 	}
-	public static void main
-	(String[] args) {
+	
+	//public static void doGraph(final Vector<GraphFunction> graphlist2) {
+	public static void main(String args[]) {
+
 		  SwingUtilities.invokeLater(new Runnable() {
-		   
-		   @Override
+		 
+		//public Vector<GraphFunction> graphlist = graphlist2;
+	  
+
+		@Override
 		   public void run() {
 			   	//String str = "cos(x)";
 			   	String str = "x(4/3)";

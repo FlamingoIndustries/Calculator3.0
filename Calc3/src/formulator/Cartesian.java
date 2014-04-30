@@ -1,21 +1,30 @@
 package formulator;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public class Cartesian {
 
@@ -74,7 +83,36 @@ class CartesianFrame extends JFrame {
 				showUI();
 			}
 		});
+		
+		ActionListener actionListener = new ActionListener() {
+		      public void actionPerformed(ActionEvent actionEvent) {
+		        System.out.println("I was selected.");
+		      }
+		    };
 
+		    MouseListener mouseListener = new MouseAdapter() {
+		      public void mousePressed(MouseEvent mouseEvent) {
+		        int modifiers = mouseEvent.getModifiers();
+		        if ((modifiers & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
+		          // Mask may not be set properly prior to Java 2
+		          // See SwingUtilities.isLeftMouseButton() for workaround
+		          System.out.println("Left button pressed.");
+		        }
+		        if ((modifiers & InputEvent.BUTTON2_MASK) == InputEvent.BUTTON2_MASK) {
+		          System.out.println("Middle button pressed.");
+		        }
+		        if ((modifiers & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK) {
+		          System.out.println("Right button pressed.");
+		        }
+		      }
+		    };
+			JButton button = new JButton("Save Graph");
+		    button.addActionListener(actionListener);
+		    button.addMouseListener(mouseListener);
+		    button.setSize(80,20);
+		    button.setVerticalAlignment(SwingConstants.BOTTOM);
+		    button.setHorizontalAlignment(SwingConstants.RIGHT);
+		    panel.add(button);
 	}
 
 	public void showUI() {
