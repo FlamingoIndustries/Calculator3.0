@@ -1,6 +1,8 @@
 package formulator;
  
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
@@ -15,11 +17,11 @@ public class Splash {
      
     private int splashPos = 0;
  
-    private final int SPLASH_MAX = 100;
+    private final int SPLASH_MAX = 20;
  
     public Splash(Display display)
     {
-        final Image image = new Image(display, "Splash.jpg");
+        final Image image = new Image(display, "bats260.png");
  
         final Shell splash = new Shell(SWT.ON_TOP);
         final ProgressBar bar = new ProgressBar(splash, SWT.NONE);
@@ -27,6 +29,9 @@ public class Splash {
  
         Label label = new Label(splash, SWT.NONE);
         label.setImage(image);
+        Device device = display.getCurrent();
+        Color red = new Color(device, 205, 201, 201);
+        label.setBackground(red);
  
         FormLayout layout = new FormLayout();
         splash.setLayout(layout);
@@ -67,7 +72,9 @@ public class Splash {
                     }
                     bar.setSelection(splashPos);
                 }
-                ApplicationLauncher.calculator.open();
+                
+        		ApplicationLauncher.calculator.open();
+        		ApplicationLauncher.calculator.layout();
                 splash.close();
                 image.dispose();
             }
