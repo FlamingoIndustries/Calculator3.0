@@ -13,6 +13,8 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 
 
@@ -20,6 +22,7 @@ public class CalculatorUI extends Shell {
 		private Text text;
 		// The three calculator registers.
 		private String displayString = "";
+		String answer = new String();
 		// A flag to check if display should be cleared on the next keystroke
 		private boolean clearDisplay = true;
 		private Text text_1;
@@ -74,14 +77,14 @@ public class CalculatorUI extends Shell {
 			}
 		});
 		text.setBounds(23, 88, 260, 44);
-		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_MAGENTA));
+		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_YELLOW));
 		text.setEditable (true);
 		text.setDoubleClickEnabled(false);
 		text.setText(displayString);
 		
-		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
+		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		text_1.setBounds(23, 10, 279, 72);
-		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN));
 		
 		Button button1 = new Button(this, SWT.NONE);
 		button1.addMouseListener(new MouseAdapter() {
@@ -264,17 +267,6 @@ public class CalculatorUI extends Shell {
 		buttonPower.setText("^");
 		buttonPower.setBounds(130, 267, 47, 37);
 		
-		Button buttonEquals = new Button(this, SWT.NONE);
-		buttonEquals.setToolTipText("Equals");
-		buttonEquals.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				updateDisplay('R');
-			}
-		});
-		buttonEquals.setText("=");
-		buttonEquals.setBounds(183, 267, 100, 37);
-		
 		Button btnBsp = new Button(this, SWT.NONE);
 		btnBsp.addMouseListener(new MouseAdapter() {
 			@Override
@@ -327,20 +319,76 @@ public class CalculatorUI extends Shell {
 		
 		MenuItem mntmScientific = new MenuItem(menu_2, SWT.CHECK);
 		mntmScientific.setText("Scientific");
+		
+		MenuItem mntmHelp = new MenuItem(menu, SWT.NONE);
+		mntmHelp.setText("Help");
+		
+		Button button_1 = new Button(this, SWT.NONE);
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay(')');
+			}
+		});
+		button_1.setToolTipText("Right Bracket");
+		button_1.setText(")");
+		button_1.setBounds(77, 310, 47, 37);
+		
+		Button button = new Button(this, SWT.NONE);
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay('(');
+			}
+		});
+		button.setToolTipText("Left Bracket");
+		button.setText("(");
+		button.setBounds(23, 310, 47, 37);
+		
+		Button btnAns = new Button(this, SWT.NONE);
+		btnAns.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay('A');
+			}
+		});
+		btnAns.setToolTipText("Return Previous Result");
+		btnAns.setText("Ans");
+		btnAns.setBounds(130, 310, 47, 37);
+		
+		Button buttonEquals = new Button(this, SWT.NONE);
+		buttonEquals.setToolTipText("Equals");
+		buttonEquals.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay('E');
+			}
+		});
+		buttonEquals.setText("=");
+		buttonEquals.setBounds(183, 267, 100, 80);
 		createContents();
 	}
 
 		private void updateDisplay(final char keyPressed) {
 		    char keyVal = keyPressed;
 		    String tempString = new String();
-		    boolean doClear = false;
+		    
+		    
 		    
 		    if (!clearDisplay) {
 		        tempString = displayString;
 		      }
 		    
 		    switch (keyVal) {
+		    
+		    case 'A': 
+		    	text.append(answer);
+		    	System.out.println(answer);
+		    	break;
+		    	
+		    	
 		    case 'B': // Backspace
+		    	tempString = text.getText();
 		      if (tempString.length() < 2) {
 		        tempString = "";
 		      } else {
@@ -350,23 +398,34 @@ public class CalculatorUI extends Shell {
 		      text.setText(displayString);
 		      break;
 		      
-		    case 'R':
-		    	String previous = text_1.getText();
+		    case 'E':
 		    	String current = text.getText();
+		    	text_1.append(current+"\n");
 		    	String result=calc.branch(current);
-		    	System.out.println(current);
-		    	text_1.setText(previous+current+"\n"+result);
+		    	answer = result;
+		    	text_1.append(result+"\n");
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
-		    	doClear = true;
+		    	break;
+		    	
+		      
+		    case 'R':
+		    	String current2 = text.getText();
+		    	text_1.append(current2+"\n");
+		    	String result2=calc.branch(current2);
+		    	answer = result2;
+		    	text_1.append(result2);
+		    	text_1.setTopIndex(text_1.getLineCount()-1);
+		    	tempString = "";
+		    	text.setText(tempString);
 		    	break;
 		     
 		    	
 		      
 		    case 'C': // Clear
 		      tempString = "";
-		      doClear = true;
+		      text.setText("");
 		      break;
 		      
 		    default: 
@@ -377,7 +436,7 @@ public class CalculatorUI extends Shell {
 		        break;
 		      }
 		    
-		    clearDisplay = doClear;
+		    //clearDisplay = doClear;
 
 		
 	}
@@ -389,7 +448,7 @@ public class CalculatorUI extends Shell {
 	 */
 	protected void createContents() {
 		setText("Formulator");
-		setSize(319, 373);
+		setSize(314, 410);
 
 	}
 
