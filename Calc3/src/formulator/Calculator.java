@@ -1,7 +1,6 @@
 package formulator;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 
 
 public class Calculator {
-	public  HashMap<String, FormulaElement> formulas;
+	private  HashMap<String, FormulaElement> formulas;
 	
 	public Calculator()
 	{
@@ -31,23 +30,25 @@ public class Calculator {
 	public String branch(String text)
 	{
 		text=text.trim();
-		if(text.equals("save"))
+		if(text.equals("save"))				//Branching to save all formulae in a file
 		{
-			if(this.WriteFormulae())
-				return "Successfully written to file";
+			if(!formulas.isEmpty())
+				if(this.WriteFormulae())
+					return "File Saved";
+				else
+					return "File not Saved";
 			else
-				return "Unable to write to file";
+				return "Nothing to save!";
 		}
-		else if(text.equals("load"))
+		else if(text.equals("load"))		//Branching to load all formulae from a chosen file
 		{
 			if(this.ReadFormulae())
 				return "Successfully read from file";
 			else
 				return "Unable to read from file";
 		}
-		else if(text.matches("graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
+		else if(text.matches("^graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
 		{
-			System.out.println("hijjjjj");
 			Vector<GraphFunction> graphs=new Vector<GraphFunction>();
 			
 			Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\)");
@@ -96,6 +97,8 @@ public class Calculator {
 						
 					}
 				}
+				if(!root.isFullyGrounded())
+					return "Cannot graph "+m.group(1)+" all other variables must be set";
 				GraphFunction x= new GraphFunction(root, var, min, max, increment);
 				graphs.add(x);
 			}
@@ -137,7 +140,8 @@ public class Calculator {
 		else
 		{
 			//Parse as formula and attempt to solve
-			return "Solve";
+			EvalFormula ev=new EvalFormula();
+			return ""+ev.evaluateFor(text);
 		}
 		
 	}
@@ -175,6 +179,8 @@ public class Calculator {
 	    	}
 	    	writer.close();
 	    }
+	    else
+	    	return false;
 	    display.dispose();
 	    return true;
 	 }
@@ -278,7 +284,7 @@ public class Calculator {
 				}
 			}
 			reader.close();
-		} catch (IOException e)
+		} catch (Exception e)
 		{
 			return false;
 		}

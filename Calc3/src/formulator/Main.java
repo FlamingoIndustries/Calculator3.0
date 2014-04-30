@@ -6,28 +6,28 @@ import org.eclipse.swt.widgets.Display;
 public class Main
 {
 	public static void main(String[] args){
-//		try {
-//			Display display = Display.getDefault();
-//			CalculatorUI shell = new CalculatorUI(display);
-//			shell.open();
-//			shell.layout();
-//			while (!shell.isDisposed()) {
-//				if (!display.readAndDispatch()) {
-//					display.sleep();
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//
-//		}
+		try {
+			Display display = Display.getDefault();
+			CalculatorUI shell = new CalculatorUI(display);
+			shell.open();
+			shell.layout();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 		
 
 //		}		
-//		FormulaElement form=FormulaElement.parseFormula("x(y)");
+//		FormulaElement form=FormulaElement.parseFormula("x");
 //		Differentiation diff=new Differentiation();
-//		System.out.println(diff.symbolicDiff(form, "x", 1));
+//		System.out.println(diff.symbolicDiff(form, "x", 2));
 //		Calculator calc=new Calculator();
-//		System.out.println(calc.branch("load"));
+//		System.out.println(calc.branch("save"));
 //		System.out.println(calc.branch("load"));
 //		EvalFormula ev=new EvalFormula();
 //		//Sample input Strings to try:
