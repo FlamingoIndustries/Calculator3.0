@@ -79,12 +79,6 @@ public class EvalFormula extends Calculator
 			}
 		}
 		
-		//testing that variables were assigned the correct values
-//		for(String key: vars.keySet()){
-//			System.out.print(key+": ");
-//			System.out.println(vars.get(key));
-//		}
-		
 		//assign respective values to all variables in the formula using the created variables vector
 		for(String key: vars.keySet()){
 			//System.out.println(key);

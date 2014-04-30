@@ -80,10 +80,17 @@ public class Calculator {
 		else
 		{
 			//Parse as formula and attempt to solve
-			FormulaElement e=FormulaElement.parseFormula(text, formulas, symbolic);
-			if(e!=null)
-				return "$"+e.toString();
-			return "";
+			try
+			{
+				FormulaElement e=FormulaElement.parseFormula(text, formulas, symbolic);
+				if(e!=null)
+					return "$"+e.toString();
+				return "";
+			}
+			catch(Exception e)
+			{
+				return "Invalid input!";
+			}
 		}
 	}
 	
@@ -148,6 +155,8 @@ public class Calculator {
 				return "Cannot graph "+m.group(1)+" all other variables must be set";
 			if(increment<1)
 				return "Cannot graph "+m.group(1)+" increment must be positive!";
+			if(min>max)
+				return "Cannot graph "+m.group(1)+" min must be less than max";
 			GraphFunction x= new GraphFunction(root, var, min, max, increment);
 			graphs.add(x);
 		}
@@ -157,12 +166,13 @@ public class Calculator {
 	
 	public boolean WriteFormulae()
 	{
-		Display display = new Display();
+		Display display = Display.getCurrent();
 	    final Shell shell = new Shell(display);
 	    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
-	    String[] extensions={"*.xml", "*.txt"};
+	    String[] extensions={"*.xml"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
+	    display.dispose();
 	    if (fileName != null) {
 	    	PrintWriter writer;
 			try
@@ -170,11 +180,9 @@ public class Calculator {
 				writer = new PrintWriter(fileName, "UTF-8");
 			} catch (FileNotFoundException e)
 			{
-				display.dispose();
 				return false;
 			} catch (UnsupportedEncodingException e)
 			{
-				display.dispose();
 				return false;
 			}
 	    	for(Entry<String, FormulaElement> form:formulas.entrySet())
@@ -183,17 +191,12 @@ public class Calculator {
 	    		String formXML="<"+form.getKey()+">"+"\n"+"\t";
 	    		formXML+=formula.getXMLformat("\t")+"\n";
 	    		formXML+="</"+form.getKey()+">";
-	    		System.out.println(formXML);
 	    		writer.print(formXML);
 	    	}
 	    	writer.close();
 	    }
 	    else
-	    {
-	    	display.dispose();
 	    	return false;
-	    }
-	    display.dispose();
 	    return true;
 	 }
 	
@@ -202,12 +205,13 @@ public class Calculator {
 		HashMap<String, FormulaElement> out=new HashMap<String, FormulaElement>();
 		Stack<String> xmlstatements=new Stack<String>();
 		Stack<FormulaElement> formulae=new Stack<FormulaElement>();
-		Display display = new Display();
+		Display display = Display.getCurrent();
 	    final Shell shell = new Shell(display);
 	    FileDialog dlg = new FileDialog(shell, SWT.NONE);
-	    String[] extensions={"*.xml", "*.txt"};
+	    String[] extensions={"*.xml"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
+	    display.dispose();
 		Scanner reader;
 		try
 		{
@@ -279,7 +283,6 @@ public class Calculator {
 					else
 					{
 						reader.close();
-						display.dispose();
 						return false;
 					}
 					if(!formulae.isEmpty()&&formulae.peek() instanceof FunctionElement)
@@ -295,12 +298,10 @@ public class Calculator {
 			reader.close();
 		} catch (Exception e)
 		{
-			display.dispose();
 			return false;
 		}
 		for(Entry<String, FormulaElement> e: out.entrySet())
 		{
-			System.out.println("gg");
 			if(formulas.containsKey(e.getKey()))
 			{
 				int dialogResult = JOptionPane.showConfirmDialog (null, "The formula \""+e.getKey()+"\" already exists\nWould you like to overwrite?","Warning",JOptionPane.YES_NO_OPTION);
@@ -310,7 +311,6 @@ public class Calculator {
 			else
 				formulas.put(e.getKey(), e.getValue());
 		}
-		display.dispose();
 		return true;
 	}
 	
