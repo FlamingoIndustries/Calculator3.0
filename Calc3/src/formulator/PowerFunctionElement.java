@@ -69,5 +69,21 @@ public class PowerFunctionElement extends FunctionElement {
 				return true;
 		}
 		return false;
-	}	
+	}
+	
+	@Override
+	public FormulaElement symbolicDiff(String respect, int degree)
+	{
+		if(degree==0)
+			return this;
+		Vector<FormulaElement> elements=this.getArguments();
+		FunctionElement elem=new MultipleFunctionElement();
+		FormulaElement first=elements.elementAt(0);
+		FormulaElement second=elements.elementAt(1);
+		elem.addArgument(second);
+		MinusFunctionElement minus=new MinusFunctionElement(second,new ConstantElement(1));
+		PowerFunctionElement pow=new PowerFunctionElement(first,minus);
+		elem.addArgument(pow);
+		return elem.symbolicDiff(respect, degree-1);
+	}
 }

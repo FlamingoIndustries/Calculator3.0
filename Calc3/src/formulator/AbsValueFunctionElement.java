@@ -1,5 +1,7 @@
 package formulator;
 
+import java.util.Vector;
+
 public class AbsValueFunctionElement extends FunctionElement {
 	
 	//constructor that allows argument to be added immediately
@@ -33,5 +35,13 @@ public class AbsValueFunctionElement extends FunctionElement {
 		return new AbsValueFunctionElement(getArguments().get(0).dEval());
 	}
 	
-
+	@Override
+	public FormulaElement symbolicDiff(String respect, int degree)
+	{
+		if(degree==0)
+			return this;
+		Vector<FormulaElement> elements=this.getArguments();
+		FormulaElement first=elements.elementAt(0);
+		return new AbsValueFunctionElement(first.symbolicDiff(respect, degree));
+	}
 }

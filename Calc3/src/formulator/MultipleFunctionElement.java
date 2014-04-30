@@ -91,4 +91,23 @@ public class MultipleFunctionElement extends FunctionElement {
 		}
 		return newMult;
 	}
+	
+	@Override
+	public FormulaElement symbolicDiff(String respect, int degree)
+	{
+		if(degree==0)
+			return this;
+		Vector<FormulaElement> elements=this.getArguments();
+		FunctionElement elem=new PlusFunctionElement();
+		for(int i=0;i<elements.size();i++)
+		{
+			MultipleFunctionElement mult=new MultipleFunctionElement();
+			mult.addArgument(elements.elementAt(i).symbolicDiff(respect, degree));
+			for(int j=0;j<elements.size();j++)
+				if(i!=j)
+					mult.addArgument(elements.elementAt(j));
+			elem.addArgument(mult);
+		}
+		return elem.symbolicDiff(respect, degree-1);
+	}
 }

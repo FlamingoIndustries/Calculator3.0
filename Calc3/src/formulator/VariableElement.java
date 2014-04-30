@@ -57,4 +57,17 @@ public class VariableElement extends FormulaElement {
 			return false;
 		
 	}
+
+	@Override
+	public FormulaElement symbolicDiff(String respect,int degree)
+	{
+		if(degree==0)
+			return this;
+		FormulaElement out;
+		if(name.equals(respect))
+			out=new ConstantElement(1).symbolicDiff(respect, degree-1);
+		else
+			out=new ConstantElement(0);
+		return out;
+	}
 }

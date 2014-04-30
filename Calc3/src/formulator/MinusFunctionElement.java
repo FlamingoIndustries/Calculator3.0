@@ -62,4 +62,16 @@ public class MinusFunctionElement extends FunctionElement{
 		}
 		return false;
 	}
+
+	@Override
+	public FormulaElement symbolicDiff(String respect, int degree)
+	{
+		if(degree==0)
+			return this;
+		Vector<FormulaElement> elements=this.getArguments();
+		FunctionElement elem=new MinusFunctionElement();
+		for(int i=0;i<elements.size();i++)
+			elem.addArgument(elements.elementAt(i).symbolicDiff(respect, degree));
+		return elem.symbolicDiff(respect, degree-1);
+	}
 }

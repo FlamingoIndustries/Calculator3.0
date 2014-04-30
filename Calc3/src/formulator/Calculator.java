@@ -126,7 +126,7 @@ public class Calculator {
 				if(i==1)
 				{
 					if(formulas.containsKey(formName))
-						root=formulas.get(formName);/////////
+						root=formulas.get(formName).symbolicDiff("x", diffCount);
 					else
 						return "Cannot graph "+formName+" as it does not exist";
 				}

@@ -75,4 +75,24 @@ public class DivideFunctionElement extends FunctionElement{
 		return false;
 	}
 
+	@Override
+	public FormulaElement symbolicDiff(String respect, int degree)
+	{
+		if(degree==0)
+			return this;
+		Vector<FormulaElement> elements=this.getArguments();
+		FunctionElement elem=new DivideFunctionElement();
+		FormulaElement first=elements.elementAt(0);
+		FormulaElement second=elements.elementAt(1);
+		FormulaElement divfirst=first.symbolicDiff(respect, degree);
+		FormulaElement divsecond=second.symbolicDiff(respect, degree);
+		MultipleFunctionElement mult=new MultipleFunctionElement(divfirst,second);
+		MultipleFunctionElement mult1=new MultipleFunctionElement(first,divsecond);
+		MinusFunctionElement minus=new MinusFunctionElement(mult,mult1);
+		System.out.println(first);
+		elem.addArgument(minus);
+		PowerFunctionElement pow=new PowerFunctionElement(second,new ConstantElement(2));
+		elem.addArgument(pow);
+		return elem.symbolicDiff(respect, degree-1);
+	}
 }

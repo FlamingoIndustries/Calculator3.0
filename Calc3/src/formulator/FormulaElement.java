@@ -9,6 +9,7 @@ public abstract class FormulaElement
 	public abstract double evaluate();
 	public abstract FormulaElement dEval();
 	public abstract String getXMLformat(String tabbing);
+	public abstract FormulaElement symbolicDiff(String respect, int degree);
 	//TO DO
 	//parse for nested formulas in formula declaration
 	
@@ -310,6 +311,19 @@ public abstract class FormulaElement
 			return null;
 	}
 	
+	public FormulaElement numericDiff(FormulaElement form, String respect, int degree)
+	{
+		ConstantElement dx=new ConstantElement(0.0000001);
+		FormulaElement replace=new PlusFunctionElement(dx, form.findVariable(respect));
+		form.setDValue(respect, replace);//ASK BARBARA!
+		System.out.println(form.dEval()+"\t\t"+form);
+		MinusFunctionElement minus=new MinusFunctionElement(form.dEval(),form);
+		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
+		if(degree==1)
+			return div;
+		else
+			return numericDiff(div, respect, degree-1);
+	}
 //	//This method returns false if the formula doesn't have the correct format
 //	public static boolean checkFormula(Vector tokens){
 //		
@@ -383,7 +397,7 @@ public abstract class FormulaElement
 		HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
 		formulas.put("f", new MultipleFunctionElement(new VariableElement("y"), new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3))));
 		formulas.put("g", new PlusFunctionElement(new VariableElement("y"), new ConstantElement(2)));
-		formulas.put("h", new SqrtFunctionElement(new VariableElement("x")));
+		//formulas.put("h", new SqrtFunctionElement(new VariableElement("x")));
 		FormulaElement test = FormulaElement.parseFormula("f(4)", formulas);
 		MultipleFunctionElement test2 = new MultipleFunctionElement();
 		VariableElement x = new VariableElement("x");

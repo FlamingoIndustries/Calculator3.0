@@ -41,4 +41,10 @@ public class ConstantElement extends FormulaElement {
 			return false;
 		
 	}
+
+	@Override
+	public FormulaElement symbolicDiff(String respect, int degree)
+	{
+		return new ConstantElement(0);
+	}
 }
