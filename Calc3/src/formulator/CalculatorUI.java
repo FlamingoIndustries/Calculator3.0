@@ -77,14 +77,14 @@ public class CalculatorUI extends Shell {
 			}
 		});
 		text.setBounds(23, 88, 260, 44);
-		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_YELLOW));
+		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		text.setEditable (true);
 		text.setDoubleClickEnabled(false);
 		text.setText(displayString);
 		
 		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		text_1.setBounds(23, 10, 279, 72);
-		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN));
+		text_1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		
 		Button button1 = new Button(this, SWT.NONE);
 		button1.addMouseListener(new MouseAdapter() {
@@ -382,9 +382,15 @@ public class CalculatorUI extends Shell {
 		    switch (keyVal) {
 		    
 		    case 'A': 
+		    	if (answer.charAt(0) == '$'){
 		    	text.append(answer);
 		    	System.out.println(answer);
 		    	break;
+		    	}
+		    	
+		    	else {
+		    		break;
+		    	}
 		    	
 		    	
 		    case 'B': // Backspace
@@ -403,7 +409,7 @@ public class CalculatorUI extends Shell {
 		    	text_1.append(current+"\n");
 		    	String result=calc.branch(current);
 		    	answer = result;
-		    	text_1.append("Fuck you Alan!" +result+"\n");
+		    	text_1.append("Result:" +result+"\n");
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
@@ -415,7 +421,7 @@ public class CalculatorUI extends Shell {
 		    	text_1.append(current2+"\n");
 		    	String result2=calc.branch(current2);
 		    	answer = result2;
-		    	text_1.append("Fuck you Alan!" +result2);
+		    	text_1.append("Result:" +result2);
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
@@ -447,7 +453,7 @@ public class CalculatorUI extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("Fuck you Alan!");
+		setText("Formulator");
 		setSize(314, 410);
 
 	}
