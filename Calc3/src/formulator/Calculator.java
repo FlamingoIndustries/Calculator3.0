@@ -282,7 +282,6 @@ public class Calculator {
 		{
 			return false;
 		}
-		System.out.println(out);
 		for(Entry<String, FormulaElement> e: out.entrySet())
 		{
 			System.out.println("gg");
@@ -295,7 +294,6 @@ public class Calculator {
 			else
 				formulas.put(e.getKey(), e.getValue());
 		}
-		System.out.println(out+"hi");
 		return true;
 	}
 }

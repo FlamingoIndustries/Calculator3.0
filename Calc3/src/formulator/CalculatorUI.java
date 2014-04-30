@@ -23,6 +23,7 @@ public class CalculatorUI extends Shell {
 		// A flag to check if display should be cleared on the next keystroke
 		private boolean clearDisplay = true;
 		private Text text_1;
+		private Calculator calc;
 
 	/**
 	 * Launch the application.
@@ -51,7 +52,7 @@ public class CalculatorUI extends Shell {
 	public CalculatorUI(Display display) {
 		super(display, SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		setLayout(null);
-		
+		calc=new Calculator();
 		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
 		text.addFocusListener(new FocusAdapter() {
 			@Override
@@ -352,8 +353,9 @@ public class CalculatorUI extends Shell {
 		    case 'R':
 		    	String previous = text_1.getText();
 		    	String current = text.getText();
+		    	String result=calc.branch(current);
 		    	System.out.println(current);
-		    	text_1.setText(previous+current);
+		    	text_1.setText(previous+current+"\n"+result);
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	tempString = "";
 		    	text.setText(tempString);
