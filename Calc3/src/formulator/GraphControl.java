@@ -23,7 +23,7 @@ public class GraphControl {
 
 		@Override
 		   public void run() {
-				CartesianFrame frame = new CartesianFrame(graphlist, false, true, true);
+				CartesianFrame frame = new CartesianFrame(graphlist, false, true, true, true);
 				frame.showUI();
 				 frame.toFront();
 			        frame.repaint();

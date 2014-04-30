@@ -40,15 +40,17 @@ class CartesianFrame extends JFrame {
 	boolean labels;
 	boolean dots;
 	boolean lines;
+	boolean axes;
 	Vector<GraphFunction> graphs = new Vector<GraphFunction>();
 
 	public CartesianFrame(Vector<GraphFunction> graphs_in, boolean label_tog,
-			boolean dots_tog, boolean lines_tog) {
+			boolean dots_tog, boolean lines_tog, boolean axes_in) {
 		labels = label_tog;
 		dots = dots_tog;
 		lines = lines_tog;
 		graphs = graphs_in;
-		panel = new CartesianPanel(graphs, labels, dots, lines);
+		axes = axes_in;
+		panel = new CartesianPanel(graphs, labels, dots, lines, axes);
 		add(panel);
 		
 		// KEY BINDINGS
@@ -59,13 +61,15 @@ class CartesianFrame extends JFrame {
 				KeyStroke.getKeyStroke(KeyEvent.VK_2, 0), "two");
 		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_3, 0), "three");
+		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_4, 0), "four");
 
 		//Labels
 		panel.getActionMap().put("one", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				labels = !labels;
-				panel = new CartesianPanel(graphs, labels, dots, lines);
+				panel = new CartesianPanel(graphs, labels, dots, lines, axes);
 				add(panel);
 				showUI();
 			}
@@ -76,7 +80,7 @@ class CartesianFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dots = !dots;
-				panel = new CartesianPanel(graphs, labels, dots, lines);
+				panel = new CartesianPanel(graphs, labels, dots, lines,axes);
 				add(panel);
 				showUI();
 			}
@@ -87,11 +91,22 @@ class CartesianFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lines = !lines;
-				panel = new CartesianPanel(graphs, labels, dots, lines);
+				panel = new CartesianPanel(graphs, labels, dots, lines, axes);
 				add(panel);
 				showUI();
 			}
 		});
+		
+		//Axes
+				panel.getActionMap().put("four", new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						axes = !axes;
+						panel = new CartesianPanel(graphs, labels, dots, lines, axes);
+						add(panel);
+						showUI();
+					}
+				});
 		    
 			//Draw top menu
 			JMenu file = new JMenu("File");
@@ -186,6 +201,7 @@ class CartesianPanel extends JPanel {
 	boolean lines;
 	double increment;
 	Vector<GraphFunction> graphs;
+	boolean axes;
 
 	// x-axis coord constants
 	public static final int X_AXIS_FIRST_X_COORD = 50;
@@ -208,11 +224,12 @@ class CartesianPanel extends JPanel {
 	public static final int AXIS_STRING_DISTANCE = 20;
 
 	public CartesianPanel(Vector<GraphFunction> graphs_in, boolean label_tog,
-			boolean dot_tog, boolean lines_tog) {
+			boolean dot_tog, boolean lines_tog, boolean axes_tog) {
 		labels = label_tog;
 		dots = dot_tog;
 		lines = lines_tog;
 		graphs = graphs_in;
+		axes = axes_tog;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -305,6 +322,7 @@ class CartesianPanel extends JPanel {
 			y_meets_x = r;
 		}
 
+		if(axes == true){
 		// draw x-axis
 		g2.drawLine(X_AXIS_FIRST_X_COORD, X_AXIS_Y_COORD,
 				X_AXIS_SECOND_X_COORD, X_AXIS_Y_COORD);
@@ -371,7 +389,7 @@ class CartesianPanel extends JPanel {
 		}
 		j = (int) Math.floor(min_y);
 		for (int i = 0; i <= yRange; i++) {
-
+		
 			if (i % div_factor == 0) {
 				g2.drawString(Integer.toString(j), Y_AXIS_X_COORD
 						- AXIS_STRING_DISTANCE,
@@ -385,6 +403,7 @@ class CartesianPanel extends JPanel {
 			}
 			
 			j++;
+		}
 		}
 
 		// Draw Origin point where axes meet
