@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -165,6 +164,10 @@ class CartesianFrame extends JFrame {
 		setSize(700, 700);
 		setVisible(true);
 	}
+	
+	public void shutItDown(){
+		dispose();
+	}
 }
 
 @SuppressWarnings("serial")
@@ -232,19 +235,12 @@ class CartesianPanel extends JPanel {
 			increment = graph.increment;
 			variable = graph.var_name;
 
-			if(increment == 0){
-				System.out.println("Cannot increment by 0. Exiting...");
-				System.exit(0);
+			if (increment <=0){
+				System.out.println("Error: negative increment. Try ordering from minimum range to maximum.");
+				e++;
+				g2.dispose();
+				
 			}
-			if(range_min > range_max && increment>0){
-				System.out.println("Increment never reaches end. Exiting...");
-				System.exit(0);
-			}
-			if(range_min < range_max && increment<0){
-				System.out.println("Increment never reaches end. Exiting...");
-				System.exit(0);
-			}
-			//
 			if (range_min < 0) {
 				range_total = range_max - range_min;
 			} else {
@@ -253,7 +249,7 @@ class CartesianPanel extends JPanel {
 
 			// Find points
 			graph.points.clear();
-			for (x = range_min; x != range_max; x += increment) {
+			for (x = range_min; x <= range_max; x += increment) {
 				((FormulaElement) node).setVariableValue(variable, x);
 
 				y = node.evaluate();
@@ -462,5 +458,6 @@ class CartesianPanel extends JPanel {
 				old_doty = doty;
 			}
 		}
+		
 	}
 }
