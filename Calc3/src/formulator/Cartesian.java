@@ -50,8 +50,8 @@ class CartesianFrame extends JFrame {
 		graphs = graphs_in;
 		panel = new CartesianPanel(graphs, labels, dots, lines);
 		add(panel);
+		
 		// KEY BINDINGS
-
 		// Actions taken by KeyBindings
 		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_1, 0), "one");
@@ -60,6 +60,7 @@ class CartesianFrame extends JFrame {
 		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_3, 0), "three");
 
+		//Labels
 		panel.getActionMap().put("one", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -69,6 +70,8 @@ class CartesianFrame extends JFrame {
 				showUI();
 			}
 		});
+		
+		//Dots
 		panel.getActionMap().put("two", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -78,6 +81,8 @@ class CartesianFrame extends JFrame {
 				showUI();
 			}
 		});
+		
+		//Lines
 		panel.getActionMap().put("three", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -88,6 +93,7 @@ class CartesianFrame extends JFrame {
 			}
 		});
 		    
+			//Draw top menu
 			JMenu file = new JMenu("File");
 			file.setMnemonic('F');
 			JMenuItem newItem = new JMenuItem("Save Graph");
@@ -103,7 +109,7 @@ class CartesianFrame extends JFrame {
 					public void actionPerformed(ActionEvent e)
 					{
 					    
-					    //Save as
+					    //Open file explorer, retrieve name to save file as
 					    Display display2 = new Display();
 					    final Shell shell2 = new Shell(display2);
 					    FileDialog dlg2 = new FileDialog(shell2, SWT.SAVE);
@@ -126,6 +132,7 @@ class CartesianFrame extends JFrame {
 								System.out.println("Encoding exception.");
 							}
 							
+							// Take points in current graph(s) and print out to file
 							String output = "";
 					    	for(GraphFunction g: graphs)
 					    	{
@@ -143,6 +150,7 @@ class CartesianFrame extends JFrame {
 					}
 				}
 			);
+			//Exit menu button
 			exitItem.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e)
@@ -165,9 +173,6 @@ class CartesianFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	public void shutItDown(){
-		dispose();
-	}
 }
 
 @SuppressWarnings("serial")
@@ -235,12 +240,7 @@ class CartesianPanel extends JPanel {
 			increment = graph.increment;
 			variable = graph.var_name;
 
-			if (increment <=0){
-				System.out.println("Error: negative increment. Try ordering from minimum range to maximum.");
-				e++;
-				g2.dispose();
-				
-			}
+
 			if (range_min < 0) {
 				range_total = range_max - range_min;
 			} else {
@@ -268,7 +268,6 @@ class CartesianPanel extends JPanel {
 					min_y = y;
 				}
 				graph.points.add(current);
-				// String t = "(" + x + ", " + y + ")";
 			}
 		}
 
@@ -415,10 +414,7 @@ class CartesianPanel extends JPanel {
 					doty = (y_meets_x - (py * yLength));
 				}
 
-				// System.out.println("Pixel values for x,y: " + dotx + ", " +
-				// doty);
-				// System.out.println("meets: " + x_meets_y + ", " + y_meets_x);
-
+				//Assign colours
 				if (e % 3 == 0) {
 					g2.setPaint(Color.BLACK);
 				}
