@@ -437,19 +437,6 @@ public class CalculatorUI extends Shell {
 		btnSpace.setText("Space");
 		btnSpace.setBounds(368, 267, 100, 37);
 		
-		final Button btnCheckButton = new Button(this, SWT.CHECK);
-		btnCheckButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (btnCheckButton.getSelection())
-		            setPageComplete(true);
-		        else
-		            setPageComplete(false);
-			}
-		});
-		btnCheckButton.setBounds(479, 148, 101, 16);
-		btnCheckButton.setText("Sym/Num Diff.");
-		
 		Button btnEvaluate = new Button(this, SWT.NONE);
 		btnEvaluate.addMouseListener(new MouseAdapter() {
 			@Override
@@ -459,7 +446,27 @@ public class CalculatorUI extends Shell {
 		});
 		btnEvaluate.setToolTipText("Evaluate the function");
 		btnEvaluate.setText("Evaluate");
-		btnEvaluate.setBounds(474, 181, 105, 123);
+		btnEvaluate.setBounds(474, 181, 100, 123);
+		
+		Button btnNumDiff = new Button(this, SWT.NONE);
+		btnNumDiff.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				boolean diff=calc.toggleDiff();
+				
+				if (diff = true) {
+					text.append("Symbolic Differentiation On \n");
+				
+				}
+				
+				else if (diff = false) {
+					text.append("Numeric Differentiation On \n");
+				}
+			}
+		});
+		btnNumDiff.setToolTipText("Toggle Between Symbolic and Numeric Differentiation");
+		btnNumDiff.setText("Toggle Diff.");
+		btnNumDiff.setBounds(474, 138, 100, 37);
 		createContents();
 	}
 
