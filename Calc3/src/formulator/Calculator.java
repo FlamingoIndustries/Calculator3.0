@@ -117,11 +117,11 @@ public class Calculator {
 	 * @return String indicating success or failure to graph formula
 	 */
 	private String graphFormula(String text)
-	{
+	{	
 		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
 			return "Improper graph format";
 		
-		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
+		Vector<GraphFunction> graphs=new Vector<GraphFunction>();	//Using regular expression to separate out function parts
 		Pattern form= Pattern.compile("\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)");
 		Matcher m = form.matcher(text);
 		Vector<String> formv=new Vector<String>();

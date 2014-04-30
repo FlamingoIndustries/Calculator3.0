@@ -457,8 +457,22 @@ public class CalculatorUI extends Shell {
 		btnNumDiff.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+<<<<<<< HEAD
 				text_1.append("Symbolic Differentiation:" + calc.toggleDiff()+ "\n" );
 			
+=======
+				boolean diff=calc.toggleDiff();
+				
+				if (diff = true) {
+					text_1.append("Symbolic Differentiation On \n");
+					
+				
+				}
+				
+				else if (diff = false) {
+					text_1.append("Numeric Differentiation On \n");
+				}
+>>>>>>> 2fa9169393723a6c89083750fddefb7504c21127
 			}
 		});
 		btnNumDiff.setToolTipText("Toggle Between Symbolic and Numeric Differentiation");
@@ -563,7 +577,6 @@ public class CalculatorUI extends Shell {
 
 		
 	}
-		
 		
 
 	/**
