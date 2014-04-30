@@ -110,15 +110,7 @@ public abstract class FormulaElement
 			}
 			
 		}
-		//Used for debugging:
-		//System.out.println("Initial: "+tokens.toString());
-		
-		//Before continuing, perform some basic checks to ensure that the formula has a proper format
-//		if(!checkFormula(tokens))
-//			return null;
-		
-		
-		
+
 		//FORMULAS USED TO DEFINE FORMULAS
 		for(int i=0; i<tokens.size(); i++){
 			String key = (String) tokens.get(i);
@@ -137,7 +129,7 @@ public abstract class FormulaElement
 						input+=current;
 					}
 					if(current.equals("(")){
-						tokens.remove(i);
+						current=(String)tokens.remove(i);
 						while(!current.equals(")")){
 							if(!current.equals("(")){
 								respect+=current;
@@ -148,10 +140,10 @@ public abstract class FormulaElement
 						if(degree!=0){
 							FormulaElement temp;
 							if(symbolic){
-								temp = formulas.get(key).symbolicDiff(respect, degree);
+								temp = formulas.get(key).symbolicDiff(respect, degree-1);
 							}
 							else
-								temp = formulas.get(key).numericDiff(respect, degree);
+								temp = formulas.get(key).numericDiff(respect, degree-1);
 							tokens.add(i, temp);
 						}
 						else{
