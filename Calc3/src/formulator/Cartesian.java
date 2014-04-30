@@ -407,11 +407,12 @@ class CartesianPanel extends JPanel {
 		}
 
 		// Draw Origin point where axes meet
+		if(axes == true){
 		g2.fill(new Ellipse2D.Double(
 				x_meets_y - (ORIGIN_COORDINATE_LENGHT / 2), y_meets_x
 						- (ORIGIN_COORDINATE_LENGHT / 2),
 				ORIGIN_COORDINATE_LENGHT, ORIGIN_COORDINATE_LENGHT));
-
+		}
 		double old_dotx = 0;
 		double old_doty = 0;
 
