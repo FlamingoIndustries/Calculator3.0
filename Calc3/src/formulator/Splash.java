@@ -29,7 +29,7 @@ public class Splash {
  
         Label label = new Label(splash, SWT.NONE);
         label.setImage(image);
-        Device device = display.getCurrent();
+        Device device = Display.getCurrent();
         Color red = new Color(device, 205, 201, 201);
         label.setBackground(red);
  

@@ -1,4 +1,5 @@
 package formulator;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -10,9 +11,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -51,7 +50,6 @@ public class Calculator {
 		}
 		else if(text.matches("^\\s*graph.*$"))
 		{//Regex is used to match the user input
-			System.out.println("Graph!");
 			return this.graphFormula(text);
 		}
 		else if(text.matches("^\\s*\\w+\\s*=.*"))
@@ -81,14 +79,12 @@ public class Calculator {
 		}
 		else
 		{
-			System.out.println(text);
 			//Parse as formula and attempt to solve
 			FormulaElement e=FormulaElement.parseFormula(text, formulas, symbolic);
 			if(e!=null)
 				return "$"+e.toString();
 			return "";
 		}
-		
 	}
 	
 	public String graphFormula(String text)
@@ -145,7 +141,6 @@ public class Calculator {
 						double value=Double.parseDouble(b.group(2));
 						root.setVariableValue(varName, value);
 					}
-					
 				}
 			}
 			root.setVariableValue(var, 0);
@@ -156,7 +151,7 @@ public class Calculator {
 			GraphFunction x= new GraphFunction(root, var, min, max, increment);
 			graphs.add(x);
 		}
-		GraphControl y= new GraphControl(graphs, formulas);
+		new GraphControl(graphs, formulas);
 		return "Formulae successfully graphed";
 	}
 	
@@ -175,9 +170,11 @@ public class Calculator {
 				writer = new PrintWriter(fileName, "UTF-8");
 			} catch (FileNotFoundException e)
 			{
+				display.dispose();
 				return false;
 			} catch (UnsupportedEncodingException e)
 			{
+				display.dispose();
 				return false;
 			}
 	    	for(Entry<String, FormulaElement> form:formulas.entrySet())
@@ -192,7 +189,10 @@ public class Calculator {
 	    	writer.close();
 	    }
 	    else
+	    {
+	    	display.dispose();
 	    	return false;
+	    }
 	    display.dispose();
 	    return true;
 	 }
@@ -208,11 +208,9 @@ public class Calculator {
 	    String[] extensions={"*.xml", "*.txt"};
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
-	    display.dispose();
 		Scanner reader;
 		try
 		{
-			
 			reader = new Scanner(new FileReader(fileName));
 			String line;
 			reader.useDelimiter("\n");
@@ -250,10 +248,8 @@ public class Calculator {
 							form=new PowerFunctionElement();
 						formulae.push(form);
 					}
-						
 					line="</"+line+">";
-					xmlstatements.push(line);
-					
+					xmlstatements.push(line);	
 				}
 				else
 				{
@@ -283,6 +279,7 @@ public class Calculator {
 					else
 					{
 						reader.close();
+						display.dispose();
 						return false;
 					}
 					if(!formulae.isEmpty()&&formulae.peek() instanceof FunctionElement)
@@ -298,6 +295,7 @@ public class Calculator {
 			reader.close();
 		} catch (Exception e)
 		{
+			display.dispose();
 			return false;
 		}
 		for(Entry<String, FormulaElement> e: out.entrySet())
@@ -312,6 +310,12 @@ public class Calculator {
 			else
 				formulas.put(e.getKey(), e.getValue());
 		}
+		display.dispose();
 		return true;
+	}
+	
+	public void toggleDiff(boolean val)
+	{
+		symbolic=val;
 	}
 }

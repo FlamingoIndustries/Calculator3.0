@@ -71,7 +71,7 @@ public abstract class FormulaElement
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static FormulaElement parseFormula(String formula, HashMap<String, FormulaElement> formulas, boolean symbolic)
 	{
 		//will chop the string into substring tokens wherever it sees a delimiter
@@ -188,6 +188,7 @@ public abstract class FormulaElement
 	}
 		
 		
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static FormulaElement parseFormulaTwo(Vector tokens){
 		
 		//2nd pass: convert adjacent variable/constant elements to multiple function elements
