@@ -1,6 +1,5 @@
 package formulator;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,7 +23,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 public class Cartesian {
 
@@ -107,9 +105,11 @@ class CartesianFrame extends JFrame {
 		      }
 		    };
 			JButton button = new JButton("Save Graph");
+			button.setLayout(null);
 		    button.addActionListener(actionListener);
 		    button.addMouseListener(mouseListener);
 		    button.setSize(80,20);
+		    button.setBounds(60, 300, 220, 30); 
 		    button.setVerticalAlignment(SwingConstants.BOTTOM);
 		    button.setHorizontalAlignment(SwingConstants.RIGHT);
 		    panel.add(button);
@@ -376,7 +376,6 @@ class CartesianPanel extends JPanel {
 
 				// Draw labels
 				if (labels == true) {
-
 					String t = "(" + Math.round(px * 100.0) / 100.0 + ", "
 							+ Math.round(py * 100.0) / 100.0 + ")";
 					g2.drawString(t, (int) dotx + 12, (int) doty);
