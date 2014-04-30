@@ -144,8 +144,8 @@ public abstract class FormulaElement
 							tokens.add(i, temp);
 						}
 						else{
-							Double result = EvalFormula.evaluateFor(input, formulas);
-							tokens.add(i, new ConstantElement(result));	
+							FormulaElement result = EvalFormula.evaluateFor(input, formulas);
+							tokens.add(i, result);	
 						}
 					}
 					else{
@@ -381,16 +381,17 @@ public abstract class FormulaElement
 	
 	public static void main(String[] args){
 		HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
-		formulas.put("f", new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3)));
+		formulas.put("f", new MultipleFunctionElement(new VariableElement("y"), new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3))));
 		formulas.put("g", new PlusFunctionElement(new VariableElement("y"), new ConstantElement(2)));
 		formulas.put("h", new SqrtFunctionElement(new VariableElement("x")));
-		FormulaElement test = FormulaElement.parseFormula("h(4)", formulas);
+		FormulaElement test = FormulaElement.parseFormula("f(4)", formulas);
 		MultipleFunctionElement test2 = new MultipleFunctionElement();
 		VariableElement x = new VariableElement("x");
 		ConstantElement zero = new ConstantElement(3);
 		ConstantElement zero2 = new ConstantElement(4);
 		test2.addArgument(zero);
 		test2.addArgument(zero2);
+		System.out.println(formulas.get("f").toString());
 		System.out.println(test.toString());
 	}
 }

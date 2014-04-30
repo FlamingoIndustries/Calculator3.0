@@ -8,7 +8,7 @@ public class EvalFormula extends Calculator
 {
 	
 	//parser
-	public static double evaluateFor(String input, HashMap<String, FormulaElement> formulas){
+	public static FormulaElement evaluateFor(String input, HashMap<String, FormulaElement> formulas){
 		//find formula element and identify its variables
 		FormulaElement formula = formulas.get(input.substring(0, 1));
 		Vector<String> varKeys = formula.identifyVars();
@@ -34,12 +34,14 @@ public class EvalFormula extends Calculator
 			//with a nested formula in the brackets
 			if(tokens.size()>2){
 				String recInput=toParse.substring(0, 4);
-				double varValue = evaluateFor(recInput, formulas);
-				vars.put(key, varValue);
+				FormulaElement varValue = evaluateFor(recInput, formulas);
+				if(varValue instanceof ConstantElement)
+					vars.put(key, ((ConstantElement)varValue).getValue());
 			}
 			else{
 			//with just a single value in the brackets
 				vars.put(key, Double.parseDouble(tokens.elementAt(0)));
+				System.out.println(vars.get(key));
 			}
 		}
 		
@@ -61,8 +63,9 @@ public class EvalFormula extends Calculator
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
-						double varValue = evaluateFor(recInput, formulas);
-						vars.put(varKey, varValue);
+						FormulaElement varValue = evaluateFor(recInput, formulas);
+						if(varValue instanceof ConstantElement)
+							vars.put(varKey, ((ConstantElement)varValue).getValue());
 					}
 					else
 						vars.put(varKey, Double.parseDouble(tokens.elementAt(i)));
@@ -84,9 +87,16 @@ public class EvalFormula extends Calculator
 		
 		//assign respective values to all variables in the formula using the created variables vector
 		for(String key: vars.keySet()){
-			formula.setVariableValue(key, vars.get(key));
+			//System.out.println(key);
+			if(vars.get(key)!=null){
+				
+				formula.setVariableValue(key, vars.get(key));
+			}
 		}
-		return formula.evaluate();
+		if(formula.isFullyGrounded())
+			return new ConstantElement(formula.evaluate());
+		return formula.dEval();
+		
 	}
 	
 	

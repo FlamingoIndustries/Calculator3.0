@@ -9,6 +9,7 @@ public class VariableElement extends FormulaElement {
 	public VariableElement(String input){
 		name = input;
 		valueAssigned=false;
+		dVal=this;
 	}
 	
 	public String getName(){
