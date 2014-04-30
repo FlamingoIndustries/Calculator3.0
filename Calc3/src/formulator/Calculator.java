@@ -151,6 +151,8 @@ public class Calculator {
 			root.setVariableValue(var, 0);
 			if(!root.isFullyGrounded())
 				return "Cannot graph "+m.group(1)+" all other variables must be set";
+			if(increment<1)
+				return "Cannot graph "+m.group(1)+" increment must be positive!";
 			GraphFunction x= new GraphFunction(root, var, min, max, increment);
 			graphs.add(x);
 		}

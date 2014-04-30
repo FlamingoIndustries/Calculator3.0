@@ -27,6 +27,7 @@ public class Main
 //		}		
 		FormulaElement form=FormulaElement.parseFormula("3(x^2)", new HashMap<String, FormulaElement>());
 //		Differentiation diff=new Differentiation();
+		System.out.println(form.symbolicDiff("x", 1).getXMLformat(""));
 		System.out.println(form.symbolicDiff("x", 1));
 //		Calculator calc=new Calculator();
 //		System.out.println(calc.branch("save"));
