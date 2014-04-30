@@ -91,7 +91,13 @@ public class PlusFunctionElement extends FunctionElement {
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new PlusFunctionElement();
 		for(int i=0;i<elements.size();i++)
-			elem.addArgument(elements.elementAt(i).symbolicDiff(respect, degree));
+		{
+			FormulaElement current=elements.elementAt(i).symbolicDiff(respect, degree);
+			if(!current.equals(new ConstantElement(0)))
+				elem.addArgument(current);
+		}
+		if(elem.getArguments().isEmpty())
+			return new ConstantElement(0);
 		return elem.symbolicDiff(respect, degree-1);
 	}
 }

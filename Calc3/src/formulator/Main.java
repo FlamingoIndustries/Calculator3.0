@@ -25,10 +25,10 @@ public class Main
 		
 
 //		}		
-		FormulaElement form=FormulaElement.parseFormula("(x-3)/(y+7)", new HashMap<String, FormulaElement>());
+//		FormulaElement form=FormulaElement.parseFormula("(x-1)/(y+3)", new HashMap<String, FormulaElement>(), false);
 //		Differentiation diff=new Differentiation();
-		System.out.println(form.symbolicDiff("x", 1).getXMLformat(""));
-		System.out.println(form.symbolicDiff("x", 1));
+//		System.out.println(form.symbolicDiff("x", 1).getXMLformat(""));
+//		System.out.println(form.symbolicDiff("x", 1));
 //		Calculator calc=new Calculator();
 //		System.out.println(calc.branch("save"));
 //		System.out.println(calc.branch("load"));

@@ -33,7 +33,7 @@ public class ConstantElement extends FormulaElement {
 		return "<"+this.getClass().getSimpleName()+">value="+value+"</"+this.getClass().getSimpleName()+">";
 	}
 	
-	public Boolean equals(FormulaElement comp)
+	public boolean equals(FormulaElement comp)
 	{
 		if(comp instanceof ConstantElement&&value==((ConstantElement) comp).getValue())
 			return true;

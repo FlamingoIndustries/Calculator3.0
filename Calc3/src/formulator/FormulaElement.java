@@ -1,6 +1,5 @@
 package formulator;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -10,8 +9,6 @@ public abstract class FormulaElement
 	public abstract FormulaElement dEval();
 	public abstract String getXMLformat(String tabbing);
 	public abstract FormulaElement symbolicDiff(String respect, int degree);
-	//TO DO
-	//parse for nested formulas in formula declaration
 	
 	//assigns the specified value to all instances of the specified variable in the formula by recursively searching
 	public void setVariableValue(String varName, double value){
@@ -75,7 +72,7 @@ public abstract class FormulaElement
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static FormulaElement parseFormula(String formula, HashMap<String, FormulaElement> formulas)
+	public static FormulaElement parseFormula(String formula, HashMap<String, FormulaElement> formulas, boolean symbolic)
 	{
 		//will chop the string into substring tokens wherever it sees a delimiter
 		StringTokenizer tokenizer = new StringTokenizer(formula, "+-/()^ \t'", true);
@@ -140,7 +137,12 @@ public abstract class FormulaElement
 							current = (String) tokens.remove(i);
 						}
 						if(degree!=0){
-							FormulaElement temp = formulas.get(key).symbolicDiff(respect, degree);
+							FormulaElement temp;
+							if(symbolic){
+								temp = formulas.get(key).symbolicDiff(respect, degree);
+							}
+							else
+								temp = formulas.get(key).numericDiff(respect, degree);
 							tokens.add(i, temp);
 						}
 						else{
@@ -310,79 +312,20 @@ public abstract class FormulaElement
 			return null;
 	}
 	
-	public FormulaElement numericDiff(FormulaElement form, String respect, int degree)
+	public FormulaElement numericDiff(String respect, int degree)
 	{
 		ConstantElement dx=new ConstantElement(0.0000001);
-		FormulaElement replace=new PlusFunctionElement(dx, form.findVariable(respect));
-		form.setDValue(respect, replace);//ASK BARBARA!
-		System.out.println(form.dEval()+"\t\t"+form);
-		MinusFunctionElement minus=new MinusFunctionElement(form.dEval(),form);
+		FormulaElement replace=new PlusFunctionElement(dx, this.findVariable(respect));
+		this.setDValue(respect, replace);//ASK BARBARA!
+		MinusFunctionElement minus=new MinusFunctionElement(this.dEval(),this);
 		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
 		if(degree==1)
 			return div;
 		else
-			return numericDiff(div, respect, degree-1);
+			return this.numericDiff(respect, degree-1);
 	}
-//	//This method returns false if the formula doesn't have the correct format
-//	public static boolean checkFormula(Vector tokens){
-//		
-//		//1st check: For brackets that don't match up
-//		int openBrackets=0;
-//		int closeBrackets=0;
-//		for(int i=0; i<tokens.size(); i++){
-//			if(tokens.get(i).equals("("))
-//				openBrackets++;
-//			else if(tokens.get(i).equals(")")){
-//				closeBrackets++;
-//				if(closeBrackets>openBrackets){
-//					System.out.println("Closing bracket appears before opening bracket.");
-//					return false;
-//				}
-//			}
-//		}
-//		if(openBrackets!=closeBrackets){
-//			System.out.println("The brackets in this formula aren't matched.");
-//			return false;
-//		}
-//		
-//		//2nd check: Symbols that occur twice in a row
-//		for(int i=0; i<tokens.size()-1; i++){
-//			if(tokens.get(i).equals(tokens.get(i+1)) && !tokens.get(i).equals(")") && !tokens.get(i).equals("(")){
-//				System.out.println("Badly formed formula; a symbol occurs twice.");
-//				return false;
-//			}
-//		}
-//		
-//		//3rd check: Incomplete formulas
-//		for(int i=0; i<tokens.size()-1; i++){
-//			if(tokens.get(i).equals("(") || i==0){
-//				String cur;
-//				if(i==0)
-//					cur = (String) tokens.get(i);
-//				else
-//					cur = (String) tokens.get(i+1);
-//				if(!Character.isDigit(cur.charAt(0)) && !Character.isLetter(cur.charAt(0)) && !cur.equals("(") && !cur.equals("sin") && !cur.equals("cos")){
-//					System.out.println("Badly formed formula.");
-//					return false;
-//				}
-//			}
-//			else if(tokens.get(i+1).equals(")") || i==tokens.size()-2){
-//				String cur;
-//				if(i==tokens.size()-2)
-//					cur = (String) tokens.get(i+1);
-//				else
-//					cur = (String) tokens.get(i);
-//				if(!Character.isDigit(cur.charAt(0)) && !Character.isLetter(cur.charAt(0)) && !cur.equals(")")){
-//					System.out.println("Badly formed formula.");
-//					return false;
-//				}
-//			}
-//		}
-//		
-//		return true;
-//	}
 	
-	public Boolean equals(FormulaElement comp)
+	public boolean equals(FormulaElement comp)
 	{
 		return false;
 	}
@@ -390,21 +333,6 @@ public abstract class FormulaElement
 	public VariableElement findVariable(String varName)
 	{
 		return null;
-	}
-	
-	public static void main(String[] args){
-		HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
-		formulas.put("f", new MultipleFunctionElement(new VariableElement("y"), new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3))));
-		formulas.put("g", new PlusFunctionElement(new VariableElement("y"), new ConstantElement(2)));
-		FormulaElement test = FormulaElement.parseFormula("f(4)", formulas);
-		MultipleFunctionElement test2 = new MultipleFunctionElement();
-		VariableElement x = new VariableElement("x");
-		ConstantElement zero = new ConstantElement(3);
-		ConstantElement zero2 = new ConstantElement(4);
-		test2.addArgument(zero);
-		test2.addArgument(zero2);
-		System.out.println(formulas.get("f").toString());
-		System.out.println(test.toString());
 	}
 }
 

@@ -49,7 +49,7 @@ public class VariableElement extends FormulaElement {
 		return "<"+this.getClass().getSimpleName()+">name="+name+"</"+this.getClass().getSimpleName()+">";
 	}
 	
-	public Boolean equals(FormulaElement comp)
+	public boolean equals(FormulaElement comp)
 	{
 		if(comp instanceof VariableElement&& name.equals(comp.toString()))
 			return true;

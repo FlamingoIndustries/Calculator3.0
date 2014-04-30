@@ -51,7 +51,7 @@ public class MinusFunctionElement extends FunctionElement{
 		return new MinusFunctionElement(arg1.dEval(), arg2.dEval());
 	}
 	
-	public Boolean equals(FormulaElement comp)
+	public boolean equals(FormulaElement comp)
 	{
 		if(this.getClass().getSimpleName().equals(comp.getClass().getSimpleName()))
 		{

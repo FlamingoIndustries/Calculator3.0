@@ -21,10 +21,12 @@ import org.eclipse.swt.widgets.Shell;
 
 public class Calculator {
 	private  HashMap<String, FormulaElement> formulas;
+	private boolean symbolic;
 	
 	public Calculator()
 	{
 		formulas=new HashMap<String, FormulaElement>();
+		symbolic=false;
 	}
 	
 	public String branch(String text)
@@ -52,17 +54,13 @@ public class Calculator {
 			System.out.println("Graph!");
 			return this.graphFormula(text);
 		}
-		else if(text.matches("^\\s*save\\sgraph\\s*$"))
-		{
-			return "save graph";
-		}
 		else if(text.matches("^\\s*\\w+\\s*=.*"))
 		{
 			Pattern form= Pattern.compile("^\\s*(\\w+)\\s*=\\s*(.+)\\s*$");
 			Matcher m = form.matcher(text);
 			if(m.find()==false)
 				return "Improper assignment form";
-			FormulaElement newform=FormulaElement.parseFormula(m.group(2), formulas);
+			FormulaElement newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic);
 			Boolean store=false;
 			if(formulas.containsKey(m.group(1)))
 			{
@@ -85,7 +83,7 @@ public class Calculator {
 		{
 			System.out.println(text);
 			//Parse as formula and attempt to solve
-			FormulaElement e=FormulaElement.parseFormula(text, formulas);
+			FormulaElement e=FormulaElement.parseFormula(text, formulas, symbolic);
 			if(e!=null)
 				return "$"+e.toString();
 			return "";
@@ -96,10 +94,7 @@ public class Calculator {
 	public String graphFormula(String text)
 	{
 		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
-		{
-			System.out.println(text);
 			return "Improper graph format";
-		}
 		
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
 		Pattern form= Pattern.compile("\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)");
@@ -126,7 +121,12 @@ public class Calculator {
 				if(i==1)
 				{
 					if(formulas.containsKey(formName))
-						root=formulas.get(formName).symbolicDiff(m.group(2), diffCount);
+					{
+						if(symbolic)
+							root=formulas.get(formName).symbolicDiff(m.group(2), diffCount);
+						else
+							root=formulas.get(formName).numericDiff(m.group(2), diffCount);
+					}
 					else
 						return "Cannot graph "+formName+" as it does not exist";
 				}

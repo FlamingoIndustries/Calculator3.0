@@ -63,7 +63,7 @@ public class DivideFunctionElement extends FunctionElement{
 		return new DivideFunctionElement(arg1.dEval(), arg2.dEval());
 	}
 	
-	public Boolean equals(FormulaElement comp)
+	public boolean equals(FormulaElement comp)
 	{
 		if(this.getClass().getSimpleName().equals(comp.getClass().getSimpleName()))
 		{
@@ -86,11 +86,19 @@ public class DivideFunctionElement extends FunctionElement{
 		FormulaElement second=elements.elementAt(1);
 		FormulaElement divfirst=first.symbolicDiff(respect, degree);
 		FormulaElement divsecond=second.symbolicDiff(respect, degree);
-		MultipleFunctionElement mult=new MultipleFunctionElement(divfirst,second);
-		MultipleFunctionElement mult1=new MultipleFunctionElement(first,divsecond);
-		MinusFunctionElement minus=new MinusFunctionElement(mult,mult1);
+		MultipleFunctionElement mult1=new MultipleFunctionElement(divfirst,second);
+		MultipleFunctionElement mult2=new MultipleFunctionElement(first,divsecond);
+		FormulaElement out;
+		if(!divfirst.equals(new ConstantElement(0))&&!divsecond.equals(new ConstantElement(0)))
+			out=new MinusFunctionElement(mult1,mult2);
+		else if(divfirst.equals(new ConstantElement(0)))
+			out=mult2;
+		else if(divsecond.equals(new ConstantElement(0)))
+			out=mult1;
+		else 
+			out=new ConstantElement(0);
 		System.out.println(first);
-		elem.addArgument(minus);
+		elem.addArgument(out);
 		PowerFunctionElement pow=new PowerFunctionElement(second,new ConstantElement(2));
 		elem.addArgument(pow);
 		return elem.symbolicDiff(respect, degree-1);

@@ -109,12 +109,18 @@ public class MultipleFunctionElement extends FunctionElement {
 		for(int i=0;i<elements.size();i++)
 		{
 			MultipleFunctionElement mult=new MultipleFunctionElement();
-			mult.addArgument(elements.elementAt(i).symbolicDiff(respect, degree));
-			for(int j=0;j<elements.size();j++)
-				if(i!=j)
-					mult.addArgument(elements.elementAt(j));
-			elem.addArgument(mult);
+			FormulaElement diff=elements.elementAt(i).symbolicDiff(respect, degree);
+			if(!diff.equals(new ConstantElement(0)))
+			{
+				mult.addArgument(diff);
+				for(int j=0;j<elements.size();j++)
+					if(i!=j)
+						mult.addArgument(elements.elementAt(j));
+				elem.addArgument(mult);
+			}
 		}
+		if(elem.getArguments().isEmpty())
+			return new ConstantElement(0);
 		return elem.symbolicDiff(respect, degree-1);
 	}
 }
