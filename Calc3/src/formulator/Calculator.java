@@ -115,7 +115,8 @@ public class Calculator {
 			m.find();
 			FormulaElement root=null;
 			String var=null;
-			String formName=m.group(1).replaceAll("\\w+", "$1");
+			String formName=m.group(1).replaceAll("(\\w+)('*)", "$1");
+			int diffCount=(m.group(1).replaceAll("(\\w+)('*)", "$2")).length();
 			double min=Double.parseDouble(m.group(3));
 			double max=Double.parseDouble(m.group(5));
 			double increment=1;
@@ -124,10 +125,10 @@ public class Calculator {
 				results.add("b"+m.group(i));
 				if(i==1)
 				{
-					if(formulas.containsKey(m.group(1)))
-						root=formulas.get(m.group(1));
+					if(formulas.containsKey(formName))
+						root=formulas.get(formName);/////////
 					else
-						return "Cannot graph "+m.group(1)+" as it does not exist";
+						return "Cannot graph "+formName+" as it does not exist";
 				}
 				else if(i==2)
 					var=m.group(2);
