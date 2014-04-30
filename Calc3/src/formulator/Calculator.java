@@ -49,61 +49,7 @@ public class Calculator {
 		}
 		else if(text.matches("^graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
 		{//Regex is used to match the user input
-			Vector<GraphFunction> graphs=new Vector<GraphFunction>();
-			
-			Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\)");
-			Matcher m = form.matcher(text);
-			Vector<String> formv=new Vector<String>();
-			while(m.find()==true)
-			{
-				formv.add(m.group(0));
-			}
-			for(String s:formv)
-			{
-				Vector<String> results=new Vector<String>();
-				form= Pattern.compile("(\\w+)\\((\\w+)=(\\d+(\\.\\d+)?),\\s?(\\d+(\\.\\d+)?)(,\\s?(\\d+(\\.\\d+)?))?(.*)\\)");
-				m = form.matcher(s);
-				m.find();
-				FormulaElement root=null;
-				String var=null;
-				double min=Double.parseDouble(m.group(3));
-				double max=Double.parseDouble(m.group(5));
-				double increment=1;
-				for(int i=1;i<m.groupCount()+1;i++)
-				{
-					results.add("b"+m.group(i));
-					if(i==1)
-					{
-						if(formulas.containsKey(m.group(1)))
-							root=formulas.get(m.group(1));
-						else
-							return "Cannot graph "+m.group(1)+" as it does not exist";
-					}
-					else if(i==2)
-						var=m.group(2);
-					else if(i==8&&m.group(8)!=null&&m.group(8).matches("^\\d+(\\.\\d+)?$"))
-						increment=Double.parseDouble(m.group(8));
-					else if(i==10)
-					{
-						String assign=m.group(i);
-						Pattern a= Pattern.compile("(\\w+)=(\\d+(\\.\\d+)?)");
-						Matcher b = a.matcher(assign);
-						while(b.find()==true)
-						{
-							String varName=b.group(1);
-							double value=Double.parseDouble(b.group(2));
-							root.setVariableValue(varName, value);
-						}
-						
-					}
-				}
-				if(!root.isFullyGrounded())
-					return "Cannot graph "+m.group(1)+" all other variables must be set";
-				GraphFunction x= new GraphFunction(root, var, min, max, increment);
-				graphs.add(x);
-			}
-			GraphControl y= new GraphControl(graphs);
-			return "Formulae successfully graphed";
+			return this.graphFormula(text);
 		}
 		else if(text.equals("save graph"))
 		{
@@ -114,7 +60,7 @@ public class Calculator {
 			Pattern form= Pattern.compile("^(\\w+)=(.+)");
 			Matcher m = form.matcher(text);
 			m.find();
-			FormulaElement newform=FormulaElement.parseFormula(m.group(2));
+			FormulaElement newform=FormulaElement.parseFormula(m.group(2), formulas);
 			Boolean store=false;
 			if(formulas.containsKey(m.group(1)))
 			{
@@ -135,11 +81,73 @@ public class Calculator {
 		}
 		else
 		{
-			//Parse as formula and attempt to solve
-			EvalFormula ev=new EvalFormula();
-			return ""+ev.evaluateFor(text);
+			//Parse as formula and attempt to solve f(3)+g(4)
+			FormulaElement e=FormulaElement.parseFormula(text, formulas);
+			if(e.isFullyGrounded())
+				return ""+e.evaluate();
+			else
+				return e.toString();
 		}
 		
+	}
+	
+	public String graphFormula(String text)
+	{
+		Vector<GraphFunction> graphs=new Vector<GraphFunction>();
+		
+		Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\)");
+		Matcher m = form.matcher(text);
+		Vector<String> formv=new Vector<String>();
+		while(m.find()==true)
+		{
+			formv.add(m.group(0));
+		}
+		for(String s:formv)
+		{
+			Vector<String> results=new Vector<String>();
+			form= Pattern.compile("(\\w+)\\((\\w+)=(\\d+(\\.\\d+)?),\\s?(\\d+(\\.\\d+)?)(,\\s?(\\d+(\\.\\d+)?))?(.*)\\)");
+			m = form.matcher(s);
+			m.find();
+			FormulaElement root=null;
+			String var=null;
+			double min=Double.parseDouble(m.group(3));
+			double max=Double.parseDouble(m.group(5));
+			double increment=1;
+			for(int i=1;i<m.groupCount()+1;i++)
+			{
+				results.add("b"+m.group(i));
+				if(i==1)
+				{
+					if(formulas.containsKey(m.group(1)))
+						root=formulas.get(m.group(1));
+					else
+						return "Cannot graph "+m.group(1)+" as it does not exist";
+				}
+				else if(i==2)
+					var=m.group(2);
+				else if(i==8&&m.group(8)!=null&&m.group(8).matches("^\\d+(\\.\\d+)?$"))
+					increment=Double.parseDouble(m.group(8));
+				else if(i==10)
+				{
+					String assign=m.group(i);
+					Pattern a= Pattern.compile("(\\w+)=(\\d+(\\.\\d+)?)");
+					Matcher b = a.matcher(assign);
+					while(b.find()==true)
+					{
+						String varName=b.group(1);
+						double value=Double.parseDouble(b.group(2));
+						root.setVariableValue(varName, value);
+					}
+					
+				}
+			}
+			if(!root.isFullyGrounded())
+				return "Cannot graph "+m.group(1)+" all other variables must be set";
+			GraphFunction x= new GraphFunction(root, var, min, max, increment);
+			graphs.add(x);
+		}
+		GraphControl y= new GraphControl(graphs, formulas);
+		return "Formulae successfully graphed";
 	}
 	
 	public boolean WriteFormulae()
