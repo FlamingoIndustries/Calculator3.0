@@ -1,5 +1,6 @@
 package formulator;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.SwingUtilities;
@@ -7,14 +8,16 @@ import javax.swing.SwingUtilities;
 public class GraphControl {
 	
 	public Vector<GraphFunction> graphlist = new Vector<GraphFunction>();
-	public GraphControl(Vector<GraphFunction> graphs){
-		graphlist = graphs;	
+	public HashMap<String, FormulaElement> formulas;
+	public GraphControl(Vector<GraphFunction> graphs, HashMap<String, FormulaElement> map){
+		graphlist = graphs;
+		formulas = map;
 		System.out.println("Running graph...");
 		//doGraph(graphlist);
 	}
 	
-	//public void doGraph(final Vector<GraphFunction> graphlist2) {
-	public static void main(String args[]) {
+	public void doGraph(final Vector<GraphFunction> graphlist2) {
+	//public static void main(String args[]) {
 
 		  SwingUtilities.invokeLater(new Runnable() {
 		 
@@ -27,7 +30,7 @@ public class GraphControl {
 			   	String str = "x(4/3)";
 				//String str = "sin(x)";
 				//String str = "(x+2)(x-(y^7)+cos(2^x))";
-				FormulaElement result = (FormulaElement.parseFormula(str));
+				FormulaElement result = (FormulaElement.parseFormula(str, formulas));
 				//Pass in the root node of the formula to the CartesianFrame constructor
 				double min =-5;
 				double max =5;
@@ -38,8 +41,8 @@ public class GraphControl {
 			   	String str2 = "cos(x)";
 			   	String str3 = "x(2/3)";
 
-				FormulaElement result2 = (FormulaElement.parseFormula(str2));
-				FormulaElement result3 = (FormulaElement.parseFormula(str3));
+				FormulaElement result2 = (FormulaElement.parseFormula(str2, formulas));
+				FormulaElement result3 = (FormulaElement.parseFormula(str3, formulas));
 
 				GraphFunction test2 = new GraphFunction(result2, "x", min, max, incre);
 				GraphFunction test3 = new GraphFunction(result3, "x", min, max, incre);
