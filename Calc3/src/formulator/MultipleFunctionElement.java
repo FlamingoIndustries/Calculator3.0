@@ -3,7 +3,7 @@ package formulator;
 import java.util.Vector;
 
 public class MultipleFunctionElement extends FunctionElement {
-	boolean zeroFlag;
+	private boolean zeroFlag;
 	
 	//constructor that allows two arguments to be added immediately
 	public MultipleFunctionElement(FormulaElement arg1, FormulaElement arg2){
@@ -27,15 +27,14 @@ public class MultipleFunctionElement extends FunctionElement {
 		}
 		else if(arg instanceof ConstantElement){
 			if(((ConstantElement)arg).getValue()==0){
+				arguments.add(arg);
 				zeroFlag=true;
 			}
 			else{
-				zeroFlag=false;
 				arguments.add(arg);
 			}
 		}
 		else{
-			zeroFlag=false;
 			arguments.add(arg);
 		}
 	}
@@ -64,6 +63,7 @@ public class MultipleFunctionElement extends FunctionElement {
 				retString+=arg.toString();
 			}
 		}
+		System.out.println(zeroFlag);
 		if(zeroFlag)
 			return "";
 		else if(retNum!=0 && retNum%1==0)
