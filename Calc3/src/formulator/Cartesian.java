@@ -320,6 +320,12 @@ class CartesianPanel extends JPanel {
 		if (xRange >= 70) {
 			div_factor = 10;
 		}
+		if (xRange >= 200) {
+			div_factor = 50;
+		}
+		if (xRange >= 500) {
+			div_factor = 100;
+		}
 		if (range_min < 0) {
 			j = (int) range_min;
 		} else {
@@ -332,21 +338,29 @@ class CartesianPanel extends JPanel {
 				g2.drawString(Integer.toString(j), (int) (X_AXIS_FIRST_X_COORD
 						+ (i * xLength) - 3), X_AXIS_Y_COORD
 						+ AXIS_STRING_DISTANCE);
+				Shape l = new Line2D.Double(X_AXIS_FIRST_X_COORD + (i * xLength),
+						(int) y_meets_x - SECOND_LENGHT, X_AXIS_FIRST_X_COORD
+								+ (i * xLength), (int) y_meets_x + SECOND_LENGHT);
+				g2.draw(l);
 			}
-			Shape l = new Line2D.Double(X_AXIS_FIRST_X_COORD + (i * xLength),
-					(int) y_meets_x - SECOND_LENGHT, X_AXIS_FIRST_X_COORD
-							+ (i * xLength), (int) y_meets_x + SECOND_LENGHT);
-			g2.draw(l);
+			
 			j++;
 		}
 
 		// draw y-axis numbers
 		div_factor = 1;
+		System.out.println("yRange: " + yRange);
 		if (yRange >= 30) {
 			div_factor = 5;
 		}
 		if (yRange >= 70) {
 			div_factor = 10;
+		}
+		if (yRange >= 200) {
+			div_factor = 50;
+		}
+		if (yRange >= 500) {
+			div_factor = 100;
 		}
 		j = (int) Math.floor(min_y);
 		for (int i = 0; i <= yRange; i++) {
@@ -355,12 +369,14 @@ class CartesianPanel extends JPanel {
 				g2.drawString(Integer.toString(j), Y_AXIS_X_COORD
 						- AXIS_STRING_DISTANCE,
 						(int) (Y_AXIS_SECOND_Y_COORD - (i * yLength)));
+				Shape l = new Line2D.Double(Y_AXIS_X_COORD - SECOND_LENGHT,
+						Y_AXIS_SECOND_Y_COORD - (i * yLength), Y_AXIS_X_COORD
+								+ SECOND_LENGHT, Y_AXIS_SECOND_Y_COORD
+								- (i * yLength));
+				g2.draw(l);
+
 			}
-			Shape l = new Line2D.Double(Y_AXIS_X_COORD - SECOND_LENGHT,
-					Y_AXIS_SECOND_Y_COORD - (i * yLength), Y_AXIS_X_COORD
-							+ SECOND_LENGHT, Y_AXIS_SECOND_Y_COORD
-							- (i * yLength));
-			g2.draw(l);
+			
 			j++;
 		}
 
