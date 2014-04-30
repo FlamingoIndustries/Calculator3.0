@@ -37,6 +37,11 @@ public class Calculator {
 		symbolic=false;
 	}
 	
+	/**
+	 * 
+	 * @param text indicating where to branch to 
+	 * @return REsulting string to be shown to user
+	 */
 	public String branch(String text)
 	{
 		text=text.trim();
@@ -92,7 +97,6 @@ public class Calculator {
 			}
 			else
 				return m.group(1)+" not saved!";
-			//Parse and store formula
 		}
 		else
 		{
