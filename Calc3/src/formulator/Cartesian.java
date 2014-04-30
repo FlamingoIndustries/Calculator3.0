@@ -10,7 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -104,12 +108,39 @@ class CartesianFrame extends JFrame {
 					    Display display2 = new Display();
 					    final Shell shell2 = new Shell(display2);
 					    FileDialog dlg2 = new FileDialog(shell2, SWT.SAVE);
-					    String[] extensions2={"*.xls", "*.txt"};
+					    String[] extensions2={"*.csv", "*.txt"};
 					    dlg2.setFilterExtensions(extensions2);
-					    String fileName2 = dlg2.open();
+					    String fileName = dlg2.open();
 					    display2.dispose();
 					    
-					    System.out.println(fileName2);
+					    System.out.println(fileName);
+					    if (fileName != null) {
+					    	PrintWriter writer = null;
+							try
+							{
+								writer = new PrintWriter(fileName, "UTF-8");
+							} catch (FileNotFoundException e1)
+							{
+								System.out.println("File not found!");
+							} catch (UnsupportedEncodingException e1)
+							{
+								System.out.println("Encoding exception.");
+							}
+							
+							String output = "";
+					    	for(GraphFunction g: graphs)
+					    	{
+					    		for(Point p: g.points){
+					    			
+					    		output = output + p.x + ", " + p.y + ", "; 
+					    		writer.print(output);
+					    		}
+					    	}
+							System.out.println("Error.");
+					    	writer.close();
+					    }
+					    else
+					    dispose();
 					}
 				}
 			);
