@@ -6,20 +6,20 @@ import org.eclipse.swt.widgets.Display;
 public class Main
 {
 	public static void main(String[] args){
-		try {
-			Display display = Display.getDefault();
-			CalculatorUI shell = new CalculatorUI(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
+//		try {
+//			Display display = Display.getDefault();
+//			CalculatorUI shell = new CalculatorUI(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//
+//		}
 		
 
 //		}		
