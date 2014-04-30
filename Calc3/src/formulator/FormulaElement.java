@@ -110,30 +110,51 @@ public abstract class FormulaElement
 		if(!checkFormula(tokens))
 			return null;
 		
+		
+		
 		//FORMULAS USED TO DEFINE FORMULAS
 		for(int i=0; i<tokens.size(); i++){
 			String key = (String) tokens.get(i);
+			String input="";
 			if(formulas.containsKey(key)){
-				tokens.remove(i);
-				String current = (String) tokens.remove(i);
-				int degree=0;
-				String respect="";
-				while(current.equals("'")){
-					degree++;
-					current = (String) tokens.remove(i);
+				
+				input += (String)tokens.remove(i);
+				if(i!=tokens.size()){
+					String current = (String) tokens.get(i);
+					input+=current;
+					int degree=0;
+					String respect="";
+					while(current.equals("'")){
+						degree++;
+						current = (String) tokens.remove(i);
+						input+=current;
+					}
+					if(current.equals("(")){
+						tokens.remove(i);
+						while(!current.equals(")")){
+							if(!current.equals("(")){
+								respect+=current;
+								input+=current;
+							}
+							current = (String) tokens.remove(i);
+						}
+						if(degree!=0){
+							Differentiation diff = new Differentiation();
+							FormulaElement temp = diff.symbolicDiff(formulas.get(key), respect, degree);
+							tokens.add(i, temp);
+						}
+						else{
+							Double result = EvalFormula.evaluateFor(input, formulas);
+							tokens.add(i, new ConstantElement(result));	
+						}
+					}
+					else{
+						tokens.add(i, formulas.get(key));
+					}
 				}
-				while(!current.equals(")")){
-					if(!current.equals("("))
-						respect+=current;
-					current = (String) tokens.remove(i);
-				}
-				if(degree!=0){
-					Differentiation diff = new Differentiation();
-					FormulaElement temp = diff.symbolicDiff(formulas.get(key), respect, degree);
-					tokens.add(i, temp);
-				}
-				else
+				else{
 					tokens.add(i, formulas.get(key));
+				}
 			}
 		}
 		
@@ -359,15 +380,17 @@ public abstract class FormulaElement
 	}
 	
 	public static void main(String[] args){
-		HashMap<String , FormulaElement> formulas = new HashMap<String, FormulaElement>();
-		FormulaElement test = FormulaElement.parseFormula("4+5", formulas);
+		HashMap<String, FormulaElement> formulas = new HashMap<String, FormulaElement>();
+		formulas.put("f", new PlusFunctionElement(new VariableElement("x"), new ConstantElement(3)));
+		formulas.put("g", new PlusFunctionElement(new VariableElement("y"), new ConstantElement(2)));
+		FormulaElement test = FormulaElement.parseFormula("(f)(g)", formulas);
 		MultipleFunctionElement test2 = new MultipleFunctionElement();
 		VariableElement x = new VariableElement("x");
 		ConstantElement zero = new ConstantElement(3);
 		ConstantElement zero2 = new ConstantElement(4);
 		test2.addArgument(zero);
 		test2.addArgument(zero2);
-		System.out.println(test2.toString());
+		System.out.println(test.toString());
 	}
 }
 
