@@ -29,6 +29,7 @@ public class MultipleFunctionElement extends FunctionElement {
 			if(((ConstantElement)arg).getValue()==0){
 				arguments.add(arg);
 				zeroFlag=true;
+				arguments.add(arg);
 			}
 			else{
 				arguments.add(arg);
@@ -57,7 +58,8 @@ public class MultipleFunctionElement extends FunctionElement {
 			}
 			//if an argument is a PlusFuntionElement or MinusFunctionElement, add parentheses around it
 			else if(arg instanceof PlusFunctionElement || arg instanceof MinusFunctionElement){
-				retString+="("+arg.toString()+")";
+				if(!arg.toString().equals("0"))
+					retString+="("+arg.toString()+")";
 			}
 			else{
 				retString+=arg.toString();
