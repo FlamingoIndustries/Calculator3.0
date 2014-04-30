@@ -48,7 +48,7 @@ public class Calculator {
 				return "Unable to read from file";
 		}
 		else if(text.matches("^graph(\\s+\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\))+"))
-		{
+		{//Regex is used to match the user input
 			Vector<GraphFunction> graphs=new Vector<GraphFunction>();
 			
 			Pattern form= Pattern.compile("\\w+\\(\\w+=\\d+(\\.\\d+)?,\\s?\\d+(\\.\\d+)?(,\\s?\\d+(\\.\\d+)?)?(,\\s?\\w+=\\d+(\\.\\d+)?)*\\)");
@@ -109,10 +109,6 @@ public class Calculator {
 		{
 			return "save graph";
 		}
-		else if(text.equals("load graph"))
-		{
-			return "load graph";
-		}
 		else if(text.matches("^\\w+=.+"))
 		{
 			Pattern form= Pattern.compile("^(\\w+)=(.+)");
@@ -150,8 +146,6 @@ public class Calculator {
 	{
 		Display display = new Display();
 	    final Shell shell = new Shell(display);
-
-
 	    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
 	    String[] extensions={"*.xml", "*.txt"};
 	    dlg.setFilterExtensions(extensions);
