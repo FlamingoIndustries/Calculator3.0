@@ -116,7 +116,7 @@ public class Calculator {
 	 * @param text input graph instruction
 	 * @return String indicating success or failure to graph formula
 	 */
-	public String graphFormula(String text)
+	private String graphFormula(String text)
 	{
 		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
 			return "Improper graph format";
@@ -347,8 +347,9 @@ public class Calculator {
 	 * 
 	 * Switches differentiation type
 	 */
-	public void toggleDiff()
+	public boolean toggleDiff()
 	{
 		symbolic=!symbolic;
+		return symbolic;
 	}
 }
