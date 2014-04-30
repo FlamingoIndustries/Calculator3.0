@@ -130,13 +130,13 @@ class CartesianFrame extends JFrame {
 							String output = "";
 					    	for(GraphFunction g: graphs)
 					    	{
+					    		System.out.println("Graph has " + g.points.size() + " points");
+
 					    		for(Point p: g.points){
-					    			
 					    		output = output + p.x + ", " + p.y + ", "; 
-					    		writer.print(output);
 					    		}
 					    	}
-							System.out.println("Error.");
+				    		writer.print(output);
 					    	writer.close();
 					    }
 					    else
