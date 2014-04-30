@@ -40,15 +40,18 @@ public class PlusFunctionElement extends FunctionElement {
 			}
 			//add variables together with plus symbol
 			else{
-				retString+=arg.toString()+" + ";
+				if(retString.isEmpty())
+					retString+=arg.toString();
+				else
+					retString+="+"+arg.toString();
 			}
 		}
 		//assemble return string, putting constants and variables together
 		//return an int if the double constant is actually an int
 		if(retNum!=0 && retNum%1==0)
-			return retString+(int)retNum;
+			return retString+"+"+(int)retNum;
 		if(retNum!=0)
-			return retString+retNum;
+			return retString+"+"+retNum;
 		else
 			return retString;
 
