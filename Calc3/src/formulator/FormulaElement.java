@@ -140,8 +140,7 @@ public abstract class FormulaElement
 							current = (String) tokens.remove(i);
 						}
 						if(degree!=0){
-							Differentiation diff = new Differentiation();
-							FormulaElement temp = diff.symbolicDiff(formulas.get(key), respect, degree);
+							FormulaElement temp = formulas.get(key).symbolicDiff(respect, degree);
 							tokens.add(i, temp);
 						}
 						else{
