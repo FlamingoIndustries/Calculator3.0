@@ -33,6 +33,7 @@ public class CalculatorUI extends Shell {
 		String answer = new String();
 		private Text text_1;
 		private Calculator calc;
+		private AnotherShell anothershell;
 
 	/**
 	 * Create the shell.
@@ -42,6 +43,7 @@ public class CalculatorUI extends Shell {
 		super(display, SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		setLayout(null);
 		calc=new Calculator();
+		anothershell= new AnotherShell();
 		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
 		text.addFocusListener(new FocusAdapter() {
 			@Override
@@ -305,27 +307,38 @@ public class CalculatorUI extends Shell {
 		
 		mntmSave.setText("Save Formula");
 		
-		Button button_1 = new Button(this, SWT.NONE);
-		button_1.addMouseListener(new MouseAdapter() {
+		MenuItem mntmHelp = new MenuItem(menu, SWT.NONE);
+		mntmHelp.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void mouseDown(MouseEvent e) {
-				updateDisplay(')');
-			}
+			public void widgetSelected(SelectionEvent e) {
+				anothershell.open();
+				setMinimized(true);
+				
+				}
 		});
-		button_1.setToolTipText("Right Bracket");
-		button_1.setText(")");
-		button_1.setBounds(368, 138, 47, 37);
+		mntmHelp.setText("Help");
 		
-		Button button = new Button(this, SWT.NONE);
-		button.addMouseListener(new MouseAdapter() {
+		Button buttonLPar = new Button(this, SWT.NONE);
+		buttonLPar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('(');
 			}
 		});
-		button.setToolTipText("Left Bracket");
-		button.setText("(");
-		button.setBounds(315, 138, 47, 37);
+		buttonLPar.setToolTipText("Left Bracket");
+		buttonLPar.setText("(");
+		buttonLPar.setBounds(315, 138, 47, 37);
+		
+		Button buttonRPar = new Button(this, SWT.NONE);
+		buttonRPar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				updateDisplay(')');
+			}
+		});
+		buttonRPar.setToolTipText("Right Bracket");
+		buttonRPar.setText(")");
+		buttonRPar.setBounds(368, 138, 47, 37);
 		
 		Button btnAns = new Button(this, SWT.NONE);
 		btnAns.addMouseListener(new MouseAdapter() {
@@ -356,7 +369,7 @@ public class CalculatorUI extends Shell {
 				updateDisplay('x');
 			}
 		});
-		btnX.setToolTipText("Function Name");
+		btnX.setToolTipText("Variable Name");
 		btnX.setText("x");
 		btnX.setBounds(421, 138, 47, 37);
 		
@@ -367,7 +380,7 @@ public class CalculatorUI extends Shell {
 				updateDisplay('y');
 			}
 		});
-		btnY.setToolTipText("Function Name");
+		btnY.setToolTipText("Variable Name");
 		btnY.setText("y");
 		btnY.setBounds(421, 181, 47, 37);
 		
@@ -389,7 +402,7 @@ public class CalculatorUI extends Shell {
 				updateDisplay('I');
 			}
 		});
-		btnCos.setToolTipText("Minus");
+		btnCos.setToolTipText("Cos");
 		btnCos.setText("cos");
 		btnCos.setBounds(315, 224, 47, 37);
 		
