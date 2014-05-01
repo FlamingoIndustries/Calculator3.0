@@ -256,8 +256,8 @@ class CartesianPanel extends JPanel {
 		double y;
 		double max_y = 0, min_y = 0, max_x = 0, min_x = 0;
 		String variable = "";
-		int xCoordNumbers = 0;
-		int yCoordNumbers = 0;
+		double xCoordNumbers = 0;
+		double yCoordNumbers = 0;
 
 		// Cycle through the GraphFunction objects, find all the points and then
 		// work out scales and ranges.
@@ -282,10 +282,10 @@ class CartesianPanel extends JPanel {
 				((FormulaElement) node).setVariableValue(variable, x);
 
 				y = node.evaluate();
-				if(x>550 || y>550){
-				g2.drawString("Range is too large to display. Please shorten range or edit formula.", 50, 300);
-				g2.dispose();
-				}
+//				if(x>550 || y>550){
+//				g2.drawString("Range is too large to display. Please shorten range or edit formula.", 50, 300);
+//				g2.dispose();
+//				}
 
 				Point current = new Point(x, y);
 				if (max_x < x) {
@@ -320,13 +320,13 @@ class CartesianPanel extends JPanel {
 		xCoordNumbers = (int) xRange;
 		yCoordNumbers = (int) yRange;
 
-		int xLength = (X_AXIS_SECOND_X_COORD - X_AXIS_FIRST_X_COORD)
+		double xLength = (X_AXIS_SECOND_X_COORD - X_AXIS_FIRST_X_COORD)
 				/ xCoordNumbers;
-		int yLength = (Y_AXIS_SECOND_Y_COORD - Y_AXIS_FIRST_Y_COORD)
+		double yLength = (Y_AXIS_SECOND_Y_COORD - Y_AXIS_FIRST_Y_COORD)
 				/ yCoordNumbers;
-		//System.out.println("CoordNumbers: " + xCoordNumbers + ", " + yCoordNumbers);
+		System.out.println("CoordNumbers: " + xCoordNumbers + ", " + yCoordNumbers);
 
-		//System.out.println("Lengths: " + xLength + ", " + yLength);
+		System.out.println("Lengths: " + xLength + ", " + yLength);
 
 		double x_meets_y = 50;
 		double y_meets_x = 600;
@@ -374,6 +374,9 @@ class CartesianPanel extends JPanel {
 		if (xRange >= 500) {
 			div_factor = 100;
 		}
+		if (xRange >= 2000) {
+			div_factor = 1000;
+		}
 		if (range_min < 0) {
 			j = (int) range_min;
 		} else {
@@ -408,6 +411,9 @@ class CartesianPanel extends JPanel {
 		}
 		if (yRange >= 500) {
 			div_factor = 100;
+		}
+		if (yRange >= 2000) {
+			div_factor = 1000;
 		}
 		j = (int) Math.floor(min_y);
 		for (int i = 0; i <= yRange; i++) {
