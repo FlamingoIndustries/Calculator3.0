@@ -47,7 +47,7 @@ public class CosineFunctionElement extends FunctionElement{
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree==0)
+		if(degree<1)
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new MultipleFunctionElement();
@@ -55,7 +55,6 @@ public class CosineFunctionElement extends FunctionElement{
 		elem.addArgument(new ConstantElement(-1));
 		elem.addArgument(new SineFunctionElement(first));
 		elem.addArgument(first.symbolicDiff(respect, degree));
-		System.out.println(first);//this.symbolicDiff(first, respect, degree));
 		return elem.symbolicDiff(respect, degree-1);
 	}
 }

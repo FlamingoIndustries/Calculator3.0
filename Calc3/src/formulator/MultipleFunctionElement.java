@@ -110,7 +110,7 @@ public class MultipleFunctionElement extends FunctionElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree==0)
+		if(degree<1)
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new PlusFunctionElement();

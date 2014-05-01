@@ -69,7 +69,7 @@ public class VariableElement extends FormulaElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect,int degree)
 	{
-		if(degree==0)
+		if(degree<1)
 			return this;
 		FormulaElement out;
 		if(name.equals(respect))
