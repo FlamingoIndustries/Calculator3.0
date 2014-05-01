@@ -324,9 +324,9 @@ class CartesianPanel extends JPanel {
 				/ xCoordNumbers;
 		double yLength = (Y_AXIS_SECOND_Y_COORD - Y_AXIS_FIRST_Y_COORD)
 				/ yCoordNumbers;
-		System.out.println("CoordNumbers: " + xCoordNumbers + ", " + yCoordNumbers);
+		//System.out.println("CoordNumbers: " + xCoordNumbers + ", " + yCoordNumbers);
 
-		System.out.println("Lengths: " + xLength + ", " + yLength);
+		//System.out.println("Lengths: " + xLength + ", " + yLength);
 
 		double x_meets_y = 50;
 		double y_meets_x = 600;
