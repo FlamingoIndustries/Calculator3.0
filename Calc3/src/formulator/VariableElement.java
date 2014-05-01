@@ -78,4 +78,11 @@ public class VariableElement extends FormulaElement {
 			out=new ConstantElement(0);
 		return out;
 	}
+	
+	public VariableElement findVariable(String varName)
+	{
+		if(varName.equals(name))
+			return this;
+		return null;
+	}
 }

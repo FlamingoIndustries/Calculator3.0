@@ -34,27 +34,6 @@ public class CalculatorUI extends Shell {
 		String answer = new String();
 		private Text text_1;
 		private Calculator calc;
-		private AnotherShell anothershell;
-
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String args[]) {
-		try {
-			Display display = Display.getDefault();
-			CalculatorUI shell = new CalculatorUI(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the shell.
@@ -309,18 +288,23 @@ public class CalculatorUI extends Shell {
 		mntmFile.setMenu(menu_1);
 		
 		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
-		mntmOpen.setText("Open Formula");
-		
-		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
-		mntmSave.setText("Save Formula");
-		
-		MenuItem mntmHelp = new MenuItem(menu, SWT.NONE);
-		mntmHelp.addSelectionListener(new SelectionAdapter() {
+		mntmOpen.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				text_1.append("\n >" + calc.branch("load") + "\n");
 			}
 		});
-		mntmHelp.setText("Help");
+		mntmOpen.setText("Load Formula");
+		
+		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
+		mntmSave.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				text_1.append("\n >" + calc.branch("save") + "\n");
+			}
+		});
+		
+		mntmSave.setText("Save Formula");
 		
 		Button button_1 = new Button(this, SWT.NONE);
 		button_1.addMouseListener(new MouseAdapter() {
@@ -461,17 +445,8 @@ public class CalculatorUI extends Shell {
 		btnNumDiff.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				boolean diff=calc.toggleDiff();
-				
-				if (diff = true) {
-					text_1.append("Symbolic Differentiation On \n");
-					
-				
-				}
-				
-				else if (diff = false) {
-					text_1.append("Numeric Differentiation On \n");
-				}
+				text_1.append("Symbolic Differentiation:" + calc.toggleDiff()+ "\n" );
+			
 			}
 		});
 		btnNumDiff.setToolTipText("Toggle Between Symbolic and Numeric Differentiation");
@@ -512,7 +487,7 @@ public class CalculatorUI extends Shell {
 		    	String result=calc.branch(current);
 		    	answer = result;
 		    	text_1.append(current+"\n");
-		    	if (result.charAt(0) == '$'){
+		    	if (!result.equals("")&&result.charAt(0) == '$'){
 		    	text_1.append(">"+ result.substring(1) +"\n");
 		    	}
 		    	else {
@@ -524,10 +499,10 @@ public class CalculatorUI extends Shell {
 		    	break;
 		    	
 		    case 'G':
-		    	String current3 = ("graph " + getText());
-		    	text.setText(current3);
+		    	String current3 = ("graph " + getText() + "\n");
+		    	text_1.append("\n" +current3);
 		    	String result3 =calc.branch(current3);
-		    	text_1.append(">" + result3);
+		    	text_1.append(">" + result3 + "\n");
 		    	break;
 		    	
 		    case 'I':
@@ -576,6 +551,7 @@ public class CalculatorUI extends Shell {
 
 		
 	}
+		
 		
 
 	/**
