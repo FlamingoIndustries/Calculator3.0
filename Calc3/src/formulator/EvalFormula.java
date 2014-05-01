@@ -21,7 +21,7 @@ public class EvalFormula extends Calculator
 		//find formula element and identify its variables
 		FormulaElement formula = formulas.get(input.substring(0, 1));
 		Vector<String> varKeys = formula.identifyVars();
-		HashMap<String, Double> vars = new HashMap<String, Double>();
+		HashMap<String, FormulaElement> vars = new HashMap<String, FormulaElement>();
 		for(String key: varKeys)
 			vars.put(key, null);
 		//chop off first part of the string input so the parsing bit starts after the open bracket
@@ -36,7 +36,6 @@ public class EvalFormula extends Calculator
 		}
 
 		//evaluating a function with a SINGLE VARIABLE - only one value to assign
-		//System.out.println(formula.variables.keySet());
 		if(vars.size()==1){
 			//id the only key
 			String key = vars.keySet().iterator().next();
@@ -45,12 +44,11 @@ public class EvalFormula extends Calculator
 				String recInput=toParse.substring(0, 4);
 				FormulaElement varValue = evaluateFor(recInput, formulas);
 				if(varValue instanceof ConstantElement)
-					vars.put(key, ((ConstantElement)varValue).getValue());
+					vars.put(key, varValue);
 			}
 			else{
-			//with just a single value in the brackets
-				vars.put(key, Double.parseDouble(tokens.elementAt(0)));
-				System.out.println(vars.get(key));
+				//with just a single value in the brackets, either a number or a formula element
+				vars.put(key, FormulaElement.parseFormula(tokens.get(0), formulas, true));
 			}
 		}
 		
@@ -74,10 +72,10 @@ public class EvalFormula extends Calculator
 						recInput+=tokens.remove(i+1);
 						FormulaElement varValue = evaluateFor(recInput, formulas);
 						if(varValue instanceof ConstantElement)
-							vars.put(varKey, ((ConstantElement)varValue).getValue());
+							vars.put(varKey, varValue);
 					}
 					else
-						vars.put(varKey, Double.parseDouble(tokens.elementAt(i)));
+						vars.put(varKey, FormulaElement.parseFormula(tokens.get(i), formulas, true));
 					next=false;
 				}
 				//if token is a variable, identify which one so the correct value can be assigned
@@ -90,10 +88,11 @@ public class EvalFormula extends Calculator
 		
 		//assign respective values to all variables in the formula using the created variables vector
 		for(String key: vars.keySet()){
-			//System.out.println(key);
 			if(vars.get(key)!=null){
-				
-				formula.setVariableValue(key, vars.get(key));
+				if(vars.get(key) instanceof ConstantElement)
+					formula.setVariableValue(key, ((ConstantElement)vars.get(key)).getValue());
+				else
+					formula.setDValue(key, vars.get(key));
 			}
 		}
 		if(formula.isFullyGrounded())

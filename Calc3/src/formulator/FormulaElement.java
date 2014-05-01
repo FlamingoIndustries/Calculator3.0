@@ -133,21 +133,25 @@ public abstract class FormulaElement
 						while(!current.equals(")")){
 							if(!current.equals("(")){
 								respect+=current;
-								input+=current;
 							}
 							current = (String) tokens.remove(i);
+							input+=current;
 						}
 						if(degree!=0){
 							FormulaElement temp;
-							if(symbolic){
+							if(symbolic)
 								temp = formulas.get(key).symbolicDiff(respect, degree-1);
-							}
 							else
 								temp = formulas.get(key).numericDiff(respect, degree-1);
 							tokens.add(i, temp);
 						}
 						else{
-							FormulaElement result = EvalFormula.evaluateFor(input, formulas);
+							if(i!=tokens.size()){
+								if(((String)tokens.get(i)).equals(")"))
+									input+=tokens.remove(i);
+							}
+							FormulaElement result;	
+							result = EvalFormula.evaluateFor(input, formulas);
 							tokens.add(i, result);	
 						}
 					}
@@ -317,7 +321,12 @@ public abstract class FormulaElement
 	public FormulaElement numericDiff(String respect, int degree)
 	{
 		ConstantElement dx=new ConstantElement(0.0000001);
-		FormulaElement replace=new PlusFunctionElement(dx, this.findVariable(respect));
+		VariableElement var=this.findVariable(respect);
+		FormulaElement replace;
+		if(var==null)
+			replace=new PlusFunctionElement(dx, var);
+		else
+			replace=new PlusFunctionElement(dx, new VariableElement(respect));
 		if(replace!=null)
 			this.setDValue(respect, replace);
 		MinusFunctionElement minus=new MinusFunctionElement(this.dEval(),this);

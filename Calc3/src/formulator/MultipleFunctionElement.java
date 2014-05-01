@@ -74,7 +74,6 @@ public class MultipleFunctionElement extends FunctionElement {
 				retString+=arg.toString();
 			}
 		}
-		System.out.println(zeroFlag);
 		if(zeroFlag)
 			return "";
 		else if(retNum!=0 && retNum%1==0)
