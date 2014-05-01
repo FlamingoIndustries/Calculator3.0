@@ -133,9 +133,9 @@ public abstract class FormulaElement
 						while(!current.equals(")")){
 							if(!current.equals("(")){
 								respect+=current;
-								input+=current;
 							}
 							current = (String) tokens.remove(i);
+							input+=current;
 						}
 						if(degree!=0){
 							FormulaElement temp;
@@ -146,10 +146,12 @@ public abstract class FormulaElement
 							tokens.add(i, temp);
 						}
 						else{
-							FormulaElement result;							
+							if(i!=tokens.size()){
+								if(((String)tokens.get(i)).equals(")"))
+									input+=tokens.remove(i);
+							}
+							FormulaElement result;	
 							result = EvalFormula.evaluateFor(input, formulas);
-							
-							System.out.println(result);
 							tokens.add(i, result);	
 						}
 					}
