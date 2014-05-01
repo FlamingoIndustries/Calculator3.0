@@ -320,23 +320,14 @@ public abstract class FormulaElement
 	
 	public FormulaElement numericDiff(String respect, int degree)
 	{
+		if(degree<1)
+			return this;
 		ConstantElement dx=new ConstantElement(0.0000001);
-		VariableElement var=this.findVariable(respect);
-		FormulaElement replace;
-		if(var==null)
-			replace=new PlusFunctionElement(dx, var);
-		else
-			replace=new PlusFunctionElement(dx, new VariableElement(respect));
-		if(replace!=null)
-			this.setDValue(respect, replace);
+		FormulaElement replace=new PlusFunctionElement(dx, new VariableElement(respect));
+		this.setDValue(respect, replace);
 		MinusFunctionElement minus=new MinusFunctionElement(this.dEval(),this);
 		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
-		if(degree==1)
-			return div;
-		else if(degree==0)
-			return this;
-		else
-			return this.numericDiff(respect, degree-1);
+		return div.numericDiff(respect, degree-1);
 	}
 	
 	public boolean equals(FormulaElement comp)

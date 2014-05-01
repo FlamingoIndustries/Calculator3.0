@@ -148,6 +148,20 @@ class CartesianFrame extends JFrame {
 							try
 							{
 								writer = new PrintWriter(fileName, "UTF-8");
+								
+								// Take points in current graph(s) and print out to file
+								String output = "";
+						    	for(GraphFunction g: graphs)
+						    	{
+
+						    		for(Point p: g.points){
+						    		output = output + p.x + ", " + p.y + ", "; 
+						    		}
+						    	}
+					    		writer.print(output);
+							    System.out.println("Saved in " + fileName);
+
+						    	writer.close();
 							} catch (FileNotFoundException e1)
 							{
 								System.out.println("File not found!");
@@ -156,19 +170,6 @@ class CartesianFrame extends JFrame {
 								System.out.println("Encoding exception.");
 							}
 							
-							// Take points in current graph(s) and print out to file
-							String output = "";
-					    	for(GraphFunction g: graphs)
-					    	{
-
-					    		for(Point p: g.points){
-					    		output = output + p.x + ", " + p.y + ", "; 
-					    		}
-					    	}
-				    		writer.print(output);
-						    System.out.println("Saved in " + fileName);
-
-					    	writer.close();
 					    }
 					    else
 					    dispose();
