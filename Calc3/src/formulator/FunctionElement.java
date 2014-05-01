@@ -40,6 +40,7 @@ abstract class FunctionElement extends FormulaElement {
 		return out;
 	}
 	
+	@Override
 	public boolean equals(FormulaElement comp)
 	{
 		if(this.getClass().getSimpleName().equals(comp.getClass().getSimpleName()))

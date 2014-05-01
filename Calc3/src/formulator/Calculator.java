@@ -13,14 +13,19 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -30,6 +35,10 @@ import org.eclipse.swt.widgets.Shell;
 public class Calculator {
 	private  HashMap<String, FormulaElement> formulas;
 	private boolean symbolic;
+	private String[] res={"graph", "abs", "save", "load"};
+	private Vector<String> reserved=new Vector<String>(Arrays.asList(res));
+	private final Lock _mutex = new ReentrantLock(true);
+	protected String fileName;
 	
 	public Calculator()
 	{
@@ -79,10 +88,14 @@ public class Calculator {
 			}
 			catch(Exception e)
 			{
-				return "Unable to save, invalid formula entered";
+				return "Unable to store, invalid formula entered";
 			}
 			Boolean store=false;
-			if(formulas.containsKey(m.group(1)))
+			if(reserved.contains(m.group(1)))
+			{
+				return "Unable to store, cannot store using reserved name";
+			}
+			else if(formulas.containsKey(m.group(1)))
 			{
 				int dialogResult = JOptionPane.showConfirmDialog (null, "The formula \""+m.group(1)+"\" already exists\nWould you like to overwrite?","Warning",JOptionPane.YES_NO_OPTION);
 				if(dialogResult==0)
@@ -93,10 +106,10 @@ public class Calculator {
 			if(store)
 			{
 				formulas.put(m.group(1), newform);
-				return m.group(1)+" saved!";
+				return m.group(1)+" stored!";
 			}
 			else
-				return m.group(1)+" not saved!";
+				return m.group(1)+" not stored!";
 		}
 		else
 		{
@@ -196,13 +209,20 @@ public class Calculator {
 	 */
 	public boolean WriteFormulae()
 	{
-		Display display = Display.getCurrent();
-	    final Shell shell = new Shell(display);
-	    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
-	    String[] extensions={"*.xml"};
-	    dlg.setFilterExtensions(extensions);
-	    String fileName = dlg.open();
-	    
+		fileName=null;
+		new Thread(new Runnable()
+		{
+			public void run()
+			{
+				Display display = new Display();
+			    final Shell shell = new Shell(display);
+			    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
+			    String[] extensions={"*.xml"};
+			    dlg.setFilterExtensions(extensions);
+			    fileName = dlg.open();
+			    display.dispose();
+			}
+		}).start();
 	    if (fileName != null) {
 	    	PrintWriter writer;
 			try
@@ -215,14 +235,21 @@ public class Calculator {
 			{
 				return false;
 			}
+			boolean first=true;
+			writer.print("<formulas>\n");
 	    	for(Entry<String, FormulaElement> form:formulas.entrySet())
 	    	{
+	    		String formXML="";
+	    		if(!first)
+	    			formXML+="\n";
+	    		first=false;
 	    		FormulaElement formula=form.getValue();
-	    		String formXML="<"+form.getKey()+">"+"\n"+"\t";
-	    		formXML+=formula.getXMLformat("\t")+"\n";
-	    		formXML+="</"+form.getKey()+">";
+	    		formXML+="\t<"+form.getKey()+">"+"\n"+"\t";
+	    		formXML+=formula.getXMLformat("\t\t")+"\n";
+	    		formXML+="\t</"+form.getKey()+">";
 	    		writer.print(formXML);
 	    	}
+	    	writer.print("\n</formulas>");
 	    	writer.close();
 	    }
 	    else
@@ -239,30 +266,45 @@ public class Calculator {
 		HashMap<String, FormulaElement> out=new HashMap<String, FormulaElement>();
 		Stack<String> xmlstatements=new Stack<String>();
 		Stack<FormulaElement> formulae=new Stack<FormulaElement>();
-		Display display = Display.getCurrent();
-	    final Shell shell = new Shell(display);
-	    FileDialog dlg = new FileDialog(shell, SWT.NONE);
-	    String[] extensions={"*.xml"};
-	    dlg.setFilterExtensions(extensions);
-	    String fileName = dlg.open();
+		fileName=null;
+		_mutex.lock();
+		new Thread(new Runnable()
+		{
+			public void run()
+			{
+				Display display = new Display();
+				final Shell shell = new Shell(display);
+				FileDialog dlg = new FileDialog(shell, SWT.NONE);
+				String[] extensions={"*.xml"};
+				dlg.setFilterExtensions(extensions);
+				fileName = dlg.open();
+				display.dispose();
+			}
+		}).start();
+		_mutex.unlock();
 		Scanner reader;
 		try
 		{
 			reader = new Scanner(new FileReader(fileName));
 			String line;
 			reader.useDelimiter("\n");
-			Boolean newFormula=true;
+			boolean newFormula=true;
+			boolean newFile=true;
 			String currentFormula="";
 			
 			while (reader.hasNext()) 
 			{
 				line=reader.next();
 				line=line.trim();
+				
 				if(line.matches("<[a-zA-Z]\\w*>"))
 				{
 					line=line.substring(1, line.length()-1);
 					FormulaElement form=null;
-					if(newFormula)
+					
+					if(newFile&&line.equals("formulas"))
+						newFile=false;
+					else if(newFormula)
 					{
 						currentFormula=line;
 						newFormula=false;
