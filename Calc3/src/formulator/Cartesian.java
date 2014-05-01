@@ -12,6 +12,7 @@ package formulator;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
@@ -281,6 +282,10 @@ class CartesianPanel extends JPanel {
 				((FormulaElement) node).setVariableValue(variable, x);
 
 				y = node.evaluate();
+				if(x>550 || y>550){
+				g2.drawString("Range is too large to display. Please shorten range or edit formula.", 50, 300);
+				g2.dispose();
+				}
 
 				Point current = new Point(x, y);
 				if (max_x < x) {
@@ -295,8 +300,11 @@ class CartesianPanel extends JPanel {
 				if (min_y > y) {
 					min_y = y;
 				}
+				
 				graph.points.add(current);
-			}
+				//System.out.println("Adding point: " + x + ", " + y);
+				}
+			
 		}
 
 		// finding ranges
@@ -316,6 +324,9 @@ class CartesianPanel extends JPanel {
 				/ xCoordNumbers;
 		int yLength = (Y_AXIS_SECOND_Y_COORD - Y_AXIS_FIRST_Y_COORD)
 				/ yCoordNumbers;
+		//System.out.println("CoordNumbers: " + xCoordNumbers + ", " + yCoordNumbers);
+
+		//System.out.println("Lengths: " + xLength + ", " + yLength);
 
 		double x_meets_y = 50;
 		double y_meets_x = 600;
@@ -461,6 +472,8 @@ class CartesianPanel extends JPanel {
 				if (e % 3 == 5) {
 					g2.setPaint(Color.CYAN);
 				}
+				//System.out.println("Drawing point: " + dotx + ", " + doty);
+
 				// Draw points
 				if (dots == true) {
 					g2.fill(new Ellipse2D.Double(
