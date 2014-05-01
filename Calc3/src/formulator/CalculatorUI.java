@@ -30,7 +30,6 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class CalculatorUI extends Shell {
 		private Text text;
-		private String displayString = "";
 		String answer = new String();
 		private Text text_1;
 		private Calculator calc;
@@ -50,7 +49,7 @@ public class CalculatorUI extends Shell {
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						text.setFocus();
-						text.setSelection(text.getText().length());
+						text.setSelection(text.getText().length()-1);
 					}
 				});
 			}
@@ -59,7 +58,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.character == SWT.CR) {
-					updateDisplay('R');
+					updateDisplay('E');
 				}
 			}
 		});
@@ -67,7 +66,7 @@ public class CalculatorUI extends Shell {
 		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		text.setEditable (true);
 		text.setDoubleClickEnabled(false);
-		text.setText(displayString);
+		text.setText("");
 		
 		text_1 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		text_1.setBounds(23, 10, 556, 72);
@@ -475,34 +474,31 @@ public class CalculatorUI extends Shell {
 		      } else {
 		        tempString = tempString.substring(0, tempString.length() - 1);
 		      }
-		      displayString =  tempString;
-		      text.setText(displayString);
+		      text.setText(tempString);
 		      break;
 		      
-		    	
 		      
 		    case 'E':
 		    	String current = text.getText();
-		    	
 		    	String result=calc.branch(current);
 		    	answer = result;
 		    	text_1.append(current+"\n");
 		    	if (!result.equals("")&&result.charAt(0) == '$'){
-		    	text_1.append(">"+ result.substring(1) +"\n");
+		    		text_1.append(">"+ result.substring(1) +"\n");
 		    	}
 		    	else {
 		    		text_1.append(">"+ result+"\n");
 		    	}
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
-		    	tempString = "";
-		    	text.setText(tempString);
+		    	text.setText("");
 		    	break;
 		    	
 		    case 'G':
-		    	String current3 = ("graph " + getText() + "\n");
-		    	text_1.append("\n" +current3);
+		    	String current3 = ("graph " + text.getText());
+		    	text_1.append(current3+"\n");
 		    	String result3 =calc.branch(current3);
-		    	text_1.append(">" + result3 + "\n");
+		    	text_1.append(">"+result3+"\n");
+		    	text.setText("");
 		    	break;
 		    	
 		    case 'I':
@@ -512,40 +508,15 @@ public class CalculatorUI extends Shell {
 		    case 'O':
 		    	text.append("abs(");
 		    	break;
-		    	
-		      
-		    case 'R':
-		    	String current2 = text.getText();
-		    	text_1.append(current2+"\n");
-		    	String result2=calc.branch(current2);
-		    	answer = result2;
-		    	if (result2.charAt(0) == '$'){
-			    	text_1.append(">"+ result2.substring(1));
-			    }
-		    	else {
-		    		text_1.append(">"+result2);
-		    	}
-		    	text_1.setTopIndex(text_1.getLineCount()-1);
-		    	tempString = "";
-		    	text.setText(tempString);
-		    	break;
-		    	
-		    case 'S':
-		    	text.append("sin(");
-		    	break;
-		     
-		    	
 		      
 		    case 'C': // Clear
-		      tempString = "";
 		      text.setText("");
 		      break;
 		      
 		    default: 
-		    	tempString = ""+keyVal; 
-			     displayString =  text.getText() + tempString;
-			     text.setText(displayString);
-
+		    	tempString = ""+keyVal;
+		    	tempString =  text.getText() + tempString;
+			    text.setText(tempString);
 		        break;
 		      }
 
