@@ -284,13 +284,6 @@ public abstract class FormulaElement
 				tokens.add(i-1, new MultipleFunctionElement(arg1, arg2));
 				i--;
 			}
-			else if(tokens.get(i).equals("*")){
-				tokens.remove(i);
-				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);			
-				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
-				tokens.add(i-1, new DivideFunctionElement(arg1,arg2));
-				i--;
-			}
 			else if(tokens.get(i).equals("/")){
 				tokens.remove(i);
 				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);			
