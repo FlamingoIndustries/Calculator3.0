@@ -9,28 +9,40 @@
 
 package formulator;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class AnotherShell
 {
 
 
-    private Shell shell;
+    private Shell shlHelp;
+    boolean active = true;
+    private Text text;
 
     public AnotherShell()
     {
-        shell = new Shell(Display.getCurrent());
+        shlHelp = new Shell(Display.getCurrent(),SWT.DIALOG_TRIM | SWT.MIN | SWT.ON_TOP);
+        shlHelp.setSize(527, 409);
+        shlHelp.setText("Help");
+        
+        text = new Text(shlHelp, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
+        text.setBounds(10, 10, 501, 361);
+        text.setText("Hello");
     }
 
 
     public void open()
     {
-        shell.open();
+        shlHelp.open();
+        shlHelp.forceActive();
     }
 
-    public void close()
+    public  void close()
     {
-        shell.setVisible(false);
+    	active = false;
+        shlHelp.setVisible(false);
     }
 }
