@@ -84,7 +84,7 @@ public abstract class FormulaElement
 	public static FormulaElement parseFormula(String formula, HashMap<String, FormulaElement> formulas, boolean symbolic)
 	{
 		//will chop the string into substring tokens wherever it sees a delimiter
-		StringTokenizer tokenizer = new StringTokenizer(formula, "+-/()^ \t'", true);
+		StringTokenizer tokenizer = new StringTokenizer(formula, "+-/()^* \t'", true);
 		Vector tokens = new Vector();
 		String token="";
 
@@ -284,7 +284,7 @@ public abstract class FormulaElement
 				tokens.add(i-1, new MultipleFunctionElement(arg1, arg2));
 				i--;
 			}
-			else if(tokens.get(i).equals("/")){
+			else if(tokens.get(i).equals("*")){
 				tokens.remove(i);
 				FormulaElement arg1=(FormulaElement)tokens.remove(i-1);			
 				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
