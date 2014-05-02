@@ -51,7 +51,7 @@ public class CalculatorUI extends Shell {
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
 						text.setFocus();
-						text.setSelection(text.getText().length()-1);
+						text.setSelection(text.getText().length());
 					}
 				});
 			}
