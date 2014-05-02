@@ -312,7 +312,6 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				anothershell.open();
-				setMinimized(true);
 				
 				}
 		});
