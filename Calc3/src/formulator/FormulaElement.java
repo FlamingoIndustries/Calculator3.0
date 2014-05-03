@@ -178,7 +178,7 @@ public abstract class FormulaElement
 					tokens.remove(i);
 					tokens.add(i, new ConstantElement(Double.parseDouble(current)));
 				}
-				else if(Character.isLetter(current.charAt(0))&&!current.equals("cos")&&!current.equals("sin")){
+				else if(Character.isLetter(current.charAt(0))&&!current.equals("cos")&&!current.equals("sin")&&!current.equals("abs")){
 					tokens.remove(i);
 					tokens.add(i, new VariableElement(current));
 				}
@@ -242,24 +242,26 @@ public abstract class FormulaElement
 		//testing
 		//System.out.println("3rd pass: "+tokens.toString());
 		
-		//4th pass: finding sin and cosine functions and using the next formula element as the argument
-		//the part in brackets has already been reduced to one formula element; the item after sin/cos in tokens
+		//4th pass: finding sin, cosine and absolute value functions and using the next formula element as the argument
+		//the part in brackets has already been reduced to one formula element; the item after sin/cos/abs in tokens
 		for(int i=0; i<tokens.size(); i++)
 		{
-			if(tokens.get(i).equals("sin") || tokens.get(i).equals("cos"))
+			if(tokens.get(i).equals("sin") || tokens.get(i).equals("cos") || tokens.get(i).equals("abs")) 
 			{
 				String type = (String) tokens.remove(i);
 				FormulaElement arg = (FormulaElement) tokens.remove(i);
 				FormulaElement func;
 				if(type.equals("cos"))
 					func = new CosineFunctionElement(arg);
-				else
+				else if(type.equals("sin"))
 					func = new SineFunctionElement(arg);
+				else
+					func = new AbsValueFunctionElement(arg);
 				tokens.add(i, func);
 			}
 		}
 		//testing
-		//System.out.println("4th pass: "+tokens.toString());
+		System.out.println("4th pass: "+tokens.toString());
 		
 		//5th pass: find powers and replace the symbol and its 2 arguments with a power function element
 		for(int i=0; i<tokens.size()-1; i++)
@@ -310,6 +312,11 @@ public abstract class FormulaElement
 				FormulaElement arg2=(FormulaElement)tokens.remove(i-1);
 				tokens.add(i-1, new PlusFunctionElement(arg1, arg2));
 				i--;
+			}
+			else if(tokens.get(i).equals("-") && i==0){
+				tokens.remove(i);
+				FormulaElement arg1=(FormulaElement)tokens.remove(i);
+				tokens.add(i, new MinusFunctionElement(new ConstantElement(0.0), arg1));
 			}
 			else if(tokens.get(i).equals("-")){
 				tokens.remove(i);

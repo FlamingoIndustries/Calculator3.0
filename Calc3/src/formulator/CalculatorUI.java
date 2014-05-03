@@ -78,6 +78,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('1');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button1.setToolTipText("Numeric Pad");
@@ -90,6 +91,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('2');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button2.setText("2");
@@ -101,6 +103,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('3');
+				text.setSelection(text.getText().length());
 			}
 		});
 
@@ -113,6 +116,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('4');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button4.setText("4");
@@ -124,6 +128,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('5');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button5.setText("5");
@@ -135,6 +140,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('6');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button6.setText("6");
@@ -146,6 +152,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('7');
+				text.setSelection(text.getText().length());
 			}
 		});
 
@@ -158,6 +165,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('8');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button8.setText("8");
@@ -169,6 +177,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('9');
+				text.setSelection(text.getText().length());
 			}
 		});
 		button9.setText("9");
@@ -180,6 +189,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('0');
+				text.setSelection(text.getText().length());
 			}
 		});
 		
@@ -192,6 +202,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('.');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonDot.setText(".");
@@ -203,6 +214,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('+');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonPlus.setText("+");
@@ -214,6 +226,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('-');
+				text.setSelection(text.getText().length());
 			}
 		});
 
@@ -226,6 +239,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('*');
+				text.setSelection(text.getText().length());
 			}
 		});
 
@@ -238,6 +252,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('/');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonDivide.setText("/");
@@ -248,6 +263,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('^');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonPower.setToolTipText("Power");
@@ -259,6 +275,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('B');
+				text.setSelection(text.getText().length());
 			}
 		});
 
@@ -271,6 +288,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('C');
+				text.setSelection(text.getText().length());
 			}
 		});
 
@@ -321,6 +339,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('(');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonLPar.setToolTipText("Left Bracket");
@@ -332,6 +351,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay(')');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonRPar.setToolTipText("Right Bracket");
@@ -343,6 +363,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('A');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnAns.setToolTipText("Return Previous Result");
@@ -355,6 +376,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('=');
+				text.setSelection(text.getText().length());
 			}
 		});
 		buttonEquals.setText("=");
@@ -365,6 +387,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('x');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnX.setToolTipText("Variable Name");
@@ -376,6 +399,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('y');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnY.setToolTipText("Variable Name");
@@ -387,6 +411,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('S');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnSin.setToolTipText("Sin");
@@ -398,6 +423,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('I');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnCos.setToolTipText("Cos");
@@ -409,6 +435,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay('O');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnAbs.setToolTipText("Abs");
@@ -434,6 +461,7 @@ public class CalculatorUI extends Shell {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				updateDisplay(' ');
+				text.setSelection(text.getText().length());
 			}
 		});
 		btnSpace.setToolTipText("Space");
@@ -518,6 +546,10 @@ public class CalculatorUI extends Shell {
 		    	System.out.print(current3);
 		    	text_1.append(">"+result3+"\n");
 		    	text.setText("");
+		    	break;
+		    
+		    case 'S':
+		    	text.append("sin(");
 		    	break;
 		    	
 		    case 'I':
