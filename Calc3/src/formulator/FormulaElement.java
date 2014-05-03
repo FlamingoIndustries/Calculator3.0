@@ -261,7 +261,7 @@ public abstract class FormulaElement
 			}
 		}
 		//testing
-		System.out.println("4th pass: "+tokens.toString());
+		//System.out.println("4th pass: "+tokens.toString());
 		
 		//5th pass: find powers and replace the symbol and its 2 arguments with a power function element
 		for(int i=0; i<tokens.size()-1; i++)
@@ -316,7 +316,10 @@ public abstract class FormulaElement
 			else if(tokens.get(i).equals("-") && i==0){
 				tokens.remove(i);
 				FormulaElement arg1=(FormulaElement)tokens.remove(i);
-				tokens.add(i, new MinusFunctionElement(new ConstantElement(0.0), arg1));
+				if(arg1 instanceof ConstantElement)
+					tokens.add(i, new ConstantElement(0-((ConstantElement)arg1).getValue()));
+				else
+					tokens.add(i, new MinusFunctionElement(new ConstantElement(0), arg1));
 			}
 			else if(tokens.get(i).equals("-")){
 				tokens.remove(i);

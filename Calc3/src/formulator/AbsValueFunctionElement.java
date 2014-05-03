@@ -30,6 +30,8 @@ public class AbsValueFunctionElement extends FunctionElement {
 	}
 	
 	public String toString(){
+		if(getArguments().get(0) instanceof ConstantElement)
+			return new ConstantElement(evaluate()).toString();
 		String retString = "|" + getArguments().get(0).toString() +"|";
 		return retString;
 	}
