@@ -10,8 +10,6 @@
 package formulator;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -25,6 +23,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.events.TraverseEvent;
 
 
 
@@ -44,7 +44,14 @@ public class CalculatorUI extends Shell {
 		setLayout(null);
 		calc=new Calculator();
 		anothershell= new AnotherShell();
-		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL);
+		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
+		text.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(TraverseEvent e) {
+				if (e.keyCode == SWT.CR) {
+					updateDisplay('E');
+				}
+			}
+		});
 		text.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -54,14 +61,6 @@ public class CalculatorUI extends Shell {
 						text.setSelection(text.getText().length());
 					}
 				});
-			}
-		});
-		text.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.character == SWT.CR) {
-					updateDisplay('E');
-				}
 			}
 		});
 		text.setBounds(23, 88, 536, 44);
@@ -503,12 +502,20 @@ public class CalculatorUI extends Shell {
 		    	}
 		    	text_1.setTopIndex(text_1.getLineCount()-1);
 		    	text.setText("");
+		    	Display.getCurrent().asyncExec(new Runnable() {
+					public void run() {
+						text.setFocus();
+						text.setSelection(text.getText().length());
+						updateDisplay('C');
+					}
+				});
 		    	break;
 		    	
 		    case 'G':
 		    	String current3 = ("graph " + text.getText());
 		    	text_1.append(current3+"\n");
 		    	String result3 =calc.branch(current3);
+		    	System.out.print(current3);
 		    	text_1.append(">"+result3+"\n");
 		    	text.setText("");
 		    	break;
