@@ -43,7 +43,6 @@ public class CalculatorUI extends Shell {
 		super(display, SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		setLayout(null);
 		calc=new Calculator();
-		anothershell= new AnotherShell();
 		text = new Text(this, SWT.BORDER | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
 		text.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(TraverseEvent e) {
@@ -328,6 +327,7 @@ public class CalculatorUI extends Shell {
 		mntmHelp.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				anothershell= new AnotherShell();
 				anothershell.open();
 				
 				}
