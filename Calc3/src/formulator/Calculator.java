@@ -267,21 +267,29 @@ public class Calculator {
 		Stack<String> xmlstatements=new Stack<String>();
 		Stack<FormulaElement> formulae=new Stack<FormulaElement>();
 		fileName=null;
-		_mutex.lock();
-		new Thread(new Runnable()
-		{
-			public void run()
-			{
-				Display display = new Display();
-				final Shell shell = new Shell(display);
-				FileDialog dlg = new FileDialog(shell, SWT.NONE);
-				String[] extensions={"*.xml"};
-				dlg.setFilterExtensions(extensions);
-				fileName = dlg.open();
-				display.dispose();
-			}
-		}).start();
-		_mutex.unlock();
+		
+//		new Thread(new Runnable()
+//		{
+//			public void run()
+//			{
+//				Display display = new Display();
+//				final Shell shell = new Shell(display);
+//				FileDialog dlg = new FileDialog(shell, SWT.NONE);
+//				String[] extensions={"*.xml"};
+//				dlg.setFilterExtensions(extensions);
+//				fileName = dlg.open();
+//				display.dispose();
+//			}
+//		}).start();
+		
+		Display display = Display.getCurrent();
+		final Shell shell = new Shell(display);
+		FileDialog dlg = new FileDialog(shell, SWT.NONE);
+		String[] extensions={"*.xml"};
+		dlg.setFilterExtensions(extensions);
+		fileName = dlg.open();
+		shell.close();
+		
 		Scanner reader;
 		try
 		{
