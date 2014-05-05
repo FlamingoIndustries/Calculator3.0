@@ -114,7 +114,7 @@ public class Calculator {
 			{
 				FormulaElement e=FormulaElement.parseFormula(text, formulas, symbolic);
 				if(e!=null)
-					return "$"+e.toString();
+					return "$"+e.getSimplifiedCopy().toString();
 				return "";
 			}
 			catch(Exception e)
