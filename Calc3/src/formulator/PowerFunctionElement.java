@@ -94,4 +94,14 @@ public class PowerFunctionElement extends FunctionElement {
 		elem.addArgument(pow);
 		return elem.symbolicDiff(respect, degree-1);
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		Vector<FormulaElement> v=this.getArguments();
+		PowerFunctionElement out=new PowerFunctionElement();
+		out.addArgument(v.firstElement().getSimplifiedCopy());
+		out.addArgument(v.lastElement().getSimplifiedCopy());
+		return out;
+	}
 }

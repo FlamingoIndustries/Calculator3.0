@@ -9,7 +9,9 @@
 
 package formulator;
 
+import java.util.HashMap;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 public class PlusFunctionElement extends FunctionElement {
 	
@@ -110,5 +112,98 @@ public class PlusFunctionElement extends FunctionElement {
 		if(elem.getArguments().isEmpty())
 			return new ConstantElement(0);
 		return elem.symbolicDiff(respect, degree-1);
+	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		PlusFunctionElement out=new PlusFunctionElement();
+		double consttotal=0;
+		Vector<FormulaElement> pluselem=this.getArguments();
+		HashMap<String, Vector<FormulaElement>> vars=new HashMap<String, Vector<FormulaElement>>();
+		for(int x=0;x<pluselem.size();x++)
+		{
+			FormulaElement p=pluselem.remove(x);
+			pluselem.add(x,p.getSimplifiedCopy());
+		}
+		for(int x=0;x<pluselem.size();)
+		{
+			if(pluselem.elementAt(x) instanceof ConstantElement)
+				consttotal+=((ConstantElement) pluselem.remove(x)).getValue();
+			else if(pluselem.elementAt(x) instanceof VariableElement)
+				vars=this.addToHashMap(pluselem.remove(x), new ConstantElement(1), vars);
+			else if(pluselem.elementAt(x) instanceof PlusFunctionElement)
+				pluselem.addAll(((PlusFunctionElement)pluselem.remove(x)).getArguments());
+			else if(pluselem.elementAt(x) instanceof MinusFunctionElement)
+			{
+				MinusFunctionElement minus=(MinusFunctionElement)pluselem.remove(x);
+				Vector<FormulaElement> minelem=minus.getArguments();
+				pluselem.add(minelem.elementAt(0));
+				FormulaElement minuspart=minelem.lastElement();
+				MultipleFunctionElement r=new MultipleFunctionElement(new ConstantElement(-1), minuspart);
+				pluselem.add(r);
+			}
+			else if(pluselem.elementAt(x) instanceof MultipleFunctionElement)
+				vars=this.simplifyMultipleFunctionElement(vars, (MultipleFunctionElement)pluselem.remove(x));
+			else if(pluselem.elementAt(x) instanceof PowerFunctionElement)
+				vars=this.addToHashMap((PowerFunctionElement) pluselem.remove(x), new ConstantElement(1), vars);
+			else
+				x++;
+		}
+		for(Entry<String,Vector<FormulaElement>> ent:vars.entrySet())
+		{
+			Vector<FormulaElement> var=ent.getValue();
+			MultipleFunctionElement mult=new MultipleFunctionElement();
+			FormulaElement varcount=var.lastElement();
+			if (varcount instanceof ConstantElement&&((ConstantElement)varcount).getValue()==1)
+				pluselem.add((FormulaElement)var.firstElement());
+			else
+			{
+				mult.addArgument(varcount);
+				mult.addArgument((FormulaElement)var.firstElement());
+				pluselem.add(mult);
+			}
+		}
+		if(consttotal!=0)
+		{
+			ConstantElement constelem=new ConstantElement(consttotal);
+			if(pluselem.isEmpty())
+				return constelem;
+			pluselem.add(constelem);
+		}
+		if(pluselem.size()>1)
+			for(FormulaElement e:pluselem)
+				out.addArgument(e);
+		else
+			return pluselem.firstElement();
+		return out;
+	}
+		
+	private HashMap<String,Vector<FormulaElement>> simplifyMultipleFunctionElement(HashMap<String, Vector<FormulaElement>> vars, MultipleFunctionElement mult)
+	{
+		Vector<FormulaElement> v=mult.getArguments();
+		double constprod=1;
+		Vector<String> variables=new Vector<String>(); 
+		FormulaElement check=mult;
+		for(int i=0;i<v.size();i++)
+		{
+			if(v.elementAt(i) instanceof ConstantElement)
+			{
+				constprod*=((ConstantElement) v.remove(i)).getValue();
+				i--;
+			}
+			else if(v.elementAt(i) instanceof VariableElement||v.elementAt(i) instanceof FunctionElement)
+				variables.add(v.elementAt(i).toString());
+		}
+		if(v.size()>1)
+		{
+			check=new MultipleFunctionElement();
+			for(FormulaElement elem:v)
+				((MultipleFunctionElement) check).addArgument(elem);
+		}
+		else
+			check=v.firstElement();
+		vars=this.addToHashMap(check, new ConstantElement(constprod), vars);
+		return vars;
 	}
 }

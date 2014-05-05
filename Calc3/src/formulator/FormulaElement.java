@@ -18,6 +18,7 @@ public abstract class FormulaElement
 	public abstract FormulaElement dEval();
 	public abstract String getXMLformat(String tabbing);
 	public abstract FormulaElement symbolicDiff(String respect, int degree);
+	public abstract FormulaElement getSimplifiedCopy();
 	
 	//assigns the specified value to all instances of the specified variable in the formula by recursively searching
 	public void setVariableValue(String varName, double value){

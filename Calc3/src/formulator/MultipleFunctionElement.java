@@ -9,6 +9,8 @@
 
 package formulator;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 public class MultipleFunctionElement extends FunctionElement {
@@ -130,5 +132,91 @@ public class MultipleFunctionElement extends FunctionElement {
 		if(elem.getArguments().isEmpty())
 			return new ConstantElement(0);
 		return elem.symbolicDiff(respect, degree-1);
+	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		FormulaElement out=this;
+		Vector<FormulaElement> multelem=this.getArguments();
+		for(int i=0;i<multelem.size();i++)
+		{
+			FormulaElement m=multelem.remove(i);
+			multelem.add(i,m.getSimplifiedCopy());
+		}
+		for(int i=0;i<multelem.size();i++)
+		{
+			if(multelem.elementAt(i) instanceof PlusFunctionElement)
+			{
+				out=new PlusFunctionElement();
+				PlusFunctionElement f=(PlusFunctionElement)multelem.remove(i);
+				Vector<FormulaElement> v=f.getArguments();
+				for(int j=0;j<v.size();j++)
+				{
+					FormulaElement g=v.elementAt(j);
+					MultipleFunctionElement m=new MultipleFunctionElement(); 
+					m.addArgument(g);
+					for(int p=0;p<multelem.size();p++)
+						m.addArgument(multelem.elementAt(p));
+					try
+					{
+						ConstantElement newcon=new ConstantElement(m.evaluate());
+						((PlusFunctionElement) out).addArgument(newcon);
+					}
+					catch(Exception e)
+					{
+						((PlusFunctionElement) out).addArgument(m);
+					}
+				}
+				return out.getSimplifiedCopy();
+			}
+		}
+		double constprod=1;
+		HashMap<String,Vector<FormulaElement>> vars=new HashMap<String,Vector<FormulaElement>>();
+		for(int j=0;j<multelem.size();j++)
+		{
+			if(multelem.elementAt(j) instanceof ConstantElement)
+			{
+				constprod*=((ConstantElement)multelem.remove(j)).getValue();
+				j--;
+			}
+			else if(multelem.elementAt(j) instanceof FormulaElement)
+			{
+				FormulaElement var=multelem.remove(j);
+				FormulaElement count=new ConstantElement(1);
+				if(var instanceof PowerFunctionElement)
+				{
+					Vector<FormulaElement> powargs=((PowerFunctionElement)var).getArguments();
+					var=powargs.firstElement();
+					count=powargs.lastElement();
+				}
+				vars=this.addToHashMap(var, count, vars);
+				j--;
+			}
+		}
+		for(Entry<String, Vector<FormulaElement>> ent:vars.entrySet())
+		{
+			Vector<FormulaElement> v=ent.getValue();
+			if(v.elementAt(1) instanceof ConstantElement&&((ConstantElement)v.elementAt(1)).getValue()==1)
+				multelem.add(v.firstElement());
+			else
+			{
+				FormulaElement var=((FormulaElement) v.firstElement());
+				PowerFunctionElement pow=new PowerFunctionElement();
+				pow.addArgument(var);
+				pow.addArgument(v.elementAt(1));
+				multelem.add(pow);
+			}
+		}
+		ConstantElement product=new ConstantElement(constprod);
+		if(!multelem.isEmpty()&&constprod!=1)
+			multelem.add(product);
+		else if(multelem.isEmpty())
+			return product;
+		
+		out=new MultipleFunctionElement();
+		for(FormulaElement e:multelem)
+			((MultipleFunctionElement)out).addArgument(e);
+		return out;
 	}
 }

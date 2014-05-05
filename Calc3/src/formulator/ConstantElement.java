@@ -57,4 +57,10 @@ public class ConstantElement extends FormulaElement {
 			return this;
 		return new ConstantElement(0);
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		return this;
+	}
 }

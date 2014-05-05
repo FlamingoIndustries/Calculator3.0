@@ -9,6 +9,8 @@
 
 package formulator;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 abstract class FunctionElement extends FormulaElement {
@@ -90,5 +92,42 @@ abstract class FunctionElement extends FormulaElement {
 			}
 		}
 		return null;
+	}
+	
+	protected HashMap<String,Vector<FormulaElement>> addToHashMap(FormulaElement elem, FormulaElement count, HashMap<String,Vector<FormulaElement>> vars)
+	{
+		Boolean match=false;
+		for(Entry<String, Vector<FormulaElement>> ent:vars.entrySet())
+		{
+			FormulaElement form=(FormulaElement) ent.getValue().firstElement();
+			match= elem.equals(form);
+			if(match)
+			{
+				Vector<FormulaElement> n=vars.get(ent.getKey());
+				FormulaElement plus=new PlusFunctionElement(count,n.remove(1));
+				try
+				{
+					plus=new ConstantElement(plus.evaluate());
+				}
+				catch(Exception e)
+				{}
+				if(plus instanceof ConstantElement&& ((ConstantElement)plus).getValue()==0)
+					vars.remove(ent.getKey());
+				else
+				{
+					n.add(plus);
+					vars.put(ent.getKey(), n);
+				}
+				break;
+			}
+		}
+		if(!match)
+		{
+			Vector<FormulaElement> q=new Vector<FormulaElement>();
+			q.add(elem);
+			q.add(count);
+			vars.put(elem.toString(), q);
+		}
+		return vars;
 	}
 }

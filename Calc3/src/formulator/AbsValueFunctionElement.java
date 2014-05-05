@@ -54,4 +54,12 @@ public class AbsValueFunctionElement extends FunctionElement {
 		FormulaElement first=elements.elementAt(0);
 		return new AbsValueFunctionElement(first.symbolicDiff(respect, degree));
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		AbsValueFunctionElement out=new AbsValueFunctionElement();
+		out.addArgument(this.getArguments().firstElement().getSimplifiedCopy());
+		return out;
+	}
 }

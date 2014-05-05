@@ -85,4 +85,17 @@ public class MinusFunctionElement extends FunctionElement{
 			elem.addArgument(elements.elementAt(i).symbolicDiff(respect, degree));
 		return elem.symbolicDiff(respect, degree-1);
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		PlusFunctionElement out=new PlusFunctionElement();
+		Vector<FormulaElement> minuselem=this.getArguments();
+		out.addArgument(minuselem.firstElement());
+		FormulaElement minuspart=minuselem.lastElement();
+		
+		MultipleFunctionElement r=new MultipleFunctionElement(new ConstantElement(-1), minuspart);
+		out.addArgument(r);
+		return out.getSimplifiedCopy();
+	}
 }

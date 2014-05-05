@@ -58,4 +58,12 @@ public class SineFunctionElement extends FunctionElement {
 		elem.addArgument(first.symbolicDiff(respect, degree));
 		return elem.symbolicDiff(respect, degree-1);
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		Vector<FormulaElement> v=this.getArguments();
+		FormulaElement out=new SineFunctionElement(v.firstElement().getSimplifiedCopy());
+		return out;
+	}
 }

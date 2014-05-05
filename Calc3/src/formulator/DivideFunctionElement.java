@@ -114,4 +114,54 @@ public class DivideFunctionElement extends FunctionElement{
 		elem.addArgument(pow);
 		return elem.symbolicDiff(respect, degree-1);
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		Vector<FormulaElement> v=this.getArguments();
+		FormulaElement div1=v.firstElement();
+		FormulaElement div2=v.lastElement();
+		System.out.println(div1+"   "+div2);
+		if(div1.equals(div2))
+			return new ConstantElement(1);
+		if(div1 instanceof MultipleFunctionElement||div2 instanceof MultipleFunctionElement)
+		{
+			Vector<FormulaElement> var1=new Vector<FormulaElement>();
+			Vector<FormulaElement> var2=new Vector<FormulaElement>();
+			if(div1 instanceof MultipleFunctionElement)
+				var1=((FunctionElement) div1).getArguments();
+			else
+				var1.add(div1);
+			if(div2 instanceof MultipleFunctionElement)
+				var2=((FunctionElement) div2).getArguments();
+			else
+				var2.add(div2);
+			for(int i=0;i<var1.size();i++)
+			{
+				for(int j=0;j<var2.size();j++)
+				{
+					if(var1.elementAt(i).equals(var2.elementAt(j)))
+					{
+						var1.remove(i);
+						var2.remove(j);
+						i--;
+						break;
+					}
+					else if(var1.elementAt(i) instanceof ConstantElement&&var2.elementAt(j) instanceof ConstantElement)
+					{
+						double nume=((ConstantElement)var1.remove(i)).getValue();
+						double denom=((ConstantElement)var2.remove(j)).getValue();
+						nume=nume/denom;
+						var1.add(new ConstantElement(nume));
+						i--;
+						break;
+					}
+				}
+			}
+		}
+		DivideFunctionElement div=new DivideFunctionElement();
+		div.addArgument(div1);
+		div.addArgument(div2);
+		return div;
+	}
 }

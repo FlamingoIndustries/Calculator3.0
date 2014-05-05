@@ -85,4 +85,10 @@ public class VariableElement extends FormulaElement {
 			return this;
 		return null;
 	}
+	
+	@Override
+	public FormulaElement getSimplifiedCopy()
+	{
+		return this;
+	}
 }
