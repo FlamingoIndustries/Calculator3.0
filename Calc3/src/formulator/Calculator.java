@@ -19,8 +19,6 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.Map.Entry;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,8 +35,6 @@ public class Calculator {
 	private boolean symbolic;
 	private String[] res={"graph", "abs", "save", "load"};
 	private Vector<String> reserved=new Vector<String>(Arrays.asList(res));
-	private final Lock _mutex = new ReentrantLock(true);
-	protected String fileName;
 	
 	public Calculator()
 	{
@@ -192,7 +188,7 @@ public class Calculator {
 			root.setVariableValue(var, 0);
 			if(!root.isFullyGrounded())
 				return "Cannot graph "+m.group(1)+" all other variables must be set";
-			if(increment<1)
+			if(increment<=0)
 				return "Cannot graph "+m.group(1)+" increment must be positive!";
 			if(min>max)
 				return "Cannot graph "+m.group(1)+" min must be less than max";
@@ -209,20 +205,15 @@ public class Calculator {
 	 */
 	public boolean WriteFormulae()
 	{
-		fileName=null;
-		new Thread(new Runnable()
-		{
-			public void run()
-			{
-				Display display = new Display();
-			    final Shell shell = new Shell(display);
-			    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
-			    String[] extensions={"*.xml"};
-			    dlg.setFilterExtensions(extensions);
-			    fileName = dlg.open();
-			    display.dispose();
-			}
-		}).start();
+		
+		Display display = Display.getCurrent();
+	    final Shell shell = new Shell(display);
+	    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
+	    String[] extensions={"*.xml"};
+	    dlg.setOverwrite(true);
+	    dlg.setFilterExtensions(extensions);
+	    String fileName = dlg.open();
+	    shell.close();
 	    if (fileName != null) {
 	    	PrintWriter writer;
 			try
@@ -266,28 +257,13 @@ public class Calculator {
 		HashMap<String, FormulaElement> out=new HashMap<String, FormulaElement>();
 		Stack<String> xmlstatements=new Stack<String>();
 		Stack<FormulaElement> formulae=new Stack<FormulaElement>();
-		fileName=null;
-		
-//		new Thread(new Runnable()
-//		{
-//			public void run()
-//			{
-//				Display display = new Display();
-//				final Shell shell = new Shell(display);
-//				FileDialog dlg = new FileDialog(shell, SWT.NONE);
-//				String[] extensions={"*.xml"};
-//				dlg.setFilterExtensions(extensions);
-//				fileName = dlg.open();
-//				display.dispose();
-//			}
-//		}).start();
 		
 		Display display = Display.getCurrent();
 		final Shell shell = new Shell(display);
 		FileDialog dlg = new FileDialog(shell, SWT.NONE);
 		String[] extensions={"*.xml"};
 		dlg.setFilterExtensions(extensions);
-		fileName = dlg.open();
+		String fileName = dlg.open();
 		shell.close();
 		
 		Scanner reader;
