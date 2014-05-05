@@ -61,7 +61,9 @@ public class PlusFunctionElement extends FunctionElement {
 			return retString+"+"+(int)retNum;
 		if(retNum!=0 && !retString.isEmpty())
 			return retString+"+"+retNum;
-		else if(retString.isEmpty())
+		else if(retString.isEmpty() && retNum%1==0)
+			return ""+(int)retNum;
+		else if (retString.isEmpty())
 			return ""+retNum;
 		else
 			return retString;

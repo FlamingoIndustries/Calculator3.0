@@ -37,6 +37,8 @@ public class MinusFunctionElement extends FunctionElement{
 		//generate result if both arguments are constants
 		if(arg1 instanceof ConstantElement && arg2 instanceof ConstantElement){
 			double retNum = ((ConstantElement) arg1).getValue() - ((ConstantElement) arg2).getValue();
+			if(retNum%1==0)
+				return ""+(int)retNum;
 			return ""+retNum;
 		}
 		//create string with minus symbol if 1+ arguments are variables

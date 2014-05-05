@@ -38,6 +38,8 @@ public class DivideFunctionElement extends FunctionElement{
 		//check if both arguments are constants; in which case division is performed to yield 1 value
 		if(arg1 instanceof ConstantElement && arg2 instanceof ConstantElement){
 			double retNum=((ConstantElement) arg1).getValue() / ((ConstantElement) arg2).getValue();
+			if(retNum%1==0)
+				return ""+(int)retNum;
 			return ""+retNum;
 		}
 		else{
