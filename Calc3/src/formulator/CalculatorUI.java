@@ -543,7 +543,6 @@ public class CalculatorUI extends Shell {
 		    	String current3 = ("graph " + text.getText());
 		    	text_1.append(current3+"\n");
 		    	String result3 =calc.branch(current3);
-		    	System.out.print(current3);
 		    	text_1.append(">"+result3+"\n");
 		    	text.setText("");
 		    	break;
