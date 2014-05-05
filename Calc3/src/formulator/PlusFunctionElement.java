@@ -174,8 +174,10 @@ public class PlusFunctionElement extends FunctionElement {
 		if(pluselem.size()>1)
 			for(FormulaElement e:pluselem)
 				out.addArgument(e);
-		else
+		else if(pluselem.size()==1)
 			return pluselem.firstElement();
+		else
+			return new ConstantElement(0);
 		return out;
 	}
 		
