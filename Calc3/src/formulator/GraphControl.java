@@ -11,7 +11,6 @@ public class GraphControl {
 	public GraphControl(Vector<GraphFunction> graphs, HashMap<String, FormulaElement> map){
 		graphlist = graphs;
 		formulas = map;
-		System.out.println("Running graph...");
 		doGraph();
 	}
 	
