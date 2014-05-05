@@ -160,7 +160,6 @@ class CartesianFrame extends JFrame {
 						    		}
 						    	}
 					    		writer.print(output);
-							    System.out.println("Saved in " + fileName);
 
 						    	writer.close();
 							} catch (FileNotFoundException e1)
@@ -182,7 +181,6 @@ class CartesianFrame extends JFrame {
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e)
 					{
-						System.out.println("Exit is pressed");
 						setVisible(false); 
 						dispose();
 					}
@@ -490,8 +488,24 @@ class CartesianPanel extends JPanel {
 
 				// Draw labels
 				if (labels == true) {
-					String t = "(" + Math.round(px * 100.0) / 100.0 + ", "
-							+ Math.round(py * 100.0) / 100.0 + ")";
+					double px2 = Math.round(px *100.0)/100.0;
+					double py2 = Math.round(py *100.0)/100.0;
+					int pxt = (int) px2;
+					int pyt = (int) py2;
+					String t = "";
+					if ((px2 % 1 == 0) && (py2 %1 == 0)){
+						t = "(" + pxt + ", " + pyt + ")";
+					}
+					if ((px2 % 1 == 0) && (py2 %1 != 0)){
+						t = "(" + pxt + ", " + py2 + ")";
+					}
+					if ((px2 % 1 != 0) && (py2 %1 == 0)){
+						t = "(" + px2 + ", " + pyt + ")";
+					}
+					if ((px2 % 1 != 0) && (py2 %1 != 0)){
+						t = "(" + px2 + ", " + py2 + ")";
+					}
+					
 					g2.drawString(t, (int) dotx + 12, (int) doty);
 				}
 
