@@ -128,7 +128,7 @@ public abstract class FormulaElement
 		//testing
 		//System.out.println("Initial: "+tokens.toString());
 
-		//FORMULAS USED TO DEFINE FORMULAS
+		//LOOKING FOR EVALUATION OR DIFFERENTIATION
 		for(int i=0; i<tokens.size(); i++){
 			String key = (String) tokens.get(i);
 			String input="";
