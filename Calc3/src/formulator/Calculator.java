@@ -9,6 +9,7 @@
 
 package formulator;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -22,6 +23,9 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
@@ -62,6 +66,16 @@ public class Calculator {
 		}
 		else if(text.equals("What is love?"))
 		{
+			try 
+			{
+		        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("test.wav"));
+		        Clip clip = AudioSystem.getClip();
+		        clip.open(audioInputStream);
+		        clip.start();
+		    } catch(Exception ex) {
+		        System.out.println("Error with playing sound.");
+		        ex.printStackTrace();
+		    }
 			return "Baby don't hurt me!";
 		}
 		else if(text.matches("^\\s*load\\s*$"))		//Branching to load all formulae from a chosen file
