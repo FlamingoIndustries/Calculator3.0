@@ -73,7 +73,6 @@ public class EvalFormula extends Calculator
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
 						FormulaElement varValue = evaluateFor(recInput, formulas);
-						System.out.println(varValue.toString());
 						if(!(varValue instanceof ConstantElement))
 							formula.unSetValue(varKey);
 						vars.put(varKey, varValue);
