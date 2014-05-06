@@ -191,6 +191,7 @@ public class MultipleFunctionElement extends FunctionElement {
 					count=powargs.lastElement();
 				}
 				vars=this.addToHashMap(var, count, vars);
+				System.out.println(vars);
 				j--;
 			}
 		}

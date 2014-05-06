@@ -101,7 +101,12 @@ public class PowerFunctionElement extends FunctionElement {
 		Vector<FormulaElement> v=this.getArguments();
 		PowerFunctionElement out=new PowerFunctionElement();
 		out.addArgument(v.firstElement().getSimplifiedCopy());
-		out.addArgument(v.lastElement().getSimplifiedCopy());
+		FormulaElement symPower=v.lastElement().getSimplifiedCopy();
+//		if(symPower instanceof MultipleFunctionElement)
+//		{
+//			MultipleFunctionElement mult=(MultipleFunctionElement) symPower;
+//		}
+		out.addArgument(symPower);
 		return out;
 	}
 }

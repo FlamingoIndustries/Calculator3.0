@@ -105,12 +105,9 @@ abstract class FunctionElement extends FormulaElement {
 			{
 				Vector<FormulaElement> n=vars.get(ent.getKey());
 				FormulaElement plus=new PlusFunctionElement(count,n.remove(1));
-				try
-				{
+				if(plus.isFullyGrounded())
 					plus=new ConstantElement(plus.evaluate());
-				}
-				catch(Exception e)
-				{}
+				
 				if(plus instanceof ConstantElement&& ((ConstantElement)plus).getValue()==0)
 					vars.remove(ent.getKey());
 				else
