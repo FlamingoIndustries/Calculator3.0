@@ -111,7 +111,7 @@ public class EvalFormula extends Calculator
 	
 	
 	public static boolean isVariable(String s){
-		if(s.equals("cos") || s.equals("sin"))
+		if(s.equals("cos") || s.equals("sin") || s.equals("abs"))
 			return false;
 		char[] chars = s.toCharArray();
 		for(char c: chars){
