@@ -98,13 +98,13 @@ public class MultipleFunctionElement extends FunctionElement {
 	}
 
 	@Override
-	public FormulaElement dEval() {
+	public FormulaElement partialEval() {
 		Vector<FormulaElement> arguments = getArguments();
 		MultipleFunctionElement newMult = new MultipleFunctionElement();
 		FormulaElement arg;
 		for(int i=0; i<arguments.size(); i++){
 			arg=arguments.elementAt(i);
-			newMult.addArgument(arg.dEval());
+			newMult.addArgument(arg.partialEval());
 		}
 		return newMult;
 	}

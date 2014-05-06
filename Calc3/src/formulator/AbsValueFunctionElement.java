@@ -41,8 +41,8 @@ public class AbsValueFunctionElement extends FunctionElement {
 	}
 
 	@Override
-	public FormulaElement dEval() {
-		return new AbsValueFunctionElement(getArguments().get(0).dEval());
+	public FormulaElement partialEval() {
+		return new AbsValueFunctionElement(getArguments().get(0).partialEval());
 	}
 	
 	@Override

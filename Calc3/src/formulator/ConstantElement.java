@@ -29,11 +29,6 @@ public class ConstantElement extends FormulaElement {
 	public double evaluate() {
 		return value;
 	}
-
-	@Override
-	public FormulaElement dEval() {
-		return this;
-	}
 	
 	@Override
 	public String getXMLformat(String tabbing)
@@ -61,6 +56,11 @@ public class ConstantElement extends FormulaElement {
 	@Override
 	public FormulaElement getSimplifiedCopy()
 	{
+		return this;
+	}
+
+	@Override
+	public FormulaElement partialEval() {
 		return this;
 	}
 }

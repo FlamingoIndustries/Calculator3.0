@@ -68,10 +68,10 @@ public class DivideFunctionElement extends FunctionElement{
 	}
 
 	@Override
-	public FormulaElement dEval() {
+	public FormulaElement partialEval() {
 		FormulaElement arg1 = getArguments().elementAt(0);
 		FormulaElement arg2 = getArguments().elementAt(1);
-		return new DivideFunctionElement(arg1.dEval(), arg2.dEval());
+		return new DivideFunctionElement(arg1.partialEval(), arg2.partialEval());
 	}
 	
 	public boolean equals(FormulaElement comp)

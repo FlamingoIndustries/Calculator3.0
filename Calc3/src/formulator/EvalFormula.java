@@ -15,8 +15,7 @@ import java.util.Vector;
 
 public class EvalFormula extends Calculator
 {
-	
-	//parser
+	//main functionality is parsing input for which values are assigned to which variables
 	public static FormulaElement evaluateFor(String input, HashMap<String, FormulaElement> formulas){
 		//find formula element and identify its variables
 		FormulaElement formula = formulas.get(input.substring(0, 1));
@@ -34,7 +33,6 @@ public class EvalFormula extends Calculator
 			if(!currToken.equals(" "))
 				tokens.add(currToken);
 		}
-
 		//evaluating a function with a SINGLE VARIABLE - only one value to assign
 		if(vars.size()==1){
 			//id the only key
@@ -43,12 +41,16 @@ public class EvalFormula extends Calculator
 			if(tokens.size()>2){
 				String recInput=toParse.substring(0, 4);
 				FormulaElement varValue = evaluateFor(recInput, formulas);
-				if(varValue instanceof ConstantElement)
-					vars.put(key, varValue);
+				if(!(varValue instanceof ConstantElement))
+					formula.unSetValue(key);
+				vars.put(key, varValue);
 			}
 			else{
 				//with just a single value in the brackets, either a number or a formula element
-				vars.put(key, FormulaElement.parseFormula(tokens.get(0), formulas, true));
+				FormulaElement value = FormulaElement.parseFormula(tokens.get(0), formulas, true);
+				if(!(value instanceof ConstantElement))
+					formula.unSetValue(key);
+				vars.put(key, value);
 			}
 		}
 		
@@ -65,17 +67,23 @@ public class EvalFormula extends Calculator
 				//assign a value to the current variable
 				else if(next){
 					//recursion
-					if(isVariable(token)){
+					if(formulas.containsKey(varKey)){
 						String recInput = token;
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
 						recInput+=tokens.remove(i+1);
 						FormulaElement varValue = evaluateFor(recInput, formulas);
-						if(varValue instanceof ConstantElement)
-							vars.put(varKey, varValue);
+						System.out.println(varValue.toString());
+						if(!(varValue instanceof ConstantElement))
+							formula.unSetValue(varKey);
+						vars.put(varKey, varValue);
 					}
-					else
-						vars.put(varKey, FormulaElement.parseFormula(tokens.get(i), formulas, true));
+					else{
+						FormulaElement varValue = FormulaElement.parseFormula(tokens.get(i), formulas, true);
+						if(!(varValue instanceof ConstantElement))
+							formula.unSetValue(varKey);
+						vars.put(varKey, varValue);
+					}
 					next=false;
 				}
 				//if token is a variable, identify which one so the correct value can be assigned
@@ -92,12 +100,12 @@ public class EvalFormula extends Calculator
 				if(vars.get(key) instanceof ConstantElement)
 					formula.setVariableValue(key, ((ConstantElement)vars.get(key)).getValue());
 				else
-					formula.setDValue(key, vars.get(key));
+					formula.setPartialValue(key, vars.get(key));
 			}
 		}
 		if(formula.isFullyGrounded())
 			return new ConstantElement(formula.evaluate());
-		return formula.dEval();
+		return formula.partialEval();
 		
 	}
 	

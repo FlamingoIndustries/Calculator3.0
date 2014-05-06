@@ -42,8 +42,8 @@ public class CosineFunctionElement extends FunctionElement{
 	}
 
 	@Override
-	public FormulaElement dEval() {
-		return new CosineFunctionElement(getArguments().get(0).dEval());
+	public FormulaElement partialEval() {
+		return new CosineFunctionElement(getArguments().get(0).partialEval());
 	}
 	
 	@Override

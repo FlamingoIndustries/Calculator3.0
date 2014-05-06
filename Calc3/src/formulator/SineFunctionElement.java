@@ -42,8 +42,8 @@ public class SineFunctionElement extends FunctionElement {
 	}
 
 	@Override
-	public FormulaElement dEval() {
-		return new SineFunctionElement(getArguments().get(0).dEval());
+	public FormulaElement partialEval() {
+		return new SineFunctionElement(getArguments().get(0).partialEval());
 	}
 	
 	@Override

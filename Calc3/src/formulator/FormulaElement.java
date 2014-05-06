@@ -15,7 +15,7 @@ import java.util.Vector;
 public abstract class FormulaElement
 {	
 	public abstract double evaluate();
-	public abstract FormulaElement dEval();
+	public abstract FormulaElement partialEval();
 	public abstract String getXMLformat(String tabbing);
 	public abstract FormulaElement symbolicDiff(String respect, int degree);
 	public abstract FormulaElement getSimplifiedCopy();
@@ -35,21 +35,34 @@ public abstract class FormulaElement
 		}
 	}
 	
-	public void setDValue(String varName, FormulaElement value){
+	public void unSetValue(String varName){
 		if(this instanceof VariableElement){
 			VariableElement current = (VariableElement) this;
 			if(current.getName().equals(varName)){
-				current.setdVal(value);
+				current.unSetValue();
 			}
 		}
 		else if(this instanceof FunctionElement){
 			for(FormulaElement elem: ((FunctionElement)this).getArguments()){
-				elem.setDValue(varName, value);
+				elem.unSetValue(varName);
+			}
+		}
+	}
+	
+	public void setPartialValue(String varName, FormulaElement value){
+		if(this instanceof VariableElement){
+			VariableElement current = (VariableElement) this;
+			if(current.getName().equals(varName)){
+				current.setPartialValue(value);
+			}
+		}
+		else if(this instanceof FunctionElement){
+			for(FormulaElement elem: ((FunctionElement)this).getArguments()){
+				elem.setPartialValue(varName, value);
 			}
 		}
 	}
 
-	
 	//identify all the variables in a formula and put them in the variables hash map
 	public Vector<String> identifyVars(){
 		Vector<String> vars = new Vector<String>();
@@ -111,13 +124,15 @@ public abstract class FormulaElement
 			}
 			
 		}
+		
+		//testing
+		//System.out.println("Initial: "+tokens.toString());
 
 		//FORMULAS USED TO DEFINE FORMULAS
 		for(int i=0; i<tokens.size(); i++){
 			String key = (String) tokens.get(i);
 			String input="";
 			if(formulas.containsKey(key)){
-				
 				input += (String)tokens.remove(i);
 				if(i!=tokens.size()){
 					String current = (String) tokens.get(i);
@@ -342,8 +357,8 @@ public abstract class FormulaElement
 			return this;
 		ConstantElement dx=new ConstantElement(0.0000001);
 		FormulaElement replace=new PlusFunctionElement(dx, new VariableElement(respect));
-		this.setDValue(respect, replace);
-		MinusFunctionElement minus=new MinusFunctionElement(this.dEval(),this);
+		this.setPartialValue(respect, replace);
+		MinusFunctionElement minus=new MinusFunctionElement(this.partialEval(),this);
 		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
 		return div.numericDiff(respect, degree-1);
 	}

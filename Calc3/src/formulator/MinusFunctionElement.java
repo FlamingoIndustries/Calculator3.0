@@ -56,10 +56,10 @@ public class MinusFunctionElement extends FunctionElement{
 		return arg1.evaluate()-arg2.evaluate();
 	}
 	
-	public FormulaElement dEval(){
+	public FormulaElement partialEval(){
 		FormulaElement arg1 = getArguments().elementAt(0);
 		FormulaElement arg2 = getArguments().elementAt(1);
-		return new MinusFunctionElement(arg1.dEval(), arg2.dEval());
+		return new MinusFunctionElement(arg1.partialEval(), arg2.partialEval());
 	}
 	
 	public boolean equals(FormulaElement comp)
@@ -98,4 +98,5 @@ public class MinusFunctionElement extends FunctionElement{
 		out.addArgument(r);
 		return out.getSimplifiedCopy();
 	}
+
 }

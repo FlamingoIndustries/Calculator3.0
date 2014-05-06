@@ -13,12 +13,12 @@ public class VariableElement extends FormulaElement {
 	private String name;
 	private double value;
 	boolean valueAssigned;
-	private FormulaElement dVal;
+	private FormulaElement partVal;
 
 	public VariableElement(String input){
 		name = input;
 		valueAssigned=false;
-		dVal=this;
+		partVal=this;
 	}
 	
 	public String getName(){
@@ -32,6 +32,11 @@ public class VariableElement extends FormulaElement {
 	public void setValue(double x){
 		value = x;
 		valueAssigned=true;
+		partVal = new ConstantElement(x);
+	}
+	
+	public void unSetValue(){
+		valueAssigned=false;
 	}
 	
 	public String toString(){
@@ -43,13 +48,13 @@ public class VariableElement extends FormulaElement {
 		return value;
 	}
 
-	public void setdVal(FormulaElement value){
-		dVal = value;
+	public void setPartialValue(FormulaElement value){
+		partVal = value;
 	}
 	
 	@Override
-	public FormulaElement dEval() {
-		return dVal;
+	public FormulaElement partialEval() {
+		return partVal;
 	}
 	
 	@Override
