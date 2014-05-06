@@ -60,6 +60,10 @@ public class Calculator {
 			else
 				return "Nothing to save!";
 		}
+		else if(text.equals("What is love?"))
+		{
+			return "Baby don't hurt me!";
+		}
 		else if(text.matches("^\\s*load\\s*$"))		//Branching to load all formulae from a chosen file
 		{
 			if(this.ReadFormulae())
@@ -68,9 +72,7 @@ public class Calculator {
 				return "Unable to read from file";
 		}
 		else if(text.matches("^\\s*graph.*$"))		//Branching to graph code
-		{
 			return this.graphFormula(text);
-		}
 		else if(text.matches("^\\s*\\w+\\s*=.*"))	//Assigning rhs of = to formula name on lhs 
 		{
 			Pattern form= Pattern.compile("^\\s*(\\w+)\\s*=\\s*(.+)\\s*$");
@@ -80,7 +82,7 @@ public class Calculator {
 			FormulaElement newform;
 			try
 			{
-				newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic);
+				newform=FormulaElement.parseFormula(m.group(2), formulas, symbolic).getSimplifiedCopy();
 			}
 			catch(Exception e)
 			{

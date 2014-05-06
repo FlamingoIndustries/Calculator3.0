@@ -158,15 +158,13 @@ public class MultipleFunctionElement extends FunctionElement {
 					m.addArgument(g);
 					for(int p=0;p<multelem.size();p++)
 						m.addArgument(multelem.elementAt(p));
-					try
+					if(m.isFullyGrounded())
 					{
 						ConstantElement newcon=new ConstantElement(m.evaluate());
 						((PlusFunctionElement) out).addArgument(newcon);
 					}
-					catch(Exception e)
-					{
+					else
 						((PlusFunctionElement) out).addArgument(m);
-					}
 				}
 				return out.getSimplifiedCopy();
 			}
@@ -191,7 +189,6 @@ public class MultipleFunctionElement extends FunctionElement {
 					count=powargs.lastElement();
 				}
 				vars=this.addToHashMap(var, count, vars);
-				System.out.println(vars);
 				j--;
 			}
 		}
