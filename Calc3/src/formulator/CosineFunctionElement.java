@@ -25,7 +25,7 @@ public class CosineFunctionElement extends FunctionElement{
 	//override addArgument method so that you can't add more than 1 argument
 	public void addArgument(FormulaElement arg){
 		if(arguments.size()==1)
-			System.out.println("You can't add any more arguments; the cosine function only accepts one");
+			System.out.println("Can't have more than one argument.");
 		else
 			arguments.add(arg);
 	}
