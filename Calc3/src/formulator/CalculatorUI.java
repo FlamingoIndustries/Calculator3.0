@@ -62,7 +62,7 @@ public class CalculatorUI extends Shell {
 				});
 			}
 		});
-		text.setBounds(23, 88, 536, 44);
+		text.setBounds(23, 88, 556, 44);
 		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		text.setEditable (true);
 		text.setDoubleClickEnabled(false);
@@ -477,7 +477,7 @@ public class CalculatorUI extends Shell {
 		});
 		btnEvaluate.setToolTipText("Evaluate the function");
 		btnEvaluate.setText("Evaluate");
-		btnEvaluate.setBounds(474, 181, 100, 123);
+		btnEvaluate.setBounds(474, 181, 105, 123);
 		
 		Button btnNumDiff = new Button(this, SWT.NONE);
 		btnNumDiff.addMouseListener(new MouseAdapter() {
@@ -489,7 +489,7 @@ public class CalculatorUI extends Shell {
 		});
 		btnNumDiff.setToolTipText("Toggle Between Symbolic and Numeric Differentiation");
 		btnNumDiff.setText("Toggle Diff.");
-		btnNumDiff.setBounds(474, 138, 100, 37);
+		btnNumDiff.setBounds(474, 138, 105, 37);
 		createContents();
 	}
 
