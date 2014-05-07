@@ -54,7 +54,7 @@ public class Calculator {
 	public String branch(String text)
 	{
 		text=text.trim();
-		if(text.matches("^\\s*save\\s*$"))				//Branching to save all formulae in a file
+		if(text.equals("save"))				//Branching to save all formulae in a file
 		{
 			if(!formulas.isEmpty())
 				if(this.WriteFormulae())
@@ -72,13 +72,14 @@ public class Calculator {
 		        Clip clip = AudioSystem.getClip();
 		        clip.open(audioInputStream);
 		        clip.start();
+		        clip.loop(Clip.LOOP_CONTINUOUSLY);
 		    } catch(Exception ex) {
 		        System.out.println("Error with playing sound.");
 		        ex.printStackTrace();
 		    }
 			return "Baby don't hurt me!";
 		}
-		else if(text.matches("^\\s*load\\s*$"))		//Branching to load all formulae from a chosen file
+		else if(text.equals("load"))		//Branching to load all formulae from a chosen file
 		{
 			if(this.ReadFormulae())
 				return "Successfully read from file";
@@ -104,9 +105,7 @@ public class Calculator {
 			}
 			Boolean store=false;
 			if(reserved.contains(m.group(1)))
-			{
 				return "Unable to store, cannot store using reserved name";
-			}
 			else if(formulas.containsKey(m.group(1)))
 			{
 				int dialogResult = JOptionPane.showConfirmDialog (null, "The formula \""+m.group(1)+"\" already exists\nWould you like to overwrite?","Warning",JOptionPane.YES_NO_OPTION);
@@ -147,11 +146,14 @@ public class Calculator {
 	 */
 	private String graphFormula(String text)
 	{	
-		if(!text.matches("^graph(\\s+\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\))+"))
+		text=text.replaceAll("\\s", "");
+		String singlegraph="\\w+'*\\(\\w+=\\-?\\d+(\\.\\d+)?,\\-?\\d+(\\.\\d+)?(,\\-?\\d+(\\.\\d+)?)?(,\\w+=\\-?\\d+(\\.\\d+)?)*\\))";
+		if(!text.matches("^graph(\\s+"+singlegraph+"+"))
 			return "Improper graph format";
 		
+		String graphTitle=text.replaceAll("\\s*graph\\s*", "");
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();	//Using regular expression to separate out function parts
-		Pattern form= Pattern.compile("\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)");
+		Pattern form= Pattern.compile(singlegraph);
 		Matcher m = form.matcher(text);
 		Vector<String> formv=new Vector<String>();
 		while(m.find()==true)
@@ -159,7 +161,7 @@ public class Calculator {
 		for(String s:formv)
 		{
 			Vector<String> results=new Vector<String>();
-			form= Pattern.compile("(\\w+'*)\\((\\w+)\\s*=\\s*(\\-?\\d+(\\.\\d+)?)\\s*,\\s*(\\-?\\d+(\\.\\d+)?)(\\s*,\\s*(\\-?\\d+(\\.\\d+)?))?(.*)\\)");
+			form= Pattern.compile("(\\w+'*)\\((\\w+)=(\\-?\\d+(\\.\\d+)?),(\\-?\\d+(\\.\\d+)?)(,(\\-?\\d+(\\.\\d+)?))?(.*)\\)");
 			m = form.matcher(s);
 			m.find();
 			FormulaElement root=null;
@@ -211,7 +213,7 @@ public class Calculator {
 			GraphFunction x= new GraphFunction(root, var, min, max, increment);
 			graphs.add(x);
 		}
-		new GraphControl(graphs, formulas);
+		new GraphControl(graphs, formulas, graphTitle);
 		return "Formulae successfully graphed";
 	}
 	
@@ -230,7 +232,8 @@ public class Calculator {
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
 	    shell.close();
-	    if (fileName != null) {
+	    if (fileName != null) 
+	    {
 	    	PrintWriter writer;
 			try
 			{
@@ -339,17 +342,17 @@ public class Calculator {
 						if(!formulae.isEmpty())
 							elem=formulae.pop();
 					}
-					else if(line.matches("<VariableElement>name=\\w+</VariableElement>"))
+					else if(line.matches("<VariableElement name=\"\\w+\"/>"))
 					{
-						Pattern form= Pattern.compile("<VariableElement>name=(\\w+)</VariableElement>");
+						Pattern form= Pattern.compile("<VariableElement name=\"(\\w+)\"/>");
 						Matcher m = form.matcher(line);
 						m.find();
 						String name=m.group(1);
 						elem=new VariableElement(name);						
 					}
-					else if(line.matches("<ConstantElement>value=\\d+\\.\\d+</ConstantElement>"))
+					else if(line.matches("<ConstantElement value=\"\\d+\\.\\d+\"/>"))
 					{
-						Pattern form= Pattern.compile("<ConstantElement>value=(\\d+\\.\\d+)</ConstantElement>");
+						Pattern form= Pattern.compile("<ConstantElement value=\"(\\d+\\.\\d+)\"/>");
 						Matcher m = form.matcher(line);
 						m.find();
 						double value=Double.parseDouble(m.group(1));

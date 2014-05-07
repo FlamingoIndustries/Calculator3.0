@@ -33,7 +33,7 @@ public class ConstantElement extends FormulaElement {
 	@Override
 	public String getXMLformat(String tabbing)
 	{
-		return "<"+this.getClass().getSimpleName()+">value="+value+"</"+this.getClass().getSimpleName()+">";
+		return "<"+this.getClass().getSimpleName()+" value=\""+value+"\"/>";
 	}
 	
 	public boolean equals(FormulaElement comp)

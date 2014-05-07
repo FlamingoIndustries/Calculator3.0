@@ -60,7 +60,7 @@ public class VariableElement extends FormulaElement {
 	@Override
 	public String getXMLformat(String tabbing)
 	{
-		return "<"+this.getClass().getSimpleName()+">name="+name+"</"+this.getClass().getSimpleName()+">";
+		return "<"+this.getClass().getSimpleName()+" name=\""+name+"\"/>";
 	}
 	
 	public boolean equals(FormulaElement comp)

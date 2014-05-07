@@ -119,9 +119,9 @@ public class DivideFunctionElement extends FunctionElement{
 	public FormulaElement getSimplifiedCopy()
 	{
 		Vector<FormulaElement> v=this.getArguments();
-		FormulaElement div1=v.firstElement();
-		FormulaElement div2=v.lastElement();
-		System.out.println(div1+"   "+div2);
+		FormulaElement div1=v.firstElement().getSimplifiedCopy();
+		FormulaElement div2=v.lastElement().getSimplifiedCopy();
+		
 		if(div1.equals(div2))
 			return new ConstantElement(1);
 		if(div1 instanceof MultipleFunctionElement||div2 instanceof MultipleFunctionElement)
@@ -160,8 +160,8 @@ public class DivideFunctionElement extends FunctionElement{
 			}
 		}
 		DivideFunctionElement div=new DivideFunctionElement();
-		div.addArgument(div1);
-		div.addArgument(div2);
+		div.addArgument(div1.getSimplifiedCopy());
+		div.addArgument(div2.getSimplifiedCopy());
 		return div;
 	}
 }
