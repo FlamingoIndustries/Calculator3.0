@@ -146,12 +146,12 @@ public class Calculator {
 	 */
 	private String graphFormula(String text)
 	{	
+		String graphTitle=text.replaceAll("\\s*graph\\s*", "");
 		text=text.replaceAll("\\s", "");
 		String singlegraph="\\w+'*\\(\\w+=\\-?\\d+(\\.\\d+)?,\\-?\\d+(\\.\\d+)?(,\\-?\\d+(\\.\\d+)?)?(,\\w+=\\-?\\d+(\\.\\d+)?)*\\))";
-		if(!text.matches("^graph(\\s+"+singlegraph+"+"))
+		if(!text.matches("^graph("+singlegraph+"+"))
 			return "Improper graph format";
-		
-		String graphTitle=text.replaceAll("\\s*graph\\s*", "");
+
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();	//Using regular expression to separate out function parts
 		Pattern form= Pattern.compile(singlegraph);
 		Matcher m = form.matcher(text);
