@@ -147,11 +147,10 @@ public class Calculator {
 	private String graphFormula(String text)
 	{	
 		String graphTitle=text.replaceAll("\\s*graph\\s*", "");
-		text=text.replaceAll("\\s", "");
-		String singlegraph="\\w+'*\\(\\w+=\\-?\\d+(\\.\\d+)?,\\-?\\d+(\\.\\d+)?(,\\-?\\d+(\\.\\d+)?)?(,\\w+=\\-?\\d+(\\.\\d+)?)*\\))";
-		if(!text.matches("^graph("+singlegraph+"+"))
+		String singlegraph="\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)";
+		if(!text.matches("^graph(\\s+"+singlegraph+")+"))
 			return "Improper graph format";
-
+		//text=text.replaceAll("^graph.*", "");
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();	//Using regular expression to separate out function parts
 		Pattern form= Pattern.compile(singlegraph);
 		Matcher m = form.matcher(text);
@@ -161,7 +160,7 @@ public class Calculator {
 		for(String s:formv)
 		{
 			Vector<String> results=new Vector<String>();
-			form= Pattern.compile("(\\w+'*)\\((\\w+)=(\\-?\\d+(\\.\\d+)?),(\\-?\\d+(\\.\\d+)?)(,(\\-?\\d+(\\.\\d+)?))?(.*)\\)");
+			form= Pattern.compile("(\\w+'*)\\((\\w+)\\s*=\\s*(\\-?\\d+(\\.\\d+)?)\\s*,\\s*(\\-?\\d+(\\.\\d+)?)(\\s*,\\s*(\\-?\\d+(\\.\\d+)?))?(.*)\\)");
 			m = form.matcher(s);
 			m.find();
 			FormulaElement root=null;
@@ -176,6 +175,7 @@ public class Calculator {
 				results.add("b"+m.group(i));
 				if(i==1)
 				{
+					System.out.println(formName+" "+formulas);
 					if(formulas.containsKey(formName))
 					{
 						if(symbolic)
