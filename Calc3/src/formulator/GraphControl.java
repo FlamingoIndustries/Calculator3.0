@@ -19,10 +19,10 @@ public class GraphControl {
 	public void doGraph() {
 
 		  SwingUtilities.invokeLater(new Runnable() {
-		 	  
 		@Override
 		   public void run() {
-				CartesianFrame frame = new CartesianFrame(graphlist, false, true, true, true);
+				CartesianFrame frame = new CartesianFrame(graphlist, false, true, true, true, text);
+				  System.out.println(text);  
 				frame.showUI();
 				 frame.toFront();
 			        frame.repaint();

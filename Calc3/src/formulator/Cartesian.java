@@ -51,15 +51,18 @@ class CartesianFrame extends JFrame {
 	boolean dots;
 	boolean lines;
 	boolean axes;
+	String name;
 	Vector<GraphFunction> graphs = new Vector<GraphFunction>();
 
 	public CartesianFrame(Vector<GraphFunction> graphs_in, boolean label_tog,
-			boolean dots_tog, boolean lines_tog, boolean axes_in) {
+			boolean dots_tog, boolean lines_tog, boolean axes_in, String name_in) {
 		labels = label_tog;
 		dots = dots_tog;
 		lines = lines_tog;
 		graphs = graphs_in;
 		axes = axes_in;
+		name = name_in;
+		
 		panel = new CartesianPanel(graphs, labels, dots, lines, axes);
 		add(panel);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -193,7 +196,7 @@ class CartesianFrame extends JFrame {
 
 	public void showUI() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("Cartesian");
+		setTitle(name);
 		setSize(700, 700);
 		setVisible(true);
 	}
