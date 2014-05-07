@@ -30,6 +30,7 @@ public class CosineFunctionElement extends FunctionElement{
 			arguments.add(arg);
 	}
 	
+	@Override
 	public String toString(){
 		if(getArguments().get(0) instanceof ConstantElement)
 			return new ConstantElement(evaluate()).toString();
@@ -49,7 +50,7 @@ public class CosineFunctionElement extends FunctionElement{
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)			//Stop recursion when degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new MultipleFunctionElement();
@@ -57,7 +58,7 @@ public class CosineFunctionElement extends FunctionElement{
 		elem.addArgument(new ConstantElement(-1));
 		elem.addArgument(new SineFunctionElement(first));
 		elem.addArgument(first.symbolicDiff(respect, degree));
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);	//Recursively call function with 1 less degree
 	}
 	
 	@Override

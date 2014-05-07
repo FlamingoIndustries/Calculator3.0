@@ -99,7 +99,7 @@ public class PlusFunctionElement extends FunctionElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)			//Stop recursion when degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new PlusFunctionElement();
@@ -111,7 +111,7 @@ public class PlusFunctionElement extends FunctionElement {
 		}
 		if(elem.getArguments().isEmpty())
 			return new ConstantElement(0);
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);	//Recursively call function with 1 less degree
 	}
 	
 	@Override
@@ -180,7 +180,8 @@ public class PlusFunctionElement extends FunctionElement {
 			return new ConstantElement(0);
 		return out;
 	}
-		
+	
+	//Simplifies multiple function elements to total in the overall plus function element
 	private HashMap<String,Vector<FormulaElement>> simplifyMultipleFunctionElement(HashMap<String, Vector<FormulaElement>> vars, MultipleFunctionElement mult)
 	{
 		Vector<FormulaElement> v=mult.getArguments();

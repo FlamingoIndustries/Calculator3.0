@@ -49,14 +49,14 @@ public class SineFunctionElement extends FunctionElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)		//Stop recursion when degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new MultipleFunctionElement();
 		FormulaElement first=elements.elementAt(0);
 		elem.addArgument(new CosineFunctionElement(first));
 		elem.addArgument(first.symbolicDiff(respect, degree));
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);		//Recursively call function with 1 less degree
 	}
 	
 	@Override

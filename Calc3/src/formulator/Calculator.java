@@ -150,7 +150,7 @@ public class Calculator {
 		String singlegraph="\\w+'*\\(\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?\\s*,\\s*\\-?\\d+(\\.\\d+)?(\\s*,\\s*\\-?\\d+(\\.\\d+)?)?(\\s*,\\s*\\w+\\s*=\\s*\\-?\\d+(\\.\\d+)?)*\\)";
 		if(!text.matches("^graph(\\s+"+singlegraph+")+"))
 			return "Improper graph format";
-		//text=text.replaceAll("^graph.*", "");
+		
 		Vector<GraphFunction> graphs=new Vector<GraphFunction>();	//Using regular expression to separate out function parts
 		Pattern form= Pattern.compile(singlegraph);
 		Matcher m = form.matcher(text);
@@ -175,7 +175,6 @@ public class Calculator {
 				results.add("b"+m.group(i));
 				if(i==1)
 				{
-					System.out.println(formName+" "+formulas);
 					if(formulas.containsKey(formName))
 					{
 						if(symbolic)
@@ -228,7 +227,7 @@ public class Calculator {
 	    final Shell shell = new Shell(display);
 	    FileDialog dlg = new FileDialog(shell, SWT.SAVE);
 	    String[] extensions={"*.xml"};
-	    dlg.setOverwrite(true);
+	    dlg.setOverwrite(true);								//Creating file dialogue display
 	    dlg.setFilterExtensions(extensions);
 	    String fileName = dlg.open();
 	    shell.close();
@@ -253,7 +252,7 @@ public class Calculator {
 	    		if(!first)
 	    			formXML+="\n";
 	    		first=false;
-	    		FormulaElement formula=form.getValue();
+	    		FormulaElement formula=form.getValue();					//Writing XML form of formulas to file
 	    		formXML+="\t<"+form.getKey()+">"+"\n"+"\t";
 	    		formXML+=formula.getXMLformat("\t\t")+"\n";
 	    		formXML+="\t</"+form.getKey()+">";
@@ -278,7 +277,7 @@ public class Calculator {
 		Stack<FormulaElement> formulae=new Stack<FormulaElement>();
 		
 		Display display = Display.getCurrent();
-		final Shell shell = new Shell(display);
+		final Shell shell = new Shell(display);						//Creating file dialogue display
 		FileDialog dlg = new FileDialog(shell, SWT.NONE);
 		String[] extensions={"*.xml"};
 		dlg.setFilterExtensions(extensions);
@@ -305,9 +304,9 @@ public class Calculator {
 					line=line.substring(1, line.length()-1);
 					FormulaElement form=null;
 					
-					if(newFile&&line.equals("formulas"))
+					if(newFile&&line.equals("formulas"))			//The file must begin with formulas as the root
 						newFile=false;
-					else if(newFormula)
+					else if(newFormula)								//The root of each formula is its filename
 					{
 						currentFormula=line;
 						newFormula=false;
@@ -338,8 +337,8 @@ public class Calculator {
 					FormulaElement elem=null;
 					if(line.matches("</[a-zA-Z]\\w*>")&&xmlstatements.peek().equals(line))
 					{
-						xmlstatements.pop();
-						if(!formulae.isEmpty())
+						xmlstatements.pop();				//When function element is closed, it is popped from the stack
+						if(!formulae.isEmpty())				//If formula stack still has elements on it, the current formula is the popped top of it
 							elem=formulae.pop();
 					}
 					else if(line.matches("<VariableElement name=\"\\w+\"/>"))
@@ -364,10 +363,10 @@ public class Calculator {
 						return false;
 					}
 					if(!formulae.isEmpty()&&formulae.peek() instanceof FunctionElement)
-						((FunctionElement)formulae.peek()).addArgument(elem);
+						((FunctionElement)formulae.peek()).addArgument(elem);			//The current element is added to the function on top of the stack
 					else if(formulae.isEmpty()&&elem!=null)
 					{
-						out.put(currentFormula, elem);
+						out.put(currentFormula, elem);			//The final element is added to the map of read formulae
 						currentFormula="";
 						newFormula=true;
 					}
@@ -378,6 +377,7 @@ public class Calculator {
 		{
 			return false;
 		}
+		//Adding read formulas to calculator formula list and confirming with user if formula name already exists 
 		for(Entry<String, FormulaElement> e: out.entrySet())
 		{
 			if(formulas.containsKey(e.getKey()))
@@ -395,6 +395,7 @@ public class Calculator {
 	/**
 	 * 
 	 * Switches differentiation type
+	 * @return Whether the differentiation type is symbolic or not.
 	 */
 	public boolean toggleDiff()
 	{

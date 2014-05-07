@@ -63,6 +63,7 @@ public class VariableElement extends FormulaElement {
 		return "<"+this.getClass().getSimpleName()+" name=\""+name+"\"/>";
 	}
 	
+	@Override
 	public boolean equals(FormulaElement comp)
 	{
 		if(comp instanceof VariableElement&& name.equals(comp.toString()))
@@ -74,16 +75,17 @@ public class VariableElement extends FormulaElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect,int degree)
 	{
-		if(degree<1)
+		if(degree<1)		//Stop recursion when degree is less than 1
 			return this;
 		FormulaElement out;
 		if(name.equals(respect))
-			out=new ConstantElement(1).symbolicDiff(respect, degree-1);
+			out=new ConstantElement(1).symbolicDiff(respect, degree-1);	//Recursively call function with 1 less degree
 		else
-			out=new ConstantElement(0);
+			out=new ConstantElement(0);	//A variable which is not the respect, is treated like a constant
 		return out;
 	}
 	
+	@Override
 	public VariableElement findVariable(String varName)
 	{
 		if(varName.equals(name))

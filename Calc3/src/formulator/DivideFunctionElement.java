@@ -89,7 +89,7 @@ public class DivideFunctionElement extends FunctionElement{
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree==0)
+		if(degree<1)		//Stop recursion when degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new DivideFunctionElement();
@@ -100,6 +100,7 @@ public class DivideFunctionElement extends FunctionElement{
 		MultipleFunctionElement mult1=new MultipleFunctionElement(divfirst,second);
 		MultipleFunctionElement mult2=new MultipleFunctionElement(first,divsecond);
 		FormulaElement out;
+		
 		if(!divfirst.equals(new ConstantElement(0))&&!divsecond.equals(new ConstantElement(0)))
 			out=new MinusFunctionElement(mult1,mult2);
 		else if(divfirst.equals(new ConstantElement(0)))
@@ -108,11 +109,11 @@ public class DivideFunctionElement extends FunctionElement{
 			out=mult1;
 		else 
 			out=new ConstantElement(0);
-		System.out.println(first);
+		
 		elem.addArgument(out);
 		PowerFunctionElement pow=new PowerFunctionElement(second,new ConstantElement(2));
 		elem.addArgument(pow);
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);	//Recursively call function with 1 less degree
 	}
 	
 	@Override

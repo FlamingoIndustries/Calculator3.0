@@ -62,6 +62,7 @@ public class MinusFunctionElement extends FunctionElement{
 		return new MinusFunctionElement(arg1.partialEval(), arg2.partialEval());
 	}
 	
+	@Override
 	public boolean equals(FormulaElement comp)
 	{
 		if(this.getClass().getSimpleName().equals(comp.getClass().getSimpleName()))
@@ -77,13 +78,13 @@ public class MinusFunctionElement extends FunctionElement{
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)		//Stop recursion if degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new MinusFunctionElement();
 		for(int i=0;i<elements.size();i++)
 			elem.addArgument(elements.elementAt(i).symbolicDiff(respect, degree));
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);	//Recursively call function with 1 less degree
 	}
 	
 	@Override

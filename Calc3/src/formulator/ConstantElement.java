@@ -20,6 +20,7 @@ public class ConstantElement extends FormulaElement {
 		return value;
 	}
 	
+	@Override
 	public String toString(){
 		if(value%1==0)
 			return ""+((int)value);
@@ -36,6 +37,7 @@ public class ConstantElement extends FormulaElement {
 		return "<"+this.getClass().getSimpleName()+" value=\""+value+"\"/>";
 	}
 	
+	@Override
 	public boolean equals(FormulaElement comp)
 	{
 		if(comp instanceof ConstantElement&&value==((ConstantElement) comp).getValue())

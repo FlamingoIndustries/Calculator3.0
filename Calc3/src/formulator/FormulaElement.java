@@ -361,16 +361,17 @@ public abstract class FormulaElement
 			return null;
 	}
 	
+	//This method estimates the differentiate of the formula by using (f(x+dx)-f(x))/dx
 	public FormulaElement numericDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)		//Stop recursion if degree is less than 1
 			return this;
 		ConstantElement dx=new ConstantElement(0.0000001);
 		FormulaElement replace=new PlusFunctionElement(dx, new VariableElement(respect));
 		this.setPartialValue(respect, replace);
 		MinusFunctionElement minus=new MinusFunctionElement(this.partialEval(),this);
 		DivideFunctionElement div=new DivideFunctionElement(minus,dx);
-		return div.numericDiff(respect, degree-1);
+		return div.numericDiff(respect, degree-1); //Return the differentiate of the result with 1 lower degree
 	}
 	
 	//main functionality is parsing input for which values are assigned to which variables

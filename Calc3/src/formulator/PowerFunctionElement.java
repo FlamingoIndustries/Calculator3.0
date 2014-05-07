@@ -67,6 +67,7 @@ public class PowerFunctionElement extends FunctionElement {
 		return new PowerFunctionElement(arg1.partialEval(), arg2.partialEval());
 	}
 		
+	@Override
 	public boolean equals(FormulaElement comp)
 	{
 		if(this.getClass().getSimpleName().equals(comp.getClass().getSimpleName()))
@@ -82,7 +83,7 @@ public class PowerFunctionElement extends FunctionElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)	//Stop recursion when degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new MultipleFunctionElement();
@@ -92,7 +93,7 @@ public class PowerFunctionElement extends FunctionElement {
 		MinusFunctionElement minus=new MinusFunctionElement(second,new ConstantElement(1));
 		PowerFunctionElement pow=new PowerFunctionElement(first,minus);
 		elem.addArgument(pow);
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);	//Recursively call function with 1 less degree
 	}
 	
 	@Override

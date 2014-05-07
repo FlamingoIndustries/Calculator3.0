@@ -112,7 +112,7 @@ public class MultipleFunctionElement extends FunctionElement {
 	@Override
 	public FormulaElement symbolicDiff(String respect, int degree)
 	{
-		if(degree<1)
+		if(degree<1)				//Stop recursion if degree is less than 1
 			return this;
 		Vector<FormulaElement> elements=this.getArguments();
 		FunctionElement elem=new PlusFunctionElement();
@@ -131,7 +131,7 @@ public class MultipleFunctionElement extends FunctionElement {
 		}
 		if(elem.getArguments().isEmpty())
 			return new ConstantElement(0);
-		return elem.symbolicDiff(respect, degree-1);
+		return elem.symbolicDiff(respect, degree-1);		//Recursively call function with 1 less degree
 	}
 	
 	@Override

@@ -94,6 +94,7 @@ abstract class FunctionElement extends FormulaElement {
 		return null;
 	}
 	
+	//This method adds the formula to the input hashmap and adds counts together if it already exists in the hashmap in some form
 	protected HashMap<String,Vector<FormulaElement>> addToHashMap(FormulaElement elem, FormulaElement count, HashMap<String,Vector<FormulaElement>> vars)
 	{
 		Boolean match=false;
