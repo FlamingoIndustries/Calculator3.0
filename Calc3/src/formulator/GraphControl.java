@@ -8,9 +8,11 @@ public class GraphControl {
 	
 	public Vector<GraphFunction> graphlist = new Vector<GraphFunction>();
 	public HashMap<String, FormulaElement> formulas;
-	public GraphControl(Vector<GraphFunction> graphs, HashMap<String, FormulaElement> map){
+	public String text;
+	public GraphControl(Vector<GraphFunction> graphs, HashMap<String, FormulaElement> map, String formulatext){
 		graphlist = graphs;
 		formulas = map;
+		text = formulatext;
 		doGraph();
 	}
 	
@@ -18,7 +20,6 @@ public class GraphControl {
 
 		  SwingUtilities.invokeLater(new Runnable() {
 		 	  
-
 		@Override
 		   public void run() {
 				CartesianFrame frame = new CartesianFrame(graphlist, false, true, true, true);
